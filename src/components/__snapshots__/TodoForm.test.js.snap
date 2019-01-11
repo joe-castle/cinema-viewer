@@ -1,0 +1,64 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TodoForm Should render 1`] = `
+.c0 {
+  border: 1px solid #ccc;
+  font-size: 25px;
+  padding: 15px;
+  width: 100%;
+}
+
+.c0:hover {
+  border-color: rgba(0,0,0,.7);
+}
+
+<TodoForm
+  addTodo={[MockFunction]}
+>
+  <form
+    onSubmit={[Function]}
+  >
+    <TodoForm__Input
+      onChange={[Function]}
+      placeholder="Enter new todo..."
+      value=""
+    >
+      <StyledComponent
+        forwardedComponent={
+          Object {
+            "$$typeof": Symbol(react.forward_ref),
+            "attrs": Array [],
+            "componentStyle": ComponentStyle {
+              "componentId": "TodoForm__Input-a3ycd3-0",
+              "isStatic": true,
+              "lastClassName": "c0",
+              "rules": Array [
+                "border:1px solid #ccc;font-size:25px;padding:15px;width:100%;&:hover{border-color:rgba(0,0,0,.7);}",
+              ],
+            },
+            "displayName": "TodoForm__Input",
+            "foldedComponentIds": Array [],
+            "render": [Function],
+            "styledComponentId": "TodoForm__Input-a3ycd3-0",
+            "target": "input",
+            "toString": [Function],
+            "warnTooManyClasses": [Function],
+            "withComponent": [Function],
+          }
+        }
+        forwardedRef={null}
+        onChange={[Function]}
+        placeholder="Enter new todo..."
+        value=""
+      >
+        <input
+          className="c0"
+          onChange={[Function]}
+          placeholder="Enter new todo..."
+          value=""
+        />
+      </StyledComponent>
+    </TodoForm__Input>
+  </form>
+</TodoForm>
+`;

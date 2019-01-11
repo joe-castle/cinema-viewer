@@ -1,0 +1,7 @@
+Features:
+    ☐ Choose cinema
+    ☐ List available showsings, (imax, 4dx, etc)
+    ☐ Hide films not interested
+    ☐ Show films that are new to booking, and have come back, i.e. already exist in the DB but have since dropped out of booking.
+    ☐ have a "stamp" for unlimited content
+    ☐ mark a film as watched and specify a rating, the format, seats (and seat rating / notes), date / time watched and any extra notes
