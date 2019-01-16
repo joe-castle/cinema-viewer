@@ -12,14 +12,14 @@ export default (el, state) => {
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="A starter project for react and redux">
-    <title>React-Redux Starter Todo Example</title>
+    <meta name="description" content="Cinema viewier with rating and hiding ability">
+    <title>Cinema Viewer</title>
     ${styleTags}
   </head>
   <body>
     <div id="root">${html}</div>
     <script>
-      window.INITIAL_STATE = ${JSON.stringify(state)};
+      window.__PRELOADED_STATE__ = ${JSON.stringify(state)};
     </script>
     <script src="/assets/bundle.js"></script>
   </body>

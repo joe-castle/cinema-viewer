@@ -5,3 +5,12 @@ Features:
     ☐ Show films that are new to booking, and have come back, i.e. already exist in the DB but have since dropped out of booking.
     ☐ have a "stamp" for unlimited content
     ☐ mark a film as watched and specify a rating, the format, seats (and seat rating / notes), date / time watched and any extra notes
+    ☐ favourite films interested in
+    ☐ Also grab films that aren't at basildon?
+    ☐ Films api fetches from DB with parsed data and stored information about film?
+        ☐ Check for new films daily and update db?
+    ☐ Have seperate table for user information on each film, rating, description etc...
+
+Build:
+    ☐ Add build step for backend -> lib?
+    ☐ Add start script for production

@@ -13,10 +13,10 @@ export default (env, config) => {
         'webpack-dev-server/client?http://localhost:3001',
         'webpack/hot/only-dev-server',
         'react-hot-loader/patch',
-        './src/index'
+        './src/client'
       ],
       // ifProduction
-      './src/index'
+      './src/client'
     ),
     output: {
       filename: 'bundle.js',

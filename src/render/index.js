@@ -9,12 +9,14 @@ import App from '../components/App'
 
 export default (req, res) => {
   // Do async stuff...
-  const store = createStore(rootReducer /* PROVIDE INITIAL STATE */)
+  const store = createStore(rootReducer /* PROVIDE PRELOADED STATE */)
 
-  res.send(template(
-    <Provider store={store}>
-      <App />
-    </Provider>,
-    store.getState()
-  ))
+  res.send(
+    template(
+      <Provider store={store}>
+        <App />
+      </Provider>,
+      store.getState()
+    )
+  )
 }

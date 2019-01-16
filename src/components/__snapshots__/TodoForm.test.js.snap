@@ -29,7 +29,7 @@ exports[`TodoForm Should render 1`] = `
             "$$typeof": Symbol(react.forward_ref),
             "attrs": Array [],
             "componentStyle": ComponentStyle {
-              "componentId": "TodoForm__Input-a3ycd3-0",
+              "componentId": "TodoForm__Input-p2gkw7-0",
               "isStatic": true,
               "lastClassName": "c0",
               "rules": Array [
@@ -39,7 +39,7 @@ exports[`TodoForm Should render 1`] = `
             "displayName": "TodoForm__Input",
             "foldedComponentIds": Array [],
             "render": [Function],
-            "styledComponentId": "TodoForm__Input-a3ycd3-0",
+            "styledComponentId": "TodoForm__Input-p2gkw7-0",
             "target": "input",
             "toString": [Function],
             "warnTooManyClasses": [Function],
