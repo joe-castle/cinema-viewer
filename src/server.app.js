@@ -13,24 +13,27 @@ import express from 'express'
 // import client from './db/client';
 
 import render from './render'
+import controllers from './controllers'
 
-const app = express()
-// const RedisStore = connectRedis(session);
+export default (db) => {
+  const app = express()
+  // const RedisStore = connectRedis(session);
 
-app
-  .use(express.static(path.resolve(__dirname, 'assets')))
-  // .use(bodyParser.json())
-  // .use(cookieParser())
-  // .use(session({
-  //   store: new RedisStore({ client }),
-  //   secret: 'NEEDS TO BE CHANGED',
-  //   resave: false,
-  //   saveUninitialized: false,
-  // }))
-  // .use(passport.initialize())
-  // .use(passport.session())
-  // .use('/api/users', users)
-  // .use('/api/pics', pics);
-  .get('*', render)
+  app
+    .use(express.static(path.resolve(__dirname, 'assets')))
+    // .use(bodyParser.json())
+    // .use(cookieParser())
+    // .use(session({
+    //   store: new RedisStore({ client }),
+    //   secret: 'NEEDS TO BE CHANGED',
+    //   resave: false,
+    //   saveUninitialized: false,
+    // }))
+    // .use(passport.initialize())
+    // .use(passport.session())
+    // .use('/api/users', users)
+    .use(controllers(db))
+    .get('*', render)
 
-export default app
+  return app
+}
