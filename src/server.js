@@ -6,10 +6,10 @@ import app from './server.app'
 mongoose
   .plugin(autopopulate)
   .connect(process.env.MONGO_URL, { useNewUrlParser: true })
-  .then((db) => {
+  .then(() => {
     const port = process.env.PORT || 3000
 
-    app(db).listen(port, () => {
+    app.listen(port, () => {
       console.log('Express server listening on port:', port)
     })
   })

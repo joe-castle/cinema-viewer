@@ -1,11 +1,13 @@
 import { Router } from 'express'
 
+import { ensureAuthenticated } from '../middleware'
 import films from './films'
+import users from './users'
 
-export default (db) => {
-  const router = Router()
+const router = Router()
+router.use(ensureAuthenticated)
 
-  films(router)
+films(router)
+users(router)
 
-  return router
-}
+export default router

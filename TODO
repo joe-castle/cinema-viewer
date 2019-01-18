@@ -10,7 +10,7 @@ Features:
     ☐ Films api fetches from DB with parsed data and stored information about film?
     ☐ Check for new films daily and update db?
     ☐ Have seperate table for user information on each film, rating, description etc...
-    ☐ USE TYPESCRIPT FOR THE LOVE OF GOD
+    ☐ USE TYPESCRIPT FOR THE LOVE OF GOD, maybe?
 
 Build:
     ☐ Add build step for backend -> lib?
