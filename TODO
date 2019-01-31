@@ -12,6 +12,16 @@ Features:
     ☐ Have seperate table for user information on each film, rating, description etc...
     ☐ USE TYPESCRIPT FOR THE LOVE OF GOD, maybe?
 
+Redux-observable:
+  ☐ store
+    ☐ actions
+      ☐ index.js collects reducers, epics and actions. Combines them and exports them
+    ☐ configure store, takes the reducers and epics and configures them in the store
+
+TODO:
+  ☐ Update ensureauthenticated middleware
+  ✔ Update render to use configurestore instead? @done(19-01-18 16:41)
+
 Build:
     ☐ Add build step for backend -> lib?
     ☐ Add start script for production
@@ -35,11 +45,11 @@ Archive:
     ✔ favourited (defaults to false) @done(19-01-18 11:15) @project(Features)
     ✔ unlimited (grab from title) @done(19-01-18 11:15) @project(Features)
     ✔ watched (null/object): @done(19-01-18 11:15) @project(Features)
-    ✔ rating: number 0/100 @done(19-01-18 11:15) @project(Features)
-    ✔ format: string 2D/4D etc.. (provide from data in db, or add custom) @done(19-01-18 11:15) @project(Features)
-    ✔ screen: object Screen @done(19-01-18 11:15) @project(Features)
-    ✔ date / time @done(19-01-18 11:15) @project(Features)
-    ✔ notes / rating @done(19-01-18 11:15) @project(Features)
+      ✔ rating: number 0/100 @done(19-01-18 11:15) @project(Features)
+      ✔ format: string 2D/4D etc.. (provide from data in db, or add custom) @done(19-01-18 11:15) @project(Features)
+      ✔ screen: object Screen @done(19-01-18 11:15) @project(Features)
+      ✔ date / time @done(19-01-18 11:15) @project(Features)
+      ✔ notes / rating @done(19-01-18 11:15) @project(Features)
   ✔ Screen: (have seperate table for seats, so they're searchable, only allow one entry per seat) @done(19-01-18 11:14) @project(Features)
     ✔ id: number @done(19-01-18 11:15) @project(Features)
     ✔ screen-number: number @done(19-01-18 11:15) @project(Features)

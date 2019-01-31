@@ -1,16 +1,21 @@
 import { createStore, applyMiddleware } from 'redux'
+import { createEpicMiddleware } from 'redux-observable'
 import { composeWithDevTools } from 'redux-devtools-extension'
 
-import rootReducer from './reducers'
+import { rootReducer, rootEpic } from './actions'
 
 export default (initialState) => {
+  const epicMiddleware = createEpicMiddleware()
+
   const store = createStore(rootReducer, initialState, composeWithDevTools(
-    applyMiddleware(/* MIDDLEWARE GOES HERE */)
+    applyMiddleware(epicMiddleware)
   ))
 
+  epicMiddleware.run(rootEpic)
+
   if (process.env.NODE_ENV !== 'production' && module.hot) {
-    module.hot.accept('./reducers', () =>
-      store.replaceReducer(require('./reducers').default)
+    module.hot.accept('./actions', () =>
+      store.replaceReducer(require('./actions').rootReducer)
     )
   }
 

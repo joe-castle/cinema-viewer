@@ -1,15 +1,14 @@
 import React from 'react'
-import { createStore } from 'redux'
 import { Provider } from 'react-redux'
 
-import rootReducer from '../store/reducers'
+import configureStore from '../store/configureStore'
 import template from './template'
 
 import App from '../components/App'
 
 export default (req, res) => {
   // Do async stuff...
-  const store = createStore(rootReducer /* PROVIDE PRELOADED STATE */)
+  const store = configureStore(/* PROVIDE PRELOADED STATE */)
 
   res.send(
     template(

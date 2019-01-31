@@ -3,7 +3,7 @@ import { Schema, Types, model } from 'mongoose'
 const filmSchema = new Schema({
   title: String,
   formats: [String],
-  post: String,
+  poster: String,
   url: String,
   hidden: Boolean,
   favourite: Boolean,
