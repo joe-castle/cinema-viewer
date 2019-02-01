@@ -1,6 +1,6 @@
-import query from '../utils/query'
+import { multiQ } from '../utils/query'
 
-const films = query('films')
+const films = multiQ('films')
 
 export function getAllFilms () {
   return films((col) => col.find())
