@@ -1,3 +1,5 @@
+import { ObjectID } from 'mongodb'
+
 import { multiQ, singleQ } from '../utils/query'
 
 const filmsM = multiQ('films')
@@ -23,14 +25,10 @@ export function getFilmsWithUserData (userId) {
 }
 
 export function getOneFilm (filmId) {
-  return filmsS((col) => col.findOne({ _id: filmId }))
+  return filmsS((col) => col.findOne({ _id: new ObjectID(filmId) }))
 }
 
-export function insertOrUpdateOneFilm (filmId, newFilm) {
-  return filmsS((col) => col.findOneAndUpdate({ _id: filmId }, newFilm, { upsert: true }))
-}
-
-export function intertOrUpdateMultipleFilms (films) {
+export function insertOrUpdateMultipleFilms (films) {
   return filmsS((col) => {
     const bulk = col.initializeUnorderedBulkOp()
 

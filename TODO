@@ -11,6 +11,7 @@ Features:
     ☐ Check for new films daily and update db?
     ☐ Have seperate table for user information on each film, rating, description etc...
     ☐ USE TYPESCRIPT FOR THE LOVE OF GOD, maybe?
+    ☐ When rating a film, have a pop up that shows what would be below and above the score
 
 Redux-observable:
   ☐ store
@@ -41,9 +42,9 @@ Archive:
     ✔ cinema: object @done(19-01-18 11:15) @project(Features)
     ✔ id: number @done(19-01-18 11:15) @project(Features)
     ✔ name: string @done(19-01-18 11:15) @project(Features)
+    ✔ unlimited (grab from title) @done(19-01-18 11:15) @project(Features)
     ✔ ignored/hidden (defaults to false) @done(19-01-18 11:15) @project(Features)
     ✔ favourited (defaults to false) @done(19-01-18 11:15) @project(Features)
-    ✔ unlimited (grab from title) @done(19-01-18 11:15) @project(Features)
     ✔ watched (null/object): @done(19-01-18 11:15) @project(Features)
       ✔ rating: number 0/100 @done(19-01-18 11:15) @project(Features)
       ✔ format: string 2D/4D etc.. (provide from data in db, or add custom) @done(19-01-18 11:15) @project(Features)

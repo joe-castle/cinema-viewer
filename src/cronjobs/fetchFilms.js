@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { parseString } from 'xml2js'
 
-import { getAllFilms, intertOrUpdateMultipleFilms } from '../data/models/films'
+import { getAllFilms, insertOrUpdateMultipleFilms } from '../data/models/films'
 
 const { CINEMA_ACCESS_TOKEN } = process.env
 
@@ -78,7 +78,7 @@ function fetchFilms (attempt) {
 module.exports = () =>
   fetchFilms(5)
     .then((results) => {
-      intertOrUpdateMultipleFilms(results)
+      insertOrUpdateMultipleFilms(results)
 
       getAllFilms()
         .then((results) => {
@@ -87,7 +87,7 @@ module.exports = () =>
             .map((film) => ({ ...film, showTimes: null }))
 
           if (expiredFilms.length > 0) {
-            intertOrUpdateMultipleFilms(expiredFilms)
+            insertOrUpdateMultipleFilms(expiredFilms)
           }
         })
 
