@@ -3,21 +3,17 @@ import { insertUpdateUserData } from '../data/models/filmUserData'
 import { ensureAuthenticated } from '../middleware'
 import fetchFilms from '../cronjobs/fetchFilms'
 
-export default (router) => {
-  router.get('/api/films', (req, res) => {
-    getAllFilms(req.user)
-      .then((result) => res.send(result))
+export default function filmsController (router) {
+  router.get('/api/films', async (req, res) => {
+    res.send(await getAllFilms())
 
-    // fetchFilms()
-    //   .then((result) => res.send(result))
+    // res.send(await fetchFilms(())
   })
 
-  router.post('/api/films/:id', ensureAuthenticated, (req, res) => {
+  router.post('/api/films/:id', ensureAuthenticated, async (req, res) => {
     const { id } = req.params
 
-    insertUpdateUserData({ ...req.body, 'user-id': req.user._id, 'film-id': id })
-      .then((result) => {
-        res.send(result)
-      })
+    // FIX: Fix return value, for upserted values no body is returned
+    res.send(await insertUpdateUserData({ ...req.body, 'user-id': req.user._id, 'film-id': id }))
   })
 }

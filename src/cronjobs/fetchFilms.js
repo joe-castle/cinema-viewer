@@ -20,75 +20,62 @@ function processShowtimes (filmObj) {
     ], [])
 }
 
-function fetchFilms () {
-  return axios.all([
-    axios.get(`https://www.cineworld.co.uk/api/quickbook/films?key=${CINEMA_ACCESS_TOKEN}&full=true&cinema=104`),
-    axios.get('https://www.cineworld.co.uk/syndication/film_times.xml')
-  ])
-    .then(axios.spread((films, times) => {
-      return new Promise((resolve) => {
-        parseString(times.data, (err, results) => {
-          if (err) console.log(err)
+export default async function fetchFilms () {
+  try {
+    const films = await axios.get(`https://www.cineworld.co.uk/api/quickbook/films?key=${CINEMA_ACCESS_TOKEN}&full=true&cinema=104`)
+    const times = await axios.get('https://www.cineworld.co.uk/syndication/film_times.xml')
 
-          const parsedXml = results.relatedData.row
-            .filter((row) => row.$.key === '104')
-            .map(({ column }) => column.reduce((prev, curr) => ({ ...prev, [curr.$.name]: curr._ }), {}))
-            .reduce((prev, curr) => ({ ...prev, [curr.edi]: curr }), {})
-
-          const processedFilms = []
-
-          films.data.films.forEach((film) => {
-            const format = processTitle(film.title)
-            const existingFilm = processedFilms.find((found) => found.title === parsedXml[film.edi].Title)
-
-            if (existingFilm) {
-              existingFilm.edis.push(film.edi)
-              existingFilm.showtimes[format] = processShowtimes(parsedXml[film.edi])
-            } else {
-              processedFilms.push({
-                edis: [film.edi],
-                title: parsedXml[film.edi].Title,
-                poster: film.poster_url,
-                url: film.film_url,
-                unlimited: /unlimited/gi.test(parsedXml[film.edi].Title),
-                showtimes: {
-                  [format]: processShowtimes(parsedXml[film.edi])
-                }
-              })
-            }
-          })
-
-          resolve(processedFilms)
-        })
+    const xml = await new Promise((resolve, reject) => {
+      parseString(times.data, (err, results) => {
+        if (err) reject(err)
+        else resolve(results)
       })
-    }))
-    .then((films) => {
-      return axios
-        .all(films.map((film) => axios.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&q=${film.title} trailer&maxResults=1&key=${YOUTUBE_API_KEY}`)))
-        .then((results) => films.map((film, index) =>
-          ({ ...film, trailer: `https://www.youtube.com/watch?v=${results[index].data.items[0].id.videoId}` })))
     })
-    .catch((err) => {
-      console.log('Error fetching films:', err.message)
-    })
-}
 
-module.exports = () =>
-  fetchFilms()
-    .then((results) => {
-      console.log(results)
-      insertOrUpdateMultipleFilms(results, (film) => ({ $set: film, $setOnInsert: { date_added: new Date() } }))
+    const parsedXml = xml.relatedData.row
+      .filter((row) => row.$.key === '104')
+      .map(({ column }) => column.reduce((prev, curr) => ({ ...prev, [curr.$.name]: curr._ }), {}))
+      .reduce((prev, curr) => ({ ...prev, [curr.edi]: curr }), {})
 
-      getAllFilms()
-        .then((results) => {
-          const expiredFilms = results
-            .filter((film) => !results.find((result) => result.title === film.title))
-            .map((film) => ({ ...film, showTimes: null }))
+    const processedFilms = []
 
-          if (expiredFilms.length > 0) {
-            insertOrUpdateMultipleFilms(expiredFilms)
+    films.data.films.forEach((film) => {
+      const format = processTitle(film.title)
+      const existingFilm = processedFilms.find((found) => found.title === parsedXml[film.edi].Title)
+
+      if (existingFilm) {
+        existingFilm.edis.push(film.edi)
+        existingFilm.showtimes[format] = processShowtimes(parsedXml[film.edi])
+      } else {
+        processedFilms.push({
+          edis: [film.edi],
+          title: parsedXml[film.edi].Title,
+          synopsis: parsedXml[film.edi].synopsis,
+          poster: film.poster_url,
+          url: film.film_url,
+          unlimited: /unlimited/gi.test(parsedXml[film.edi].Title),
+          showtimes: {
+            [format]: processShowtimes(parsedXml[film.edi])
           }
         })
-
-      return results
+      }
     })
+
+    // const trailers = await axios
+    //   .all(films.map((film) => axios.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&q=${film.title} trailer&maxResults=1&key=${YOUTUBE_API_KEY}`)))
+
+    insertOrUpdateMultipleFilms(processedFilms, (film) => ({ $set: film, $setOnInsert: { date_added: new Date() } }))
+
+    const expiredFilms = await getAllFilms()
+      .filter((film) => !processedFilms.find((processed) => processed.title === film.title))
+      .map((film) => ({ ...film, showTimes: null }))
+
+    if (expiredFilms.length > 0) {
+      insertOrUpdateMultipleFilms(expiredFilms)
+    }
+
+    return processedFilms
+  } catch (err) {
+    console.log('Error whilst fetching films:', err.message)
+  }
+}

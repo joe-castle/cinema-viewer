@@ -10,12 +10,14 @@ passport.use(new Strategy(
     clientSecret: GOOGLE_CLIENT_SECRET,
     callbackURL: PRODUCTION
       ? 'http://www.example.com/auth/google/callback'
-      : 'http://localhost:3000/auth/google/callback'
+      : 'http://localhost:3001/auth/google/callback'
   },
-  (accessToken, refreshToken, profile, cb) => {
-    getUserAndAddIfNotExists(profile)
-      .then((user) => cb(null, user))
-      .catch((err) => cb(err))
+  async (accessToken, refreshToken, profile, cb) => {
+    try {
+      cb(null, await getUserAndAddIfNotExists(profile))
+    } catch (err) {
+      cb(err)
+    }
   }
 ))
 
@@ -23,9 +25,8 @@ passport.serializeUser((user, done) => {
   done(null, user._id)
 })
 
-passport.deserializeUser((id, done) => {
-  getUser(id)
-    .then((user) => done(null, user))
+passport.deserializeUser(async (id, done) => {
+  done(null, await getUser(id))
 })
 
 export default passport

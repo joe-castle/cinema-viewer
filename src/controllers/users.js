@@ -1,6 +1,6 @@
 import passport from '../strategies/google'
 
-export default (router) => {
+export default function usersController (router) {
   router.get('/api/user', (req, res) => {
     res.json(req.user)
   })
