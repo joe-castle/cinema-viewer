@@ -1,17 +1,13 @@
-import { getFilmsWithUserData, getAllFilms } from '../data/models/films'
+import { getAllFilms } from '../data/models/films'
 import { insertUpdateUserData } from '../data/models/filmUserData'
 import { ensureAuthenticated } from '../middleware'
 import fetchFilms from '../cronjobs/fetchFilms'
 
 export default (router) => {
   router.get('/api/films', (req, res) => {
-    if (req.user) {
-      getFilmsWithUserData(req.user._id)
-        .then((results) => res.send(results))
-    } else {
-      getAllFilms()
-        .then((result) => res.send(result))
-    }
+    getAllFilms(req.user)
+      .then((result) => res.send(result))
+
     // fetchFilms()
     //   .then((result) => res.send(result))
   })

@@ -3,7 +3,7 @@ import { parseString } from 'xml2js'
 
 import { getAllFilms, insertOrUpdateMultipleFilms } from '../data/models/films'
 
-const { CINEMA_ACCESS_TOKEN } = process.env
+const { CINEMA_ACCESS_TOKEN, YOUTUBE_API_KEY } = process.env
 
 function processTitle (title) {
   return title.match(/(?:\((.+?)\))?/)[1] || '2D'
@@ -20,7 +20,7 @@ function processShowtimes (filmObj) {
     ], [])
 }
 
-function fetchFilms (attempt) {
+function fetchFilms () {
   return axios.all([
     axios.get(`https://www.cineworld.co.uk/api/quickbook/films?key=${CINEMA_ACCESS_TOKEN}&full=true&cinema=104`),
     axios.get('https://www.cineworld.co.uk/syndication/film_times.xml')
@@ -50,7 +50,6 @@ function fetchFilms (attempt) {
                 title: parsedXml[film.edi].Title,
                 poster: film.poster_url,
                 url: film.film_url,
-                date_added: new Date(),
                 unlimited: /unlimited/gi.test(parsedXml[film.edi].Title),
                 showtimes: {
                   [format]: processShowtimes(parsedXml[film.edi])
@@ -63,22 +62,22 @@ function fetchFilms (attempt) {
         })
       })
     }))
+    .then((films) => {
+      return axios
+        .all(films.map((film) => axios.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&q=${film.title} trailer&maxResults=1&key=${YOUTUBE_API_KEY}`)))
+        .then((results) => films.map((film, index) =>
+          ({ ...film, trailer: `https://www.youtube.com/watch?v=${results[index].data.items[0].id.videoId}` })))
+    })
     .catch((err) => {
       console.log('Error fetching films:', err.message)
-
-      if (attempt > 0) {
-        console.log('\nTrying again, attempt number:', attempt)
-        return fetchFilms(attempt - 1)
-      } else {
-        console.log('Tried 5 times with no success, stopping...')
-      }
     })
 }
 
 module.exports = () =>
-  fetchFilms(5)
+  fetchFilms()
     .then((results) => {
-      insertOrUpdateMultipleFilms(results)
+      console.log(results)
+      insertOrUpdateMultipleFilms(results, (film) => ({ $set: film, $setOnInsert: { date_added: new Date() } }))
 
       getAllFilms()
         .then((results) => {

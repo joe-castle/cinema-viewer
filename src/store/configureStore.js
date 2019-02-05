@@ -4,7 +4,7 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 
 import { rootReducer, rootEpic } from './actions'
 
-export default (initialState) => {
+export default function configureStore (initialState) {
   const epicMiddleware = createEpicMiddleware()
 
   const store = createStore(rootReducer, initialState, composeWithDevTools(

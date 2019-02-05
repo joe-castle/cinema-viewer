@@ -1,20 +1,20 @@
 import { combineReducers } from 'redux'
 import { combineEpics } from 'redux-observable'
 
-import { todoActions, todoReducer, todoEpics } from './todos'
-import { filterActions, filterReducer, filterEpics } from './filter'
+import { filmActions, filmReducer, filmEpics } from './films'
+import { userActions, userReducer, userEpics } from './user'
 
 export const actions = {
-  ...todoActions,
-  ...filterActions
+  ...filmActions,
+  ...userActions
 }
 
 export const rootReducer = combineReducers({
-  todos: todoReducer,
-  filter: filterReducer
+  films: filmReducer,
+  user: userReducer
 })
 
 export const rootEpic = combineEpics(
-  ...todoEpics,
-  ...filterEpics
+  ...filmEpics,
+  ...userEpics
 )
