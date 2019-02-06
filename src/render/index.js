@@ -1,5 +1,6 @@
 import React from 'react'
 import { Provider } from 'react-redux'
+import { StaticRouter } from 'react-router-dom'
 
 import { getAllFilms } from '../data/models/films'
 
@@ -8,21 +9,24 @@ import template from './template'
 
 import App from '../components/App'
 
-export default (req, res) => {
-  getAllFilms(req.user)
-    .then((results) => {
-      const store = configureStore({
-        films: results,
-        user: req.user
-      })
+export default async function render (req, res) {
+  const films = await getAllFilms(req.user)
 
-      res.send(
-        template(
-          <Provider store={store}>
-            <App />
-          </Provider>,
-          store.getState()
-        )
-      )
-    })
+  const store = configureStore({
+    films,
+    user: req.user
+  })
+
+  const context = {}
+
+  res.send(
+    template(
+      <Provider store={store}>
+        <StaticRouter location={req.url} context={context}>
+          <App />
+        </StaticRouter>
+      </Provider>,
+      store.getState()
+    )
+  )
 }

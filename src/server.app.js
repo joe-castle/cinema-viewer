@@ -10,13 +10,13 @@ import passport from './strategies/google'
 import render from './render'
 import controllers from './controllers'
 
-import './cronjobs'
+// import './cronjobs'
 
 const app = express()
 const MongoStore = connect(session)
 const { SESSION_SECRET } = process.env
 
-export default (db) => {
+export default function serverApp (db) {
   return app
     .use(express.static(path.resolve(__dirname, 'assets')))
     .use(bodyParser.json())

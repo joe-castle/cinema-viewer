@@ -1,5 +1,5 @@
 import schedule from 'node-schedule'
 
-import fetchFilms from './fetchFIlms'
+import fetchFilms from './fetchFilms'
 
-schedule.scheduleJob('0 0 2 ? * * *', fetchFilms)
+schedule.scheduleJob('0 3 * * *', fetchFilms)

@@ -9,6 +9,7 @@ export function getUserData (userId) {
   return userDataM((col) => col.find({ 'user_id': new ObjectID(userId) }))
 }
 
+// FIX: Fix return value, for upserted values no body is returned
 export function insertUpdateUserData (userData) {
   return userDataS((col) =>
     col.findOneAndUpdate(

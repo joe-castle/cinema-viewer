@@ -7,13 +7,12 @@ export default function filmsController (router) {
   router.get('/api/films', async (req, res) => {
     res.send(await getAllFilms())
 
-    // res.send(await fetchFilms(())
+    // res.send(await fetchFilms())
   })
 
   router.post('/api/films/:id', ensureAuthenticated, async (req, res) => {
     const { id } = req.params
 
-    // FIX: Fix return value, for upserted values no body is returned
     res.send(await insertUpdateUserData({ ...req.body, 'user-id': req.user._id, 'film-id': id }))
   })
 }

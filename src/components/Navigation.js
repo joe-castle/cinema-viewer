@@ -6,11 +6,14 @@ import {
   NavbarToggler,
   NavbarBrand,
   Nav,
-  NavItem,
-  NavLink } from 'reactstrap'
+  NavItem } from 'reactstrap'
+import { Link } from 'react-router-dom'
 
-const NavBarCustomer = styled(Navbar)`
+// import GoogleLogin from '../assets/img/btn_google_light_normal_ios.svg'
+
+const NavBarCustom = styled(Navbar)`
   background-color: #e3f2fd;
+  margin-bottom: 1em;
 `
 
 export default class Navigation extends React.Component {
@@ -21,22 +24,29 @@ export default class Navigation extends React.Component {
 
   render () {
     return (
-      <NavBarCustomer light expand='md'>
+      <NavBarCustom light expand='md'>
         <NavbarBrand href='/'>Cinema Viewer</NavbarBrand>
-        <NavbarToggler onClick={(() => {
-          this.setState({ isOpen: !this.state.isOpen })
-        })} />
+        <NavbarToggler onClick={(() => this.setState({ isOpen: !this.state.isOpen }))} />
         <Collapse isOpen={this.state.isOpen} navbar>
+          <Nav navbar>
+            <NavItem active={this.props.url === '/'}>
+              <Link className='nav-link' to='/'>Home</Link>
+            </NavItem>
+            <NavItem active={this.props.url === '/films'}>
+              <Link className='nav-link' to='/films'>Films</Link>
+            </NavItem>
+            <NavItem active={this.props.url === '/hidden'}>
+              <Link className='nav-link' to='/hidden'>Hidden</Link>
+            </NavItem>
+          </Nav>
           <Nav className='ml-auto' navbar>
             <NavItem>
-              <NavLink href='/components/'>Components</NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink href='https://github.com/reactstrap/reactstrap'>GitHub</NavLink>
+              {/* TODO: FIX THE LOGIN BUTTON */}
+              {/* <NavLink href='/auth/google' dangerouslySetInnerHTML={{ __html: GoogleLogin }} /> */}
             </NavItem>
           </Nav>
         </Collapse>
-      </NavBarCustomer>
+      </NavBarCustom>
     )
   }
 }
