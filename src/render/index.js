@@ -10,23 +10,27 @@ import template from './template'
 import App from '../components/App'
 
 export default async function render (req, res) {
-  const films = await getAllFilms(req.user)
+  try {
+    const films = await getAllFilms(req.user)
 
-  const store = configureStore({
-    films,
-    user: req.user
-  })
+    const store = configureStore({
+      films,
+      user: req.user
+    })
 
-  const context = {}
+    const context = {}
 
-  res.send(
-    template(
-      <Provider store={store}>
-        <StaticRouter location={req.url} context={context}>
-          <App />
-        </StaticRouter>
-      </Provider>,
-      store.getState()
+    res.send(
+      template(
+        <Provider store={store}>
+          <StaticRouter location={req.url} context={context}>
+            <App />
+          </StaticRouter>
+        </Provider>,
+        store.getState()
+      )
     )
-  )
+  } catch (err) {
+    console.log('Error whilst server rendering:\n', err.stack)
+  }
 }

@@ -23,12 +23,12 @@ export function getFilmsWithUserData (userId) {
       $lookup: {
         from: 'film_user_data',
         localField: '_id',
-        foreignField: 'film_id',
-        as: 'user_data'
+        foreignField: 'filmId',
+        as: 'userData'
       }
     },
-    { $unwind: { path: '$user_data', preserveNullAndEmptyArrays: true } },
-    { $match: { $or: [{ 'user_data.user_id': userId }, { 'user_data': { $exists: false } }] } }
+    { $unwind: { path: '$userData', preserveNullAndEmptyArrays: true } },
+    { $match: { $or: [{ 'userData.userId': userId }, { 'userData': { $exists: false } }] } }
   ]))
 }
 

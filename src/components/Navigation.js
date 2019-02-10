@@ -32,11 +32,8 @@ export default class Navigation extends React.Component {
             <NavItem active={this.props.url === '/'}>
               <Link className='nav-link' to='/'>Home</Link>
             </NavItem>
-            <NavItem active={this.props.url === '/films'}>
+            <NavItem active={this.props.url.startsWith('/films')}>
               <Link className='nav-link' to='/films'>Films</Link>
-            </NavItem>
-            <NavItem active={this.props.url === '/hidden'}>
-              <Link className='nav-link' to='/hidden'>Hidden</Link>
             </NavItem>
           </Nav>
           <Nav className='ml-auto' navbar>

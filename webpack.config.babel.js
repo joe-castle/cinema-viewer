@@ -59,6 +59,10 @@ export default (env, config) => {
             'css-loader',
             'postcss-loader'
           ]
+        },
+        {
+          test: /\.(woff(2)?|ttf|eot|svg|otf)$/,
+          use: 'file-loader'
         }
       ]
     },

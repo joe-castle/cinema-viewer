@@ -1,6 +1,7 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import { Container, Row, Col, Card, CardImg, CardBody, CardTitle } from 'reactstrap'
+import { Row, Col, Card, CardImg, CardBody, CardTitle } from 'reactstrap'
 import chunk from 'lodash.chunk'
 import styled from 'styled-components'
 
@@ -9,29 +10,31 @@ const RowCustom = styled(Row)`
 `
 
 function FilmGroup ({ films }) {
-  return <Container>
-    {chunk(films, 6).map((chunk) =>
-      <RowCustom>
+  return <>
+    {chunk(films, 6).map((chunk, index) =>
+      <RowCustom key={index}>
         {chunk.map((film) =>
-          <Col lg={2} sm={4} xs={12}>
-            <Card>
-              <CardImg top src={film.poster} />
-              <CardBody>
-                <CardTitle>{film.title}</CardTitle>
-              </CardBody>
-            </Card>
+          <Col lg={{ size: 2, offset: 0 }} sm={{ size: 4, offset: 0 }} xs={{ size: 8, offset: 2 }} key={film._id}>
+            <Link to={`/films/${film._id}`}>
+              <Card>
+                <CardImg top src={film.poster} />
+                <CardBody>
+                  <CardTitle>{film.title}</CardTitle>
+                </CardBody>
+              </Card>
+            </Link>
           </Col>
         )}
       </RowCustom>
     )}
-  </Container>
+  </>
 }
 
 FilmGroup.propTypes = {
   films: PropTypes.arrayOf(PropTypes.shape({
     _id: PropTypes.string,
     title: PropTypes.string,
-    date_added: PropTypes.string,
+    dateAdded: PropTypes.string,
     edis: PropTypes.arrayOf(PropTypes.string),
     poster: PropTypes.string,
     showtimes: PropTypes.arrayOf(PropTypes.string),

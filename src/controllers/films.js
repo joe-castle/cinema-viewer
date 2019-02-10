@@ -5,9 +5,9 @@ import fetchFilms from '../cronjobs/fetchFilms'
 
 export default function filmsController (router) {
   router.get('/api/films', async (req, res) => {
-    res.send(await getAllFilms())
+    // res.send(await getAllFilms())
 
-    // res.send(await fetchFilms())
+    res.send(await fetchFilms())
   })
 
   router.post('/api/films/:id', ensureAuthenticated, async (req, res) => {

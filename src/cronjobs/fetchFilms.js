@@ -30,7 +30,7 @@ function parseXml (xml) {
 }
 
 export default async function fetchFilms () {
-  try {
+  // try {
     const films = await axios.get('https://www.cineworld.co.uk/syndication/film_times.xml')
     const listings = await axios.get('https://www.cineworld.co.uk/syndication/listings.xml')
     const existingFilms = await getAllFilms()
@@ -75,32 +75,39 @@ export default async function fetchFilms () {
 
     const expiredFilms = existingFilms
       .filter((film) => !processedFilms.find((processed) => processed.title === film.title))
-      .map((film) => ({ ...film, showTimes: null }))
+      .map((film) => {
+        delete film._id
+        delete film.dateAdded
+        return { ...film, showtimes: null }
+      })
 
     let newFilms = processedFilms
       .filter((processed) => !existingFilms.find((film) => film.title === processed.title))
 
-    const trailers = (await axios
-      .all(newFilms.map((film) => axios.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&q=${film.title} trailer&maxResults=1&key=${YOUTUBE_API_KEY}`))))
-      .map((trailer) => trailer.data)
+    // const trailers = (await axios
+    //   .all(newFilms.map((film) => axios.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&q=${encodeURIComponent(`${film.title} trailer`)}&maxResults=1&key=${YOUTUBE_API_KEY}`))))
+    //   .map((trailer) => trailer.data)
 
-    newFilms = newFilms.map((film, index) =>
-      ({ ...film, trailer: `https://www.youtube.com/watch?v=${trailers[index].items[0].id.videoId}` }))
+    // newFilms = newFilms.map((film, index) =>
+    //   ({ ...film, trailer: `https://www.youtube.com/watch?v=${trailers[index].items[0].id.videoId}` }))
 
-    insertOrUpdateMultipleFilms([
-      ...expiredFilms,
-      ...newFilms,
-      ...processedFilms.filter((processed) =>
-        !expiredFilms.find((film) => film.title === processed.title) && !newFilms.find((film) => film.title === processed.title))
-    ], (film) => ({ $set: film, $setOnInsert: { dateAdded: new Date() } }))
+    // insertOrUpdateMultipleFilms(
+    //   [
+    //     ...expiredFilms,
+    //     ...newFilms,
+    //     ...processedFilms.filter((processed) =>
+    //       !expiredFilms.find((film) => film.title === processed.title) && !newFilms.find((film) => film.title === processed.title))
+    //   ],
+    //   (film) => ({ $set: film, $setOnInsert: { dateAdded: new Date() } })
+    // )
 
     return {
       expiredFilms,
       newFilms,
-      trailers,
+      // trailers,
       processedFilms
     }
-  } catch (err) {
-    console.log('Error whilst fetching films:', err.message)
-  }
+  // } catch (err) {
+  //   console.log('Error whilst fetching films: ', err.message, '\n', err.stack)
+  // }
 }
