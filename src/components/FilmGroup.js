@@ -1,13 +1,10 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import { Row, Col, Card, CardImg, CardBody, CardTitle } from 'reactstrap'
+import { Col, Card, CardImg, CardBody, CardTitle } from 'reactstrap'
 import chunk from 'lodash.chunk'
-import styled from 'styled-components'
 
-const RowCustom = styled(Row)`
-  margin-bottom: 1em;
-`
+import { RowCustom } from './styled/FilmGroup'
 
 function FilmGroup ({ films }) {
   return <>

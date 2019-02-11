@@ -1,6 +1,7 @@
 import React from 'react'
 import { Provider } from 'react-redux'
 import { StaticRouter } from 'react-router-dom'
+import { ThemeProvider } from 'styled-components'
 
 import { getAllFilms } from '../data/models/films'
 
@@ -8,6 +9,8 @@ import configureStore from '../store/configureStore'
 import template from './template'
 
 import App from '../components/App'
+
+import theme from '../components/styled/theme'
 
 export default async function render (req, res) {
   try {
@@ -24,7 +27,9 @@ export default async function render (req, res) {
       template(
         <Provider store={store}>
           <StaticRouter location={req.url} context={context}>
-            <App />
+            <ThemeProvider theme={theme}>
+              <App />
+            </ThemeProvider>
           </StaticRouter>
         </Provider>,
         store.getState()

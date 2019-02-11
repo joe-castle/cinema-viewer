@@ -23,7 +23,7 @@ function App ({ favourite, hidden, available, films, location }) {
   // console.log('App films:', films)
   return <>
     <Navigation url={location.pathname} />
-    <Main>
+    <main>
       <Container>
         <Switch>
           <Route
@@ -46,7 +46,7 @@ function App ({ favourite, hidden, available, films, location }) {
           />
         </Switch>
       </Container>
-    </Main>
+    </main>
   </>
 }
 
@@ -60,7 +60,7 @@ function App ({ favourite, hidden, available, films, location }) {
 
 function processShowtimes (films) {
   return films.map((film) => {
-    const showtimes = Object
+    const showtimes = film.showtimes && Object
       .keys(film.showtimes)
       .reduce((prev, format) => ({
         ...prev,
@@ -80,13 +80,13 @@ function processShowtimes (films) {
   })
 }
 
-function mapStateToProps (props) {
+function mapStateToProps ({ films, ...props }) {
   return {
     ...props,
-    favourite: props.films.filter((film) => film.userData && film.userData.favourite),
-    available: props.films.filter((film) => film.showtimes !== null),
-    hidden: props.films.filter((film) => film.hidden),
-    films: processShowtimes(props.films)
+    favourite: films.filter((film) => film.userData && film.userData.favourite),
+    available: films.filter((film) => film.showtimes !== null),
+    hidden: films.filter((film) => film.hidden),
+    films: processShowtimes(films)
   }
 }
 

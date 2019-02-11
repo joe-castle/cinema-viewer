@@ -14,7 +14,7 @@ const filmsS = singleQ('films')
 export function getAllFilms (user) {
   return user
     ? getFilmsWithUserData(user._id)
-    : filmsM((col) => col.find())
+    : filmsM((col) => col.find().sort({ title: 1 }))
 }
 
 export function getFilmsWithUserData (userId) {
@@ -28,7 +28,8 @@ export function getFilmsWithUserData (userId) {
       }
     },
     { $unwind: { path: '$userData', preserveNullAndEmptyArrays: true } },
-    { $match: { $or: [{ 'userData.userId': userId }, { 'userData': { $exists: false } }] } }
+    { $match: { $or: [{ 'userData.userId': userId }, { 'userData': { $exists: false } }] } },
+    { $sort: { title: 1 } }
   ]))
 }
 

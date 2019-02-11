@@ -12,6 +12,7 @@ Features:
     ☐ Have seperate table for user information on each film, rating, description etc...
     ☐ USE TYPESCRIPT FOR THE LOVE OF GOD, maybe?
     ☐ When rating a film, have a pop up that shows what would be below and above the score
+    ☐ Coming soon films
 
 Redux-observable:
   ☐ store
@@ -23,6 +24,7 @@ TODO:
   ☐ Update ensureauthenticated middleware
   ☐ replace all axios calls with RxJS?
   ☐ Add logging
+☐ 
   ✔ Update render to use configurestore instead? @done(19-01-18 16:41)
   
 FIX:

@@ -1,70 +1,23 @@
 import React, { Component } from 'react'
-import { Row, Col, Modal } from 'reactstrap'
+import { Row, Col } from 'reactstrap'
 import { fromEvent } from 'rxjs'
 import { pluck, debounceTime } from 'rxjs/operators'
 import YouTube from 'react-youtube'
-import styled from 'styled-components'
 
-const ImgTrailer = styled(Col)`
-  color: rgba(255, 255, 255, 0.6);
-  transition: color ease-in 0.1s;
-
-  &:hover {
-    color: white;
-    cursor: pointer;
-  }
-`
-
-const Img = styled.img`
-  width: 100%;
-`
-
-const Icon = styled.span`
-  position: absolute;
-  left: calc(50% - 0.5em);
-  top: calc(50% - 0.5em);
-  font-size: 8em;
-`
-
-const TrailerModal = styled(Modal)`
-  max-width: ${({ width }) => width}px;
-
-  & .modal-content {
-    background: none;
-    border: none;
-  }
-`
-
-const Title = styled.h1`
-  margin-bottom: 0;
-`
-
-const SubTitle = styled.sub`
-  font-weight: bold;
-  font-style: italic;
-`
-
-const Synopsis = styled.p`
-  margin-top: 1.5em;
-`
-
-const ShowTime = styled.a`
-  background: ${({ expired }) => `rgba(0,0,0,0.${expired ? 3 : 7})`};
-  border-radius: 10px;
-  color: ${({ expired }) => `rgba(255,255,255,0.${expired ? 5 : 8})`};;
-  margin: 0.2em 0.8em 0.2em 0;
-  padding: 0.4em;
-
-  &:hover {
-    background: rgba(0,0,0,0.5);
-    color: white;
-    text-decoration: none;
-  }
-`
-
-const ShowDate = styled.h5`
-  margin-top: 1em;
-`
+import {
+  RowCenter,
+  ImgTrailer,
+  Img,
+  Icon,
+  TrailerModal,
+  Title,
+  ReleaseDate,
+  Synopsis,
+  Showtimes,
+  ShowCol,
+  ShowTime,
+  ShowDate
+} from './styled/Film'
 
 class Film extends Component {
   constructor (props) {
@@ -119,7 +72,7 @@ class Film extends Component {
   }
 
   formatTime = (date) => {
-    const pad = (num) => num < 10 ? `${num}0` : num
+    const pad = (num) => num < 10 ? `0${num}` : num
 
     return `${pad(date.getHours())}:${pad(date.getMinutes())}`
   }
@@ -141,29 +94,39 @@ class Film extends Component {
         </ImgTrailer>
         <Col lg={8}>
           <Title>{film.title}</Title>
-          <SubTitle>Release Date: {new Date(film.dateAdded).toDateString()}</SubTitle>
+          <ReleaseDate>Release Date: {new Date(film.dateAdded).toDateString()}</ReleaseDate>
           <Synopsis>{film.synopsis}</Synopsis>
         </Col>
       </Row>
-      <Row>
+      {film.showtimes && <RowCenter>
         <Col>
-          <h2>Showtimes:</h2>
+          <Showtimes>Showtimes</Showtimes>
         </Col>
-      </Row>
-      <Row>
+      </RowCenter>}
+      {film.showtimes && <RowCenter>
         {Object.keys(film.showtimes).map((format) =>
-          <Col>
+          <ShowCol lg={4} md={12}>
             <h3>{format}</h3>
-            {Object.keys(film.showtimes[format]).map((date) =>
-              <>
-                <ShowDate>{date}</ShowDate>
-                {film.showtimes[format][date].map((date) =>
-                  <ShowTime href={date.url} target='_blank'>{this.formatTime(new Date(date.time))}</ShowTime>)}
+            {Object.keys(film.showtimes[format]).map((date) => {
+              const today = new Date().toDateString() === date
+              return <>
+                <ShowDate today={today}>{date}</ShowDate>
+                {film.showtimes[format][date].map((date) => {
+                  // Mark as expired if show has been running for an hour
+                  const expired = (Date.parse(date.time) + (60 * 60 * 1000)) < Date.now()
+                  return <ShowTime
+                    today={today}
+                    expired={expired}
+                    {...(expired ? {} : { href: date.url, target: '_blank' })}
+                  >
+                    {this.formatTime(new Date(date.time))}
+                  </ShowTime>
+                })}
               </>
-            )}
-          </Col>
+            })}
+          </ShowCol>
         )}
-      </Row>
+      </RowCenter>}
       <TrailerModal width={width} isOpen={this.state.modal} toggle={this.toggle} centered>
         <YouTube
           opts={{ width, height }}

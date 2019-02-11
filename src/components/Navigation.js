@@ -1,8 +1,7 @@
-import styled from 'styled-components'
+
 import React from 'react'
 import {
   Collapse,
-  Navbar,
   NavbarToggler,
   NavbarBrand,
   Nav,
@@ -11,10 +10,7 @@ import { Link } from 'react-router-dom'
 
 // import GoogleLogin from '../assets/img/btn_google_light_normal_ios.svg'
 
-const NavBarCustom = styled(Navbar)`
-  background-color: #e3f2fd;
-  margin-bottom: 1em;
-`
+import { NavBarCustom } from './styled/Navigation'
 
 export default class Navigation extends React.Component {
   constructor (props) {
@@ -24,7 +20,7 @@ export default class Navigation extends React.Component {
 
   render () {
     return (
-      <NavBarCustom light expand='md'>
+      <NavBarCustom dark expand='md'>
         <NavbarBrand href='/'>Cinema Viewer</NavbarBrand>
         <NavbarToggler onClick={(() => this.setState({ isOpen: !this.state.isOpen }))} />
         <Collapse isOpen={this.state.isOpen} navbar>
