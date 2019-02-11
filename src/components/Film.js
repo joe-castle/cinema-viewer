@@ -96,6 +96,15 @@ class Film extends Component {
           <Title>{film.title}</Title>
           <ReleaseDate>Release Date: {new Date(film.dateAdded).toDateString()}</ReleaseDate>
           <Synopsis>{film.synopsis}</Synopsis>
+          {film.userData && film.userData.watched && (() => {
+            const { dateTime, rating, notes } = film.userData.watched
+            const date = new Date(dateTime)
+            return <div>
+              <p><strong>Watched: </strong>{date.toDateString()} at {this.formatTime(date)}</p>
+              <p><strong>Rating: </strong>{rating}/100</p>
+              <p><strong>Notes: </strong>{notes}</p>
+            </div>
+          })()}
         </Col>
       </Row>
       {film.showtimes && <RowCenter>

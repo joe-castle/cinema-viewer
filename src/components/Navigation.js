@@ -5,7 +5,8 @@ import {
   NavbarToggler,
   NavbarBrand,
   Nav,
-  NavItem } from 'reactstrap'
+  NavItem,
+  NavLink } from 'reactstrap'
 import { Link } from 'react-router-dom'
 
 // import GoogleLogin from '../assets/img/btn_google_light_normal_ios.svg'
@@ -19,6 +20,7 @@ export default class Navigation extends React.Component {
   }
 
   render () {
+    const { user } = this.props
     return (
       <NavBarCustom dark expand='md'>
         <NavbarBrand href='/'>Cinema Viewer</NavbarBrand>
@@ -34,8 +36,12 @@ export default class Navigation extends React.Component {
           </Nav>
           <Nav className='ml-auto' navbar>
             <NavItem>
-              {/* TODO: FIX THE LOGIN BUTTON */}
-              {/* <NavLink href='/auth/google' dangerouslySetInnerHTML={{ __html: GoogleLogin }} /> */}
+              {/* TODO: FIX THE LOGIN BUTTON dangerouslySetInnerHTML={{ __html: GoogleLogin }} */}
+              {!user && <NavLink href='/auth/google'>
+                Login to Google
+              </NavLink>}
+              {user && <Link className='nav-link' to='/'>Hello {user.name.givenName}
+              </Link>}
             </NavItem>
           </Nav>
         </Collapse>

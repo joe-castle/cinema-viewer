@@ -1,29 +1,27 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import { Col, Card, CardImg, CardBody, CardTitle } from 'reactstrap'
-import chunk from 'lodash.chunk'
+import { Card, CardImg, CardBody, CardTitle } from 'reactstrap'
 
-import { RowCustom } from './styled/FilmGroup'
+import { RowCustom, ColCustom } from './styled/FilmGroup'
 
-function FilmGroup ({ films }) {
+function FilmGroup ({ films, title }) {
   return <>
-    {chunk(films, 6).map((chunk, index) =>
-      <RowCustom key={index}>
-        {chunk.map((film) =>
-          <Col lg={{ size: 2, offset: 0 }} sm={{ size: 4, offset: 0 }} xs={{ size: 8, offset: 2 }} key={film._id}>
-            <Link to={`/films/${film._id}`}>
-              <Card>
-                <CardImg top src={film.poster} />
-                <CardBody>
-                  <CardTitle>{film.title}</CardTitle>
-                </CardBody>
-              </Card>
-            </Link>
-          </Col>
-        )}
-      </RowCustom>
-    )}
+    <h2>{title}</h2>
+    <RowCustom>
+      {films.map((film) =>
+        <ColCustom lg={2} sm={4} xs={6} key={film._id}>
+          <Link to={`/films/${film._id}`}>
+            <Card>
+              <CardImg top src={film.poster} />
+              <CardBody>
+                <CardTitle>{film.title}</CardTitle>
+              </CardBody>
+            </Card>
+          </Link>
+        </ColCustom>
+      )}
+    </RowCustom>
   </>
 }
 

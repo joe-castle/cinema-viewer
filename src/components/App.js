@@ -11,6 +11,7 @@ import { actions } from '../store/actions'
 import Navigation from './Navigation'
 import FilmGroup from './FilmGroup'
 import Film from './film'
+import Footer, { CopyrightText } from './styled/footer'
 
 const Main = styled.main`
   /* box-shadow: 2px 2px 5px 2px rgba(0,0,0,.1),
@@ -19,10 +20,10 @@ const Main = styled.main`
       -2px 2px 5px 2px rgba(0,0,0,.1); */
 `
 
-function App ({ favourite, hidden, available, films, location }) {
+function App ({ favourite, hidden, available, films, location, user }) {
   // console.log('App films:', films)
   return <>
-    <Navigation url={location.pathname} />
+    <Navigation url={location.pathname} user={user}/>
     <main>
       <Container>
         <Switch>
@@ -30,9 +31,9 @@ function App ({ favourite, hidden, available, films, location }) {
             exact
             path='/'
             render={(props) => <>
-              <FilmGroup {...props} films={favourite} />
-              <FilmGroup {...props} films={available} />
-              <FilmGroup {...props} films={hidden} />
+              <FilmGroup {...props} films={favourite} title='Favourites' />
+              <FilmGroup {...props} films={available} title='Available' />
+              <FilmGroup {...props} films={hidden} title='Hidden' />
             </>}
           />
           <Route
@@ -47,6 +48,9 @@ function App ({ favourite, hidden, available, films, location }) {
         </Switch>
       </Container>
     </main>
+    <Footer>
+      <CopyrightText>© Joe Smith 2019</CopyrightText>
+    </Footer>
   </>
 }
 
