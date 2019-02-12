@@ -21,6 +21,7 @@ export default class Navigation extends React.Component {
 
   render () {
     const { user } = this.props
+    
     return (
       <NavBarCustom dark expand='md'>
         <NavbarBrand href='/'>Cinema Viewer</NavbarBrand>
@@ -37,10 +38,10 @@ export default class Navigation extends React.Component {
           <Nav className='ml-auto' navbar>
             <NavItem>
               {/* TODO: FIX THE LOGIN BUTTON dangerouslySetInnerHTML={{ __html: GoogleLogin }} */}
-              {!user && <NavLink href='/auth/google'>
+              {!user || !user.name && <NavLink href='/auth/google'>
                 Login to Google
               </NavLink>}
-              {user && <Link className='nav-link' to='/'>Hello {user.name.givenName}
+              {user && user.name && <Link className='nav-link' to='/'>Hello {user.name.givenName}
               </Link>}
             </NavItem>
           </Nav>
