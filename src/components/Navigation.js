@@ -6,7 +6,8 @@ import {
   NavbarBrand,
   Nav,
   NavItem,
-  NavLink } from 'reactstrap'
+  NavLink,
+  Button } from 'reactstrap'
 import { Link } from 'react-router-dom'
 
 // import GoogleLogin from '../assets/img/btn_google_light_normal_ios.svg'
@@ -33,15 +34,16 @@ export default class Navigation extends React.Component {
             <NavItem active={this.props.url.startsWith('/films')}>
               <Link className='nav-link' to='/films'>Films</Link>
             </NavItem>
+            <NavItem active={this.props.url === '/soon'}>
+              <Link className='nav-link' to='/soon'>Coming Soon</Link>
+            </NavItem>
           </Nav>
           <Nav className='ml-auto' navbar>
+            {user && user.name && <span className='nav-item navbar-text mr-4'>Hello {user.name.givenName}</span>}
             <NavItem>
               {/* TODO: FIX THE LOGIN BUTTON dangerouslySetInnerHTML={{ __html: GoogleLogin }} */}
-              {!user && <NavLink href='/auth/google'>
-                Login to Google
-              </NavLink>}
-              {user && <Link className='nav-link' to='/'>Hello {user.name.givenName}
-              </Link>}
+              {!user || !user.name && <a className='btn btn-outline-success' href='/auth/google'>Login with Google</a>}
+              {user && user.name && <a className='btn btn-outline-light' href='/logout'>Logout</a>}
             </NavItem>
           </Nav>
         </Collapse>
