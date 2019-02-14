@@ -46,6 +46,11 @@ class Film extends Component {
         const { w, h } = this.calculateDimensions(window.innerWidth)
         this.setState({ width: w, height: h })
       })
+
+    // Once viewied, remove new flag from film. Assuming signed in.
+    if (this.props.user && this.props.film.new !== false) {
+      this.props.update({ id: this.props.film._id, new: false })
+    }
   }
 
   componentWillUnmount () {
