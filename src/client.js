@@ -11,6 +11,7 @@ import './assets/css/main.styl'
 import configureStore from './store/configureStore'
 
 import App from './components/App'
+import ScrollToTop from './components/utils/ScrollToTop'
 
 import theme from './components/styled/theme'
 
@@ -22,7 +23,9 @@ ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
       <ThemeProvider theme={theme}>
-        <App />
+        <ScrollToTop>
+          <App />
+        </ScrollToTop>
       </ThemeProvider>
     </BrowserRouter>
   </Provider>,
