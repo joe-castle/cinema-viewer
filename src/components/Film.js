@@ -1,23 +1,40 @@
 import React, { Component } from 'react'
 import { Row, Col } from 'reactstrap'
 import { fromEvent } from 'rxjs'
-import { pluck, debounceTime } from 'rxjs/operators'
+import { pluck, debounceTime, tap, map } from 'rxjs/operators'
 import YouTube from 'react-youtube'
 
 import {
   RowCenter,
   ImgTrailer,
   Img,
-  Icon,
+  PlayIcon,
   TrailerModal,
   Title,
   ReleaseDate,
+  Icon,
   Synopsis,
   Showtimes,
   ShowCol,
   ShowTime,
   ShowDate
 } from './styled/Film'
+
+function calculateDimensions (w) {
+  const width = w >= 992 ? w * 0.7 : w < 576
+    ? w - 20 : w * 0.9
+
+  return {
+    width,
+    height: (9 / 16) * width
+  }
+}
+
+function formatTime (date) {
+  const pad = (num) => num < 10 ? `0${num}` : num
+
+  return `${pad(date.getHours())}:${pad(date.getMinutes())}`
+}
 
 class Film extends Component {
   constructor (props) {
@@ -30,44 +47,37 @@ class Film extends Component {
     }
 
     try {
-      const { w, h } = this.calculateDimensions(window.innerWidth)
-      this.state.width = w
-      this.state.height = h
+      const { width, height } = calculateDimensions(window.innerWidth)
+      this.state.width = width
+      this.state.height = height
     } catch { }
   }
 
   componentDidMount () {
+    const { film, user, update } = this.props
+
     this.resize = fromEvent(window, 'resize')
       .pipe(
         debounceTime(500),
         pluck('target', 'innerWidth')
       )
       .subscribe((width) => {
-        const { w, h } = this.calculateDimensions(window.innerWidth)
-        this.setState({ width: w, height: h })
+        this.setState(calculateDimensions(width))
       })
 
+    this.favourite = this.createIconEvent('favourite')
+    this.hidden = this.createIconEvent('hidden')
+
     // Once viewied, remove new flag from film. Assuming signed in.
-    if (this.props.user && this.props.film.new !== false) {
-      this.props.update({ id: this.props.film._id, new: false })
+    if (user && (!film.userData || (film.userData && film.userData.new !== false))) {
+      update(this.createBody({ new: false }))
     }
   }
 
   componentWillUnmount () {
     this.resize.unsubscribe()
-  }
-
-  calculateDimensions = (width) => {
-    const w = width >= 992
-      ? width * 0.7
-      : width < 576
-        ? width - 20
-        : width * 0.9
-
-    return {
-      w,
-      h: (9 / 16) * w
-    }
+    this.favourite.unsubscribe()
+    this.hidden.unsubscribe()
   }
 
   toggle = () => {
@@ -76,10 +86,21 @@ class Film extends Component {
     }))
   }
 
-  formatTime = (date) => {
-    const pad = (num) => num < 10 ? `0${num}` : num
+  createIconEvent = (type) => {
+    return fromEvent(document.getElementById(`icon-${type}`), 'click')
+      .pipe(
+        map(() => this.createBody({ [type]: !(this.props.film.userData && this.props.film.userData[type]) })),
+        tap(console.log),
+        tap((body) => this.props.updateFilm(body)),
+        debounceTime(500)
+      )
+      .subscribe((body) => {
+        this.props.update(body)
+      })
+  }
 
-    return `${pad(date.getHours())}:${pad(date.getMinutes())}`
+  createBody = (data) => {
+    return { id: this.props.film._id, ...data }
   }
 
   render () {
@@ -95,17 +116,21 @@ class Film extends Component {
           sm={{ size: 8, offset: 2 }}
         >
           <Img src={film.poster} />
-          <Icon className='oi oi-play-circle' />
+          <PlayIcon />
         </ImgTrailer>
         <Col lg={8}>
           <Title>{film.title}</Title>
           <ReleaseDate>Release Date: {new Date(film.dateAdded).toDateString()}</ReleaseDate>
+          <div className='mt-3'>
+            <Icon icon='heart' type='favourite' title='Favourite film' favourite={film.userData && film.userData.favourite} />
+            <Icon icon='eye' type='hidden' title='Hide film' hiddenIcon={film.userData && film.userData.hidden} />
+          </div>
           <Synopsis>{film.synopsis}</Synopsis>
           {film.userData && film.userData.watched && (() => {
             const { dateTime, rating, notes } = film.userData.watched
             const date = new Date(dateTime)
             return <div>
-              <p><strong>Watched: </strong>{date.toDateString()} at {this.formatTime(date)}</p>
+              <p><strong>Watched: </strong>{date.toDateString()} at {formatTime(date)}</p>
               <p><strong>Rating: </strong>{rating}/100</p>
               <p><strong>Notes: </strong>{notes}</p>
             </div>
@@ -133,7 +158,7 @@ class Film extends Component {
                     expired={expired}
                     {...(expired ? {} : { href: date.url, target: '_blank' })}
                   >
-                    {this.formatTime(new Date(date.time))}
+                    {formatTime(new Date(date.time))}
                   </ShowTime>
                 })}
               </>

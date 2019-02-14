@@ -13,6 +13,7 @@ Features:
     ☐ USE TYPESCRIPT FOR THE LOVE OF GOD, maybe?
     ☐ When rating a film, have a pop up that shows what would be below and above the score
     ☐ Coming soon films
+    ☐ Have a sort/filter/search feature
 
 Redux-observable:
   ☐ store
@@ -24,7 +25,12 @@ TODO:
   ☐ Update ensureauthenticated middleware
   ☐ replace all axios calls with RxJS?
   ☐ Add logging
-☐ 
+  ☐ Add validation
+  ☐ Use all-performances instead of film_times as it provides director, cast, length etc...
+  ☐ Use .toLocaleString() for all date calls
+  ☐ Have logout call redux so its more responsive
+  ☐ Connect only whats needed in lower apps, rather than passing props all the way through
+  ☐ Have redux manage ALL State?
   ✔ Update render to use configurestore instead? @done(19-01-18 16:41)
   
 FIX:

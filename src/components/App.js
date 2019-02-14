@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import { hot } from 'react-hot-loader/root'
 import { Switch, Route, withRouter } from 'react-router-dom'
 import { Container } from 'reactstrap'
-import styled from 'styled-components'
 
 import { actions } from '../store/actions'
 
@@ -13,17 +12,9 @@ import FilmGroup from './FilmGroup'
 import Film from './film'
 import Footer, { CopyrightText } from './styled/footer'
 
-const Main = styled.main`
-  /* box-shadow: 2px 2px 5px 2px rgba(0,0,0,.1),
-      -2px -2px 5px 2px rgba(0,0,0,.1),
-      2px -2px 5px 2px rgba(0,0,0,.1),
-      -2px 2px 5px 2px rgba(0,0,0,.1); */
-`
-
-function App ({ favourite, hidden, available, films, location, user }) {
-  // console.log('App films:', films)
+function App ({ favourite, hidden, available, films, location, user, postUpdateFilm, updateFilm }) {
   return <>
-    <Navigation url={location.pathname} user={user}/>
+    <Navigation url={location.pathname} user={user} />
     <main>
       <Container>
         <Switch>
@@ -31,19 +22,26 @@ function App ({ favourite, hidden, available, films, location, user }) {
             exact
             path='/'
             render={(props) => <>
-              <FilmGroup {...props} films={favourite} title='Favourites' />
-              <FilmGroup {...props} films={available} title='Available' />
-              <FilmGroup {...props} films={hidden} title='Hidden' />
+              <FilmGroup {...props} user={user} films={favourite} title='Favourites' />
+              <FilmGroup {...props} user={user} films={available} title='Available' />
+              <FilmGroup {...props} user={user} films={hidden} title='Hidden' />
             </>}
           />
           <Route
             exact
             path='/films'
-            render={(props) => <FilmGroup {...props} films={films} />}
+            render={(props) => <FilmGroup {...props} user={user} films={films} />}
           />
           <Route
             path='/films/:id'
-            render={(props) => <Film film={films.find((film) => film._id.toString() === props.match.params.id)} />}
+            render={(props) =>
+              <Film
+                update={postUpdateFilm}
+                updateFilm={updateFilm}
+                user={user}
+                film={films.find((film) => film._id.toString() === props.match.params.id)}
+              />
+            }
           />
         </Switch>
       </Container>
@@ -53,14 +51,6 @@ function App ({ favourite, hidden, available, films, location, user }) {
     </Footer>
   </>
 }
-
-// App.propTypes = {
-//   films: PropTypes.arrayOf(PropTypes.shape({
-//     todoText: PropTypes.string,
-//     complete: PropTypes.bool,
-//     id: PropTypes.string
-//   })).isRequired
-// }
 
 function processShowtimes (films) {
   return films.map((film) => {
@@ -87,9 +77,10 @@ function processShowtimes (films) {
 function mapStateToProps ({ films, ...props }) {
   return {
     ...props,
+    user: props.user && props.user.name ? props.user : null,
     favourite: films.filter((film) => film.userData && film.userData.favourite),
-    available: films.filter((film) => film.showtimes !== null),
-    hidden: films.filter((film) => film.hidden),
+    available: films.filter((film) => film.showtimes !== null && film.userData && (!film.userData.favourite && !film.userData.hidden && !film.userData.watched)),
+    hidden: films.filter((film) => film.showtimes !== null && film.userData && (!film.userData.favourite && film.userData.hidden && !film.userData.watched)),
     films: processShowtimes(films)
   }
 }

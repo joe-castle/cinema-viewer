@@ -28,6 +28,7 @@ function FilmGroup ({ films, title, user }) {
                 </CardSubtitle>
                 {user && <BadgeWrapper>
                   {renderNewBadge(film)}
+                  {film.userData && film.userData.watched && <Badge color='warning'>watched</Badge>}
                   {film.userData && film.userData.unlimited && <Badge color='danger'>unlimited</Badge>}
                 </BadgeWrapper>}
               </CardBody>
