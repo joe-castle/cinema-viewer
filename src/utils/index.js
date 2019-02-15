@@ -19,3 +19,19 @@ export function formatTime (date) {
 export function formatDate (date) {
   return `${date.getFullYear()}-${zeroPad(date.getMonth() + 1)}-${zeroPad(date.getDate())}`
 }
+
+export function checkUserData (film, ...conditions) {
+  return film.userData && conditions.every((condition) => {
+    if (typeof condition === 'string') {
+      return condition.startsWith('!')
+        ? !film.userData[condition.slice(1)]
+        : film.userData[condition]
+    } else {
+      return condition(film.userData)
+    }
+  })
+}
+
+export function notCheckUserData (film, ...conditions) {
+  return !film.userData || checkUserData(film, ...conditions)
+}

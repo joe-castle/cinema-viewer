@@ -5,9 +5,7 @@ import {
   NavbarToggler,
   NavbarBrand,
   Nav,
-  NavItem,
-  NavLink,
-  Button } from 'reactstrap'
+  NavItem } from 'reactstrap'
 import { Link } from 'react-router-dom'
 
 // import GoogleLogin from '../assets/img/btn_google_light_normal_ios.svg'

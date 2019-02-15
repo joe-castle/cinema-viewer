@@ -1,16 +1,9 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { CardImg, CardBody, CardTitle, CardSubtitle, Row, Col, Badge, Collapse } from 'reactstrap'
+import { CardImg, CardBody, CardTitle, CardSubtitle, Row, Col, Collapse } from 'reactstrap'
 
-import { Title, CardCustom, LinkCustom, BadgeWrapper } from './styled/FilmGroup'
-
-function renderNewBadge (film) {
-  if (!film.userData || (film.userData && film.userData.new !== false)) {
-    return <Badge color='success'>new</Badge>
-  }
-
-  return null
-}
+import { Title, CardCustom, LinkCustom } from './styled/FilmGroup'
+import BadgeWrapper from './BadgeWrapper'
 
 class FilmGroup extends Component {
   constructor (props) {
@@ -41,11 +34,7 @@ class FilmGroup extends Component {
                     <CardSubtitle className='mb-2' tag='small'>
                       {new Date(film.releaseDate).toDateString()}
                     </CardSubtitle>
-                    {user && <BadgeWrapper>
-                      {renderNewBadge(film)}
-                      {film.userData && film.userData.watched && <Badge color='warning'>watched</Badge>}
-                      {film.userData && film.userData.unlimited && <Badge color='danger'>unlimited</Badge>}
-                    </BadgeWrapper>}
+                    {user && <BadgeWrapper film={film} />}
                   </CardBody>
                 </CardCustom>
               </LinkCustom>

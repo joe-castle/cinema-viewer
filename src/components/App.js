@@ -12,6 +12,8 @@ import FilmGroup from './FilmGroup'
 import Film from './film'
 import Footer, { CopyrightText } from './styled/footer'
 
+import { checkUserData, notCheckUserData } from '../utils'
+
 function App ({ favourite, hidden, available, films, location, user, postUpdateFilm, updateFilm }) {
   return <>
     <Navigation url={location.pathname} user={user} />
@@ -78,9 +80,9 @@ function mapStateToProps ({ films, ...props }) {
   return {
     ...props,
     user: props.user && props.user.name ? props.user : null,
-    favourite: films.filter((film) => film.userData && film.userData.favourite),
-    available: films.filter((film) => film.showtimes !== null && (!film.userData || (!film.userData.favourite && !film.userData.hidden && !film.userData.watched))),
-    hidden: films.filter((film) => film.showtimes !== null && film.userData && (!film.userData.favourite && film.userData.hidden && !film.userData.watched)),
+    favourite: films.filter((film) => checkUserData(film, 'favourite')),
+    available: films.filter((film) => film.showtimes !== null && notCheckUserData(film, '!favourite', '!hidden', '!watched')),
+    hidden: films.filter((film) => film.showtimes !== null && checkUserData(film, '!favourite', 'hidden', '!watched')),
     films: processShowtimes(films)
   }
 }

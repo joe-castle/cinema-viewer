@@ -37,11 +37,3 @@ export const LinkCustom = styled(Link)`
     text-decoration: none;
   }
 `
-
-export const BadgeWrapper = styled.div`
-  margin-top: auto;
-
-  & .badge:not(:first-child) {
-    margin-left: .25em;
-  }
-`

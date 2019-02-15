@@ -20,7 +20,7 @@ import {
   ShowDate
 } from './styled/Film'
 
-import { calculateDimensions, formatTime, formatDate } from '../utils'
+import { calculateDimensions, formatTime, formatDate, notCheckUserData, checkUserData } from '../utils'
 
 class Film extends Component {
   constructor (props) {
@@ -70,7 +70,7 @@ class Film extends Component {
     this.hidden = this.createIconEvent('hidden')
 
     // Once viewied, remove new flag from film. Assuming signed in.
-    if (user && (!film.userData || (film.userData && film.userData.new !== false))) {
+    if (user && notCheckUserData(film, (ud) => ud.new !== false)) {
       update(this.createBody({ new: false }))
     }
   }
@@ -90,7 +90,7 @@ class Film extends Component {
   createIconEvent = (type) => {
     return fromEvent(document.getElementById(`icon-${type}`), 'click')
       .pipe(
-        map(() => this.createBody({ [type]: !(this.props.film.userData && this.props.film.userData[type]) })),
+        map(() => this.createBody({ [type]: !checkUserData(this.props.film, type) })),
         tap((body) => this.props.updateFilm(body)),
         debounceTime(500)
       )
@@ -144,11 +144,11 @@ class Film extends Component {
           <Title>{film.title}</Title>
           <ReleaseDate>Release Date: {new Date(film.dateAdded).toDateString()}</ReleaseDate>
           <div className='mt-3'>
-            <Icon icon='heart' type='favourite' title='Favourite film' favourite={film.userData && film.userData.favourite} />
-            <Icon icon='eye' type='hidden' title='Visible in available' hiddenIcon={!(film.userData && film.userData.hidden)} />
+            <Icon icon='heart' type='favourite' title='Favourite film' favourite={checkUserData(film, 'favourite')} />
+            <Icon icon='eye' type='hidden' title='Visible in available' hiddenIcon={!checkUserData(film, 'hidden')} />
           </div>
           <Synopsis>{film.synopsis}</Synopsis>
-          {film.userData && film.userData.watched && (() => {
+          {checkUserData(film, 'watched') && (() => {
             const { dateTime, rating, notes, format } = film.userData.watched
             const date = new Date(dateTime)
             return <div>
@@ -192,7 +192,7 @@ class Film extends Component {
             </FormGroup>
             <Button type='submit' color='success'>Submit</Button>
           </Form>}
-          {!watchedForm && (!film.userData || !film.userData.watched) &&
+          {!watchedForm && !notCheckUserData(film, 'watched') &&
             <Button onClick={() => this.setState({ watchedForm: true })} color='success'>Watched!</Button>
           }
         </Col>
