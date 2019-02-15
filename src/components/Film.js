@@ -20,23 +20,7 @@ import {
   ShowDate
 } from './styled/Film'
 
-function calculateDimensions (w) {
-  const width = w >= 992 ? w * 0.7 : w < 576
-    ? w - 20 : w * 0.9
-
-  return {
-    width,
-    height: (9 / 16) * width
-  }
-}
-
-function pad (num) {
-  return num < 10 ? `0${num}` : num
-}
-
-function formatTime (date) {
-  return `${pad(date.getHours())}:${pad(date.getMinutes())}`
-}
+import { calculateDimensions, formatTime, formatDate } from '../utils'
 
 class Film extends Component {
   constructor (props) {
@@ -51,21 +35,23 @@ class Film extends Component {
       watchedForm: false,
       rating: 0,
       format: '2D',
-      date: `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDay())}`,
+      date: formatDate(date),
       time: formatTime(date),
       notes: ''
     }
 
-    this.state = {
-      ...state,
-      ...props.film.watched
-    }
-
     try {
-      const { width, height } = calculateDimensions(window.innerWidth)
-      this.state.width = width
-      this.state.height = height
-    } catch { }
+      this.state = {
+        ...state,
+        ...props.film.watched,
+        ...calculateDimensions(window.innerWidth)
+      }
+    } catch {
+      this.state = {
+        ...state,
+        ...props.film.watched
+      }
+    }
   }
 
   componentDidMount () {
