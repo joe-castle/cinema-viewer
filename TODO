@@ -33,9 +33,9 @@ TODO:
   ☐ Use .toLocaleString() for all date calls
   ☐ Have logout call redux so its more responsive
   ☐ Connect only whats needed in lower apps, rather than passing props all the way through
-    ☐ Also tidy up filters in App.mapStateToProps
+    ✔ Also tidy up filters in App.mapStateToProps @done(19-02-15 13:02)
   ☐ Have redux manage ALL State?
-  ☐ Abstract logical components, especially in film
+  ✔ Abstract logical components, especially in film @done(19-02-15 14:00)
   ☐ List next showing in overview page, have 3 wide colums rather than 2
   ✔ Extract utility functions in components into components/utils/index.js @done(19-02-15 10:27)
   ☐ Add cancel button for 'Watched' form

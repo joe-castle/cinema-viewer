@@ -1,0 +1,67 @@
+import React, { Component } from 'react'
+import { Row, Col, Button, Form, FormGroup, Label, Input } from 'reactstrap'
+
+import { formatTime, formatDate } from '../utils'
+
+class WatchedForm extends Component {
+  constructor (props) {
+    super(props)
+
+    const date = new Date()
+
+    this.state = {
+      rating: 0,
+      format: '2D',
+      date: formatDate(date),
+      time: formatTime(date),
+      notes: ''
+    }
+  }
+
+  handleChange = (value) => {
+    return (ev) => {
+      this.setState({ [value]: ev.target.value })
+    }
+  }
+
+  render () {
+    const { rating, date, time, notes, format } = this.state
+
+    return <Form onSubmit={this.submitForm}>
+      <FormGroup>
+        <Label for='rating'>Rating:</Label>
+        <Input type='number' min='0' max='100' name='rating' value={rating} onChange={this.handleChange('rating')} />
+      </FormGroup>
+      <FormGroup>
+        <Label for='format'>format:</Label>
+        <Input type='select' name='format' value={format} onChange={this.handleChange('format')} >
+          <option>2D</option>
+          <option>3D</option>
+          <option>IMAX</option>
+          <option>IMAX 3D</option>
+          <option>4DX</option>
+          <option>4DX 3D</option>
+        </Input>
+      </FormGroup>
+      <FormGroup>
+        <Row>
+          <Col md={6}>
+            <Label for='date'>Date:</Label>
+            <Input type='date' name='date' value={date} onChange={this.handleChange('date')} />
+          </Col>
+          <Col md={6}>
+            <Label for='time'>Date:</Label>
+            <Input type='time' name='time' value={time} onChange={this.handleChange('time')} />
+          </Col>
+        </Row>
+      </FormGroup>
+      <FormGroup>
+        <Label for='notes'>Notes:</Label>
+        <Input type='textarea' name='notes' value={notes} onChange={this.handleChange('notes')} />
+      </FormGroup>
+      <Button type='submit' color='success'>Submit</Button>
+    </Form>
+  }
+}
+
+export default WatchedForm
