@@ -24,7 +24,7 @@ function App ({ favourite, hidden, available, films, location, user, postUpdateF
             render={(props) => <>
               <FilmGroup {...props} user={user} films={favourite} title='Favourites' />
               <FilmGroup {...props} user={user} films={available} title='Available' />
-              <FilmGroup {...props} user={user} films={hidden} title='Hidden' />
+              <FilmGroup {...props} user={user} films={hidden} title='Hidden' collapse />
             </>}
           />
           <Route
@@ -79,7 +79,7 @@ function mapStateToProps ({ films, ...props }) {
     ...props,
     user: props.user && props.user.name ? props.user : null,
     favourite: films.filter((film) => film.userData && film.userData.favourite),
-    available: films.filter((film) => film.showtimes !== null && film.userData && (!film.userData.favourite && !film.userData.hidden && !film.userData.watched)),
+    available: films.filter((film) => film.showtimes !== null && (!film.userData || (!film.userData.favourite && !film.userData.hidden && !film.userData.watched))),
     hidden: films.filter((film) => film.showtimes !== null && film.userData && (!film.userData.favourite && film.userData.hidden && !film.userData.watched)),
     films: processShowtimes(films)
   }

@@ -39,11 +39,11 @@ export default class Navigation extends React.Component {
             </NavItem>
           </Nav>
           <Nav className='ml-auto' navbar>
-            {user && user.name && <span className='nav-item navbar-text mr-4'>Hello {user.name.givenName}</span>}
+            {user && <span className='nav-item navbar-text mr-4'>Hello {user.name.givenName}</span>}
             <NavItem>
               {/* TODO: FIX THE LOGIN BUTTON dangerouslySetInnerHTML={{ __html: GoogleLogin }} */}
-              {!user || !user.name && <a className='btn btn-outline-success' href='/auth/google'>Login with Google</a>}
-              {user && user.name && <a className='btn btn-outline-light' href='/logout'>Logout</a>}
+              {!user && <a className='btn btn-outline-success' href='/auth/google'>Login with Google</a>}
+              {user && <a className='btn btn-outline-light' href='/logout'>Logout</a>}
             </NavItem>
           </Nav>
         </Collapse>
