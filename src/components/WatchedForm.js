@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Row, Col, Button, Form, FormGroup, Label, Input } from 'reactstrap'
 
-import { formatTime, formatDate } from '../utils'
+import { formatTime, formatDate, zeroPad } from '../utils'
 
 class WatchedForm extends Component {
   constructor (props) {
@@ -12,7 +12,7 @@ class WatchedForm extends Component {
     this.state = {
       rating: 0,
       format: '2D',
-      date: formatDate(date),
+      date: `${date.getFullYear()}-${zeroPad(date.getMonth() + 1)}-${zeroPad(date.getDate())}`,
       time: formatTime(date),
       notes: ''
     }

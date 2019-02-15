@@ -42,6 +42,7 @@ TODO:
   ☐ Add cancel button for 'Watched' form
   ☐ Add edit button for Watched films
   ✔ Update render to use configurestore instead? @done(19-01-18 16:41)
+  ☐ Have watched and expired in films page, have date watched on film badge
   
 FIX:
 	☐ fix film showtimes so that if only one format centers gracefully 

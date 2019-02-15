@@ -14,7 +14,7 @@ import Footer, { CopyrightText } from './styled/footer'
 
 import { checkUserData, notCheckUserData } from '../utils'
 
-function App ({ favourite, hidden, available, films, location, user, postUpdateFilm, updateFilm }) {
+function App ({ favourite, hidden, available, watched, expired, films, location, user, postUpdateFilm, updateFilm }) {
   return <>
     <Navigation url={location.pathname} user={user} />
     <main>
@@ -32,7 +32,10 @@ function App ({ favourite, hidden, available, films, location, user, postUpdateF
           <Route
             exact
             path='/films'
-            render={(props) => <FilmGroup {...props} user={user} films={films} />}
+            render={(props) => <>
+              <FilmGroup {...props} user={user} films={watched} title='Watched' />
+              <FilmGroup {...props} user={user} films={expired} title='Expired' collapse />
+            </>}
           />
           <Route
             path='/films/:id'
@@ -81,8 +84,10 @@ function mapStateToProps ({ films, ...props }) {
     ...props,
     user: props.user && props.user.name ? props.user : null,
     favourite: films.filter((film) => checkUserData(film, 'favourite')),
-    available: films.filter((film) => film.showtimes !== null && notCheckUserData(film, '!favourite', '!hidden', '!watched')),
-    hidden: films.filter((film) => film.showtimes !== null && checkUserData(film, '!favourite', 'hidden', '!watched')),
+    available: films.filter((film) => film.showtimes && notCheckUserData(film, '!favourite', '!hidden', '!watched')),
+    hidden: films.filter((film) => film.showtimes && checkUserData(film, '!favourite', 'hidden', '!watched')),
+    watched: films.filter((film) => checkUserData(film, 'watched')),
+    expired: films.filter((film) => !film.showtimes && checkUserData(film, '!watched')),
     films: processShowtimes(films)
   }
 }

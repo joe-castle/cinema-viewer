@@ -17,7 +17,7 @@ export function formatTime (date) {
 }
 
 export function formatDate (date) {
-  return `${date.getFullYear()}-${zeroPad(date.getMonth() + 1)}-${zeroPad(date.getDate())}`
+  
 }
 
 export function checkUserData (film, ...conditions) {
