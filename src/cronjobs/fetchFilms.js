@@ -9,17 +9,6 @@ function processTitle (title) {
   return title.match(/^(?:\((.+?)\))? ?(.+)/)[1] || '2D'
 }
 
-// function processShowtimes (filmObj) {
-//   return Object
-//     .keys(filmObj)
-//     .filter(time => time.startsWith('Time'))
-//     .reduce((prev, curr) => [...prev,
-//       ...filmObj[curr].split(' ').map(time =>
-//         new Date(`${filmObj[`Date${curr.slice(-2)}`].replace(/(\w+) (\d+) (\w+)/, `$2 $3 ${new Date().getFullYear()}`)} ${time}:00`)
-//       )
-//     ], [])
-// }
-
 function parseXml (xml) {
   return new Promise((resolve, reject) => {
     parseString(xml, (err, results) => {
@@ -76,7 +65,7 @@ export default async function fetchFilms () {
     })
 
     const expiredFilms = existingFilms
-      .filter((film) => !processedFilms.find((processed) => processed.title === film.title))
+      .filter((film) => film.showtimes && !processedFilms.find((processed) => processed.title === film.title))
       .map((film) => Object
         .keys(film)
         .filter((key) => key !== '_id' && key !== 'dateAdded')
@@ -87,13 +76,7 @@ export default async function fetchFilms () {
       )
 
     let newFilms = processedFilms
-      .filter((processed) => {
-        const film = existingFilms.find((film) => {
-          const found = film.title === processed.title
-          return found
-        })
-        return !film
-      })
+      .filter((processed) => !existingFilms.find((film) => film.title === processed.title))
 
     const trailers = (await axios
       .all(newFilms.map((film) => axios.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&q=${encodeURIComponent(`${film.title} trailer`)}&maxResults=1&key=${YOUTUBE_API_KEY}`))))
