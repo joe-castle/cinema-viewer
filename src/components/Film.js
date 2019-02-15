@@ -93,10 +93,10 @@ class Film extends Component {
     return { id: this.props.film._id, ...data }
   }
 
-  submitForm = (ev) => {
+  submitForm = (ev, state) => {
     ev.preventDefault()
 
-    const { rating, date, time, format, notes } = this.state
+    const { rating, date, time, format, notes } = state
 
     this.props.update(this.createBody({ watched: {
       rating,

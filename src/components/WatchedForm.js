@@ -27,7 +27,7 @@ class WatchedForm extends Component {
   render () {
     const { rating, date, time, notes, format } = this.state
 
-    return <Form onSubmit={this.submitForm}>
+    return <Form onSubmit={(ev) => this.props.submitForm(ev, this.state)}>
       <FormGroup>
         <Label for='rating'>Rating:</Label>
         <Input type='number' min='0' max='100' name='rating' value={rating} onChange={this.handleChange('rating')} />
