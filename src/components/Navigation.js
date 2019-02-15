@@ -20,6 +20,7 @@ export default class Navigation extends React.Component {
 
   render () {
     const { user } = this.props
+
     return (
       <NavBarCustom dark expand='md'>
         <NavbarBrand href='/'>Cinema Viewer</NavbarBrand>

@@ -13,10 +13,14 @@ Features:
     ☐ USE TYPESCRIPT FOR THE LOVE OF GOD, maybe?
     ☐ When rating a film, have a pop up that shows what would be below and above the score
     ☐ Coming soon films
+<<<<<<< HEAD
     ☐ Have a sort/filter/search feature
     ☐ Bulk mark as favourite/hidden
     ☐ 'Delete' film so that aggregation result removes it from return
     ☐ React native
+=======
+    ☐ Warning when theres no more showtimes / showtime is in the morning
+>>>>>>> 2938914b1348c6a1b38d98aff46c24f1bd72a0f0
 
 Redux-observable:
   ☐ store
@@ -28,6 +32,7 @@ TODO:
   ☐ Update ensureauthenticated middleware
   ☐ replace all axios calls with RxJS?
   ☐ Add logging
+<<<<<<< HEAD
   ☐ Add validation
   ☐ Use all-performances instead of film_times as it provides director, cast, length etc...
   ☐ Use .toLocaleString() for all date calls
@@ -40,9 +45,14 @@ TODO:
   ✔ Extract utility functions in components into components/utils/index.js @done(19-02-15 10:27)
   ☐ Add cancel button for 'Watched' form
   ☐ Add edit button for Watched films
+=======
+	☐ Add validation
+	☐ 
+>>>>>>> 2938914b1348c6a1b38d98aff46c24f1bd72a0f0
   ✔ Update render to use configurestore instead? @done(19-01-18 16:41)
   
 FIX:
+	☐ fix film showtimes so that if only one format centers gracefully 
   ☐ Fix server rendering as its not rendering routes or styles properly, althought might be dev only issue
   ☐ Sort out footer
   ✔ Fix play button so it centers properly in image @done(19-02-15 10:13)
