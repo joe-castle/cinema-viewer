@@ -5,8 +5,9 @@ export const RowCenter = styled(Row)`
   text-align: center;
 `
 
-export const ImgTrailer = styled(Col)`
+export const PosterWrapper = styled.div`
   color: rgba(255, 255, 255, 0.6);
+  position: relative;
   transition: color ease-in 0.1s;
 
   &:hover {
@@ -15,7 +16,7 @@ export const ImgTrailer = styled(Col)`
   }
 `
 
-export const Img = styled.img`
+export const Poster = styled.img`
   width: 100%;
 `
 
