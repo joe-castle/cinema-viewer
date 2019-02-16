@@ -21,7 +21,7 @@ import Showtimes from './Showtimes'
 import Watched from './watched'
 import WatchedForm from './WatchedForm'
 
-import { calculateDimensions, notCheckUserData, checkUserData } from '../utils'
+import { calculateDimensions, notCheckUserData, checkUserData } from '../common/utils'
 
 class Film extends Component {
   constructor (props) {

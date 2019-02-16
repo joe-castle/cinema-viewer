@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { formatTime } from '../utils'
+import { formatTime } from '../common/utils'
 
 function Watched ({ watched }) {
   const { dateTime, rating, notes, format } = watched

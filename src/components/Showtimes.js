@@ -8,7 +8,7 @@ import {
   ShowDate
 } from './styled/Showtimes'
 
-import { formatTime } from '../utils'
+import { formatTime } from '../common/utils'
 
 function Showtimes ({ showtimes }) {
   return <RowCenter>

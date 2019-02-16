@@ -12,7 +12,7 @@ import FilmGroup from './FilmGroup'
 import Film from './film'
 import Footer, { CopyrightText } from './styled/footer'
 
-import { checkUserData, notCheckUserData } from '../utils'
+import { checkUserData, notCheckUserData } from '../common/utils'
 
 function App ({ favourite, hidden, available, watched, expired, films, location, user, postUpdateFilm, updateFilm }) {
   return <>

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Row, Col, Button, Form, FormGroup, Label, Input } from 'reactstrap'
 
-import { formatTime, formatDate, zeroPad } from '../utils'
+import { formatTime, zeroPad } from '../common/utils'
 
 class WatchedForm extends Component {
   constructor (props) {

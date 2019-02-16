@@ -2,7 +2,7 @@ import React from 'react'
 import { Badge } from 'reactstrap'
 import styled from 'styled-components'
 
-import { notCheckUserData, checkUserData, formatDate, formatTime } from '../utils'
+import { notCheckUserData, checkUserData, formatDate, formatTime } from '../common/utils'
 
 function BadgeWrapperComp ({ film, ...props }) {
   const watchedDate = new Date(checkUserData(film, 'watched') && film.userData.watched.dateTime)
