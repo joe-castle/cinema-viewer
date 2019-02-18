@@ -43,6 +43,8 @@ TODO:
   ☐ Add edit button for Watched films
   ✔ Update render to use configurestore instead? @done(19-01-18 16:41)
   ☐ Have watched and expired in films page, have date watched on film badge
+  ☐ chunk build and load asyncronously
+  ☐ filter by date playing
   
 FIX:
 	☐ fix film showtimes so that if only one format centers gracefully 

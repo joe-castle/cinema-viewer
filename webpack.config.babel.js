@@ -23,6 +23,9 @@ export default (env, config) => {
       path: path.resolve(__dirname, 'dist', 'assets'),
       publicPath: '/assets'
     },
+    resolve: {
+      extensions: ['.ts', '.tsx', '.js', '.json']
+    },
     plugins: [
       ...ifDevelopment(
         [
@@ -38,10 +41,15 @@ export default (env, config) => {
     module: {
       rules: [
         {
-          test: /\.js$/,
+          test: /\.(jsx?|tsx?)$/,
           use: 'babel-loader',
           exclude: /node_modules/
         },
+        // {
+        //   test: /\.js$/,
+        //   use: ['source-map-loader'],
+        //   enforce: 'pre'
+        // },
         {
           test: /\.styl$/,
           use: [
