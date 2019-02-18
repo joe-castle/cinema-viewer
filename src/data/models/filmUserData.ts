@@ -1,4 +1,4 @@
-import { ObjectID } from 'mongodb'
+import { ObjectID, FindAndModifyWriteOpResultObject } from 'mongodb'
 
 import { multiQ, singleQ } from '../utils/query'
 import { UserData } from '../../common/types';
@@ -28,5 +28,4 @@ export function insertUpdateUserData (userId: string, filmId: string, userData: 
       { userId, filmId: new ObjectID(filmId) },
       { $set: userData, $setOnInsert: { userId, filmId: new ObjectID(filmId) } },
       { upsert: true }))
-    .then((result) => result.value)
 }

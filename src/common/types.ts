@@ -1,5 +1,13 @@
 import { MongoClient, Db } from "mongodb"
 
+export interface User {
+  _id: string,
+  name: {
+    givenName: string,
+    familyName: string
+  }
+}
+
 /**
  * Defines the structure of a film object
  */
@@ -64,3 +72,8 @@ export interface Connect {
   (url: string, db: string): Promise<MongoClient>,
   _db: Db
 }
+
+/**
+ * Generic type for a function that returns a boolean based on a value
+ */
+export type Predicate <T> = (value: T) => boolean
