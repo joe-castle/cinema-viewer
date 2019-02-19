@@ -1,5 +1,8 @@
-import { MongoClient, Db } from "mongodb"
+import { MongoClient, Db } from mongodb
 
+/**
+ * Defines the structure of a User object
+ */
 export interface User {
   _id: string,
   name: {
@@ -12,25 +15,30 @@ export interface User {
  * Defines the structure of a film object
  */
 export interface Film {
-  _id: string,
+  _id?: string,
   title: string,
-  dateAdded: Date,
+  dateAdded?: Date,
   edis: string[],
   poster: string,
   releaseDate: Date,
-  showtimes: null|Showtime[]
+  showtimes: null | {
+    [key: string]: Showtime[]
+  },
   synopsis: string,
-  trailer: string,
-  unlimted: boolean,
+  trailer?: string,
+  unlimited: boolean,
   url: string
-  userData?: UserData
+  userData?: UserData,
+  [key: string]: any
 }
 
 /**
  * Defines the structure of a showtime object
  */
 export interface Showtime {
-  
+  time: Date,
+  url: string,
+  audioType?: string
 }
 
 /**
@@ -44,7 +52,7 @@ export interface UserData {
   hidden?: boolean,
   new?: boolean,
   watched?: Watched,
-  [key: string]: string|boolean|Watched
+  [key: string]: any
 }
 
 /**
@@ -71,6 +79,141 @@ export interface Dimensions {
 export interface Connect {
   (url: string, db: string): Promise<MongoClient>,
   _db: Db
+}
+
+/**
+ * Defines the structure of the parsed xml response from syndication/film_times.xml
+ */
+export interface XmlFilmTimes {
+  relatedData: {
+    row: [{
+      $: {
+        key: string
+      },
+      column: [{
+        _: string,
+        $: {
+          name: string
+          [key: string]: string
+        }
+      }]
+    }]
+  }
+}
+
+export interface ParsedFilmTimes {
+  CinemaID: string,
+  CinemaName: string,
+  Title: string,
+  Rating: string,
+  Release: string,
+  length: string,
+  url: string,
+  edi: string,
+  poster: string,
+  director: string,
+  synopsis: string,
+  cast: string,
+  [key: string]: any
+}
+
+/**
+ * Defines the structure of the parsed xml response from syndication/listings.xml
+ */
+export interface XmlListings {
+  cinemas: {
+    cinema: [{
+      $: {
+        name: string,
+        root: string,
+        url: string,
+        id: string,
+        phone: string,
+        address: string,
+        postcode: string
+      },
+      listing: [{
+        film: XmlFilmListing[]
+      }]
+    }]
+  }
+}
+
+export interface XmlFilmListing {
+  $: {
+    title: string,
+    rating: string,
+    url: string,
+    edi: string,
+    release: string
+  },
+  shows: [{
+    show: [{
+      $: {
+        time: string,
+        url: string
+      }
+    }]
+  }]
+}
+
+export interface ParsedListing {
+  title: string,
+  rating: string,
+  url: string,
+  edi: string,
+  release: string,
+  shows: [{
+    time: Date,
+    url: string
+  }]
+}
+
+/**
+ * Youtube snipper searchdata API response
+ */
+export interface YoutubeSnippetSearch {
+  kind: string,
+  etag: string,
+  nextPageToken: string,
+  regionCode: string,
+  pageInfo: {
+    totalResults: number,
+    resultsPerPage: number
+  },
+  items: [{
+    kind: string,
+    etag: string,
+    id: {
+      kind: string,
+      videoId: string
+    },
+    snippet: {
+      publishedAt: string,
+      channelId: string,
+      title: string,
+      description: string,
+      thumbnails: {
+        default: {
+          url: string,
+          width: number,
+          height: number
+        },
+        medium: {
+          url: string,
+          width: number,
+          height: number
+        },
+        high: {
+          url: string,
+          width: number,
+          height: number
+        }
+      },
+      channelTitle: string,
+      liveBroadcastContent: string
+    }
+  }]
 }
 
 /**

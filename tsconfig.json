@@ -1,6 +1,9 @@
 {
   "compilerOptions": {
-      "noImplicitAny": true,
+      "forceConsistentCasingInFileNames": true,
+      "noImplicitReturns": true,
+      "strict": true,
+      "noUnusedLocals": true,
       "module": "commonjs",
       "target": "ESNext",
       "jsx": "react",

@@ -1,53 +1,61 @@
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
 import { parseString } from 'xml2js'
 
 import { getAllFilms, insertOrUpdateMultipleFilms } from '../data/models/films'
+import { Film, XmlFilmTimes, XmlListings, ParsedFilmTimes, XmlFilmListing, ParsedListing, YoutubeSnippetSearch } from '../common/types'
 
 const { YOUTUBE_API_KEY } = process.env
 
-function processTitle (title) {
-  return title.match(/^(?:\((.+?)\))? ?(.+)/)[1] || '2D'
+function processTitle (title: string): string {
+  const matchedTitle: RegExpMatchArray|null = title.match(/^(?:\((.+?)\))? ?(.+)/)
+
+  return matchedTitle && matchedTitle[1]
+    ? matchedTitle[1]
+    : '2D'
 }
 
-function parseXml (xml) {
+function parseXml <T> (xml: string): Promise<T> {
   return new Promise((resolve, reject) => {
-    parseString(xml, (err, results) => {
+    parseString(xml, (err: Error, results: T) => {
       if (err) reject(err)
       else resolve(results)
     })
   })
 }
 
-export default async function fetchFilms () {
+export default async function fetchFilms (): Promise<Object> {
   try {
-    const [ films, listings ] = await axios.all([
+    const [ films, listings ] = await axios.all<AxiosResponse<string>>([
       axios.get('https://www.cineworld.co.uk/syndication/film_times.xml'),
       axios.get('https://www.cineworld.co.uk/syndication/listings.xml')
     ])
-    const existingFilms = await getAllFilms()
+    const existingFilms: Film[] = await getAllFilms()
 
-    const filmsXml = await parseXml(films.data)
-    const listingsXml = await parseXml(listings.data)
+    const filmsXml: XmlFilmTimes = await parseXml<XmlFilmTimes>(films.data)
+    const listingsXml: XmlListings = await parseXml<XmlListings>(listings.data)
 
-    const parsedFilms = filmsXml.relatedData.row
+    const parsedFilms: { [key: string]: ParsedFilmTimes } = filmsXml.relatedData.row
       .filter((row) => row.$.key === '104')
-      .map(({ column }) => column.reduce((prev, curr) => ({ ...prev, [curr.$.name]: curr._ }), {}))
+      .map(({ column }) => <ParsedFilmTimes> column.reduce((prev, curr) => ({ ...prev, [curr.$.name]: curr._ }), {}))
       .reduce((prev, curr) => ({ ...prev, [curr.edi]: curr }), {})
 
-    const parsedListings = listingsXml.cinemas.cinema
+    const parsedListings: ParsedListing[] = listingsXml.cinemas.cinema
       .filter((cinema) => cinema.$.id === '104')
-      .reduce((prev, curr) => [...prev, ...curr.listing[0].film], [])
-      .map((film) => ({ ...film.$, shows: film.shows[0].show.map((show) => ({ ...show.$, time: new Date(show.$.time) })) }))
+      .reduce((prev: XmlFilmListing[], curr: XmlListings['cinemas']['cinema'][0]): XmlFilmListing[] => [...prev, ...curr.listing[0].film], [])
+      .map((film) => <ParsedListing> ({ ...film.$, shows: film.shows[0].show.map((show) => ({ ...show.$, time: new Date(show.$.time) })) }))
 
-    let processedFilms = []
+    let processedFilms: Film[] = []
 
     parsedListings.forEach((film) => {
-      const format = processTitle(film.title)
-      const existingFilm = processedFilms.find((found) => found.title === parsedFilms[film.edi].Title)
+      const format: string = processTitle(film.title)
+      const existingFilm: Film | undefined = processedFilms.find((found) => found.title === parsedFilms[film.edi].Title)
 
       if (existingFilm) {
+        if (existingFilm.showtimes) {
+          existingFilm.showtimes[format] = film.shows
+        }
+
         existingFilm.edis.push(film.edi)
-        existingFilm.showtimes[format] = film.shows
       } else {
         processedFilms.push({
           edis: [film.edi],
@@ -64,9 +72,9 @@ export default async function fetchFilms () {
       }
     })
 
-    const expiredFilms = existingFilms
+    const expiredFilms: Film[] = existingFilms
       .filter((film) => film.showtimes && !processedFilms.find((processed) => processed.title === film.title))
-      .map((film) => Object
+      .map((film) => <Film> Object
         .keys(film)
         .filter((key) => key !== '_id' && key !== 'dateAdded')
         .reduce((prev, curr) => ({
@@ -75,11 +83,11 @@ export default async function fetchFilms () {
         }), {})
       )
 
-    let newFilms = processedFilms
+    let newFilms: Film[] = processedFilms
       .filter((processed) => !existingFilms.find((film) => film.title === processed.title))
 
-    const trailers = (await axios
-      .all(newFilms.map((film) => axios.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&q=${encodeURIComponent(`${film.title} trailer`)}&maxResults=1&key=${YOUTUBE_API_KEY}`))))
+    const trailers: YoutubeSnippetSearch[] = (await axios
+      .all<AxiosResponse<YoutubeSnippetSearch>>(newFilms.map((film) => axios.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&q=${encodeURIComponent(`${film.title} trailer`)}&maxResults=1&key=${YOUTUBE_API_KEY}`))))
       .map((trailer) => trailer.data)
 
     newFilms = newFilms.map((film, index) =>
@@ -103,5 +111,9 @@ export default async function fetchFilms () {
     }
   } catch (err) {
     console.log('Error whilst fetching films: ', err.message, '\n', err.stack)
+    
+    return {
+      error: err.message
+    }
   }
 }

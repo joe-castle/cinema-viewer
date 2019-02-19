@@ -126,6 +126,7 @@
       "src/store/*",
       "src/assets/*",
       "src/client.ts"
-    ]
+    ],
+    "ext": "js,jsx,ts,tsx"
   }
 }
