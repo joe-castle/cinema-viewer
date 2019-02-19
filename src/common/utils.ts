@@ -1,4 +1,4 @@
-import { Film, Dimensions } from "./types";
+import { Film, Dimensions, Predicate, UserData } from "./types"
 
 /**
  * Calculates screen dimensions for a specific 16:9 aspect ratio
@@ -45,7 +45,7 @@ export function formatDate (date: Date): string {
   return date.toDateString().slice(0, -5)
 }
 
-export function checkUserData (film: Film, ...conditions: (string|Function)[]): boolean {
+export function checkUserData (film: Film, ...conditions: (string|Predicate<UserData>)[]): boolean {
   return film.userData && conditions.every((condition) => {
     if (typeof condition === 'string') {
       return condition.startsWith('!')
@@ -53,13 +53,13 @@ export function checkUserData (film: Film, ...conditions: (string|Function)[]): 
         : film.userData[condition]
     } else if (typeof condition === 'function') {
       return condition(film.userData)
-    } else {
-      console.log(`Unexpected condition passed to checkUserData, expected string|Function but got: ${typeof condition}`)
-      return false
     }
+    
+    console.log(`Unexpected condition passed to checkUserData, expected string|Function but got: ${typeof condition}`)
+    return false
   }) 
 }
 
-export function notCheckUserData (film: Film, ...conditions: (string|Function)[]): boolean {
+export function notCheckUserData (film: Film, ...conditions: (string|Predicate<UserData>)[]): boolean {
   return !film.userData || checkUserData(film, ...conditions)
 }

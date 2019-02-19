@@ -4,6 +4,7 @@
       "noImplicitReturns": true,
       "strict": true,
       "noUnusedLocals": true,
+      "allowSyntheticDefaultImports": true,
       "module": "commonjs",
       "target": "ESNext",
       "jsx": "react",

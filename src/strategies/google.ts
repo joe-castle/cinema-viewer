@@ -1,8 +1,10 @@
-import passport from 'passport'
+import { Passport } from 'passport'
 import { Strategy } from 'passport-google-oauth20'
 import { getUserAndAddIfNotExists, getUser } from '../data/models/users'
+import { User } from '../common/types';
 
 const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, PRODUCTION } = process.env
+const passport = new Passport()
 
 passport.use(new Strategy(
   {
@@ -21,11 +23,11 @@ passport.use(new Strategy(
   }
 ))
 
-passport.serializeUser((user, done) => {
+passport.serializeUser((user: User, done) => {
   done(null, user._id)
 })
 
-passport.deserializeUser(async (id, done) => {
+passport.deserializeUser(async (id: string, done) => {
   done(null, await getUser(id))
 })
 

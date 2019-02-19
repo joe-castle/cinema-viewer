@@ -1,4 +1,12 @@
-import { MongoClient, Db } from mongodb
+import { MongoClient, Db } from 'mongodb'
+
+/**
+ * Redux store state
+ */
+export interface State {
+  films: Film[],
+  user: User[]
+}
 
 /**
  * Defines the structure of a User object

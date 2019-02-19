@@ -1,5 +1,6 @@
-import { combineReducers } from 'redux'
+import { combineReducers, Reducer } from 'redux'
 import { combineEpics } from 'redux-observable'
+import { State } from '../../common/types'
 
 import { filmActions, filmReducer, filmEpics } from './films'
 import { userActions, userReducer, userEpics } from './user'
@@ -9,7 +10,7 @@ export const actions = {
   ...userActions
 }
 
-export const rootReducer = combineReducers({
+export const rootReducer: Reducer<State> = combineReducers<State>({
   films: filmReducer,
   user: userReducer
 })

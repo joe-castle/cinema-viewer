@@ -1,4 +1,4 @@
-import { MongoClient, MongoError, Db } from 'mongodb'
+import { MongoClient, MongoError } from 'mongodb'
 
 import { Connect } from '../common/types'
 

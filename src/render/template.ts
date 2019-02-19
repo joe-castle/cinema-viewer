@@ -1,10 +1,13 @@
 import { renderToString } from 'react-dom/server'
 import { ServerStyleSheet } from 'styled-components'
 
-export default (el, state) => {
-  const sheet = new ServerStyleSheet()
-  const html = renderToString(sheet.collectStyles(el))
-  const styleTags = sheet.getStyleTags()
+import { State } from '../common/types'
+import { ReactNode } from 'react';
+
+export default (el: ReactNode, state: State) => {
+  const sheet: ServerStyleSheet = new ServerStyleSheet()
+  const html: string = renderToString(sheet.collectStyles(el))
+  const styleTags: string = sheet.getStyleTags()
 
   return (
     `<!DOCTYPE html>

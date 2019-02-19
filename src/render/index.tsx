@@ -1,7 +1,9 @@
-import React from 'react'
+import  React from 'react'
 import { Provider } from 'react-redux'
 import { StaticRouter } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
+import { Request, Response } from 'express'
+import { Film } from '../common/types'
 
 import { getAllFilms } from '../data/models/films'
 
@@ -12,12 +14,10 @@ import App from '../components/App'
 
 import theme from '../components/styled/theme'
 
-export default async function render (req, res) {
+export default async function render (req: Request, res: Response) {
   try {
-    const films = await getAllFilms(req.user)
-
     const store = configureStore({
-      films,
+      films: await getAllFilms(req.user),
       user: req.user
     })
 
