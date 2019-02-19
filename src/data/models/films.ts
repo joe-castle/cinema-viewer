@@ -12,7 +12,7 @@ const filmsS = singleQ<Film>('films')
  *
  * @param {string} [user] - The user object
  */
-export function getAllFilms (user: any): Promise<Film[]> {
+export function getAllFilms (user?: any): Promise<Film[]> {
   return user
     ? getFilmsWithUserData(user._id)
     : filmsM((col) => col.find().sort({ title: 1 }))
