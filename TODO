@@ -18,6 +18,7 @@ Features:
     ☐ 'Delete' film so that aggregation result removes it from return
     ☐ React native
     ☐ Seat and screen selection
+    ☐ Custom film entry
 
 Redux-observable:
   ☐ store

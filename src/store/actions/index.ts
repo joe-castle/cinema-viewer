@@ -4,6 +4,7 @@ import { State } from '../../common/types'
 
 import { filmActions, filmReducer, filmEpics } from './films'
 import { userActions, userReducer, userEpics } from './user'
+import { CombinedActionType } from 'redux-actions';
 
 export const actions = {
   ...filmActions,

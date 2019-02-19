@@ -8,7 +8,7 @@ import { State } from '../common/types';
 export default function configureStore (initialState: State): Store<State> {
   const epicMiddleware = createEpicMiddleware()
 
-  const store = createStore(rootReducer, initialState, composeWithDevTools(
+  const store: Store<State> = createStore(rootReducer, initialState, composeWithDevTools(
     applyMiddleware(epicMiddleware)
   ))
 

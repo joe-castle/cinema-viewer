@@ -4,7 +4,7 @@ import { ServerStyleSheet } from 'styled-components'
 import { State } from '../common/types'
 import { ReactNode } from 'react';
 
-export default (el: ReactNode, state: State) => {
+export default function template (el: ReactNode, state: State): string {
   const sheet: ServerStyleSheet = new ServerStyleSheet()
   const html: string = renderToString(sheet.collectStyles(el))
   const styleTags: string = sheet.getStyleTags()
