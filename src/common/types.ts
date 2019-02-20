@@ -1,21 +1,37 @@
-import { MongoClient, Db } from 'mongodb'
+import { Action } from "redux";
+
+/** START REDUX TYPE DEFINTIONS */
 
 /**
  * Redux store state
  */
 export interface State {
   films: Film[],
-  user: User[]
+  user: User
 }
+
+export interface ReduxAction <T = Object> extends Action<string> {
+  payload: T
+}
+
+export interface ReduxActionCreator <T> {
+  (payload: T): ReduxAction<T>
+}
+
+export interface ReduxActionCreatorMap <T> {
+  [key: string]: ReduxActionCreator<T>
+}
+
+/** END REDUX TYPE DEFINTIONS */
 
 /**
  * Defines the structure of a User object
  */
 export interface User {
-  _id: string,
+  _id?: string,
   name: {
     givenName: string,
-    familyName: string
+    familyName?: string
   }
 }
 
@@ -24,18 +40,18 @@ export interface User {
  */
 export interface Film {
   _id?: string,
-  title: string,
+  title?: string,
   dateAdded?: Date,
-  edis: string[],
-  poster: string,
-  releaseDate: Date,
-  showtimes: null | {
+  edis?: string[],
+  poster?: string,
+  releaseDate?: Date,
+  showtimes?: null | {
     [key: string]: Showtime[]
   },
-  synopsis: string,
+  synopsis?: string,
   trailer?: string,
-  unlimited: boolean,
-  url: string
+  unlimited?: boolean,
+  url?: string
   userData?: UserData,
   [key: string]: any
 }
@@ -53,9 +69,8 @@ export interface Showtime {
  * Defines the structure of a userData objcet
  */
 export interface UserData {
-  _id: string,
-  filmId: string,
-  userId: string,
+  filmId?: string,
+  userId?: string,
   favourite?: boolean,
   hidden?: boolean,
   new?: boolean,
@@ -80,151 +95,9 @@ export interface Dimensions {
   width: number,
   height: number
 }
-
 /**
- * Connection interface for mongodb client connection
+ * Generic inteface for a function that returns a boolean based on a value
  */
-export interface Connect {
-  (url: string, db: string): Promise<MongoClient>,
-  _db: Db
+export interface Predicate <T> {
+  (value: T): boolean
 }
-
-/**
- * Defines the structure of the parsed xml response from syndication/film_times.xml
- */
-export interface XmlFilmTimes {
-  relatedData: {
-    row: [{
-      $: {
-        key: string
-      },
-      column: [{
-        _: string,
-        $: {
-          name: string
-          [key: string]: string
-        }
-      }]
-    }]
-  }
-}
-
-export interface ParsedFilmTimes {
-  CinemaID: string,
-  CinemaName: string,
-  Title: string,
-  Rating: string,
-  Release: string,
-  length: string,
-  url: string,
-  edi: string,
-  poster: string,
-  director: string,
-  synopsis: string,
-  cast: string,
-  [key: string]: any
-}
-
-/**
- * Defines the structure of the parsed xml response from syndication/listings.xml
- */
-export interface XmlListings {
-  cinemas: {
-    cinema: [{
-      $: {
-        name: string,
-        root: string,
-        url: string,
-        id: string,
-        phone: string,
-        address: string,
-        postcode: string
-      },
-      listing: [{
-        film: XmlFilmListing[]
-      }]
-    }]
-  }
-}
-
-export interface XmlFilmListing {
-  $: {
-    title: string,
-    rating: string,
-    url: string,
-    edi: string,
-    release: string
-  },
-  shows: [{
-    show: [{
-      $: {
-        time: string,
-        url: string
-      }
-    }]
-  }]
-}
-
-export interface ParsedListing {
-  title: string,
-  rating: string,
-  url: string,
-  edi: string,
-  release: string,
-  shows: [{
-    time: Date,
-    url: string
-  }]
-}
-
-/**
- * Youtube snipper searchdata API response
- */
-export interface YoutubeSnippetSearch {
-  kind: string,
-  etag: string,
-  nextPageToken: string,
-  regionCode: string,
-  pageInfo: {
-    totalResults: number,
-    resultsPerPage: number
-  },
-  items: [{
-    kind: string,
-    etag: string,
-    id: {
-      kind: string,
-      videoId: string
-    },
-    snippet: {
-      publishedAt: string,
-      channelId: string,
-      title: string,
-      description: string,
-      thumbnails: {
-        default: {
-          url: string,
-          width: number,
-          height: number
-        },
-        medium: {
-          url: string,
-          width: number,
-          height: number
-        },
-        high: {
-          url: string,
-          width: number,
-          height: number
-        }
-      },
-      channelTitle: string,
-      liveBroadcastContent: string
-    }
-  }]
-}
-
-/**
- * Generic type for a function that returns a boolean based on a value
- */
-export type Predicate <T> = (value: T) => boolean

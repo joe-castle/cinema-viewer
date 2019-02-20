@@ -28,7 +28,7 @@ Redux-observable:
 
 TODO:
   ☐ Update ensureauthenticated middleware
-  ☐ replace all axios calls with RxJS?
+  ☐ replace all axios calls with RxJS? ajax has post/get methods
   ☐ Add logging
   ☐ Add validation
   ☐ Use all-performances instead of film_times as it provides director, cast, length etc...
@@ -46,6 +46,24 @@ TODO:
   ☐ Have watched and expired in films page, have date watched on film badge
   ☐ chunk build and load asyncronously
   ☐ filter by date playing
+  ☐ Move ALL dispatch based RxJS code to epics, inclduing the debounce thing from Film.js
+  ☐ Have spinners / errors for failures in async alls, use this pattern to call 
+    action$.pipe(
+      ofType(actions.SEND_EMAIL),
+      mergeMap(payload =>
+        merge(
+          // We are processing, -- this will happen 'syncrhonously' in the stream
+          of(actions.processingSubmission(true)),
+          // When this resolves, it will map into the stream and process the appropriate action... Boom.
+          Observable.from(fetch(endpoint)).pipe(
+            // It worked, tada!
+            mapTo(someAction),
+            // Oh no it failed!
+            catchError(err => actions.processingSubmissionFailed(err))
+          )
+        )
+      )
+    );
   
 FIX:
 	☐ fix film showtimes so that if only one format centers gracefully 

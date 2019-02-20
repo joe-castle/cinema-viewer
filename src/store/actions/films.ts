@@ -1,17 +1,21 @@
-import { handleActions, createActions } from 'redux-actions'
-import { ofType, ActionsObservable } from 'redux-observable'
+import { ofType, ActionsObservable, Epic } from 'redux-observable'
 import { mergeMap, map } from 'rxjs/operators'
 import { from } from 'rxjs'
 import axios from 'axios'
-import { Film } from '../../common/types'
-import { Action } from 'redux';
+import { Reducer } from 'redux'
 
-export const filmActions = createActions('UPDATE_FILM', 'POST_UPDATE_FILM')
+import { Film, ReduxAction, ReduxActionCreatorMap } from '../../common/types'
+import { actionCreatorMapFactory } from '../../common/utils';
 
-export const filmReducer = handleActions(
-  {
-    [filmActions.updateFilm] (state: Film[], { payload: { id, ...body } }) {
-      const index: number = state.findIndex((film) => film._id === id)
+const UPDATE_FILM: string = 'UPDATE_FILM'
+const POST_UPDATE_FILM: string = 'POST_UPDATE_FILM'
+
+export const filmActions: ReduxActionCreatorMap<Film> = actionCreatorMapFactory(UPDATE_FILM, POST_UPDATE_FILM)
+
+export const filmReducer: Reducer<Film[], ReduxAction<Film>> = (state = [], { type, payload: { _id, ...body }}): Film[] => {
+  switch (type) {
+    case UPDATE_FILM: {
+      const index: number = state.findIndex((film) => film._id === _id)
 
       return [
         ...state.slice(0, index),
@@ -25,16 +29,18 @@ export const filmReducer = handleActions(
         ...state.slice(index + 1, state.length)
       ]
     }
-  },
-  []
-)
+    default: {
+      return state
+    }
+  }
+}
 
-export const filmEpics = [
-  (action$: ActionsObservable<Action<string>>) => action$.pipe(
-    ofType(filmActions.postUpdateFilm),
-    mergeMap(({ payload: { id, ...body } }) =>
-      from(axios.post(`/api/films/${id}`, body)).pipe(
-        map(() => filmActions.updateFilm({ id, ...body }))
+export const filmEpics: Epic<ReduxAction<Film>>[] = [
+  (action$: ActionsObservable<ReduxAction<Film>>) => action$.pipe(
+    ofType(POST_UPDATE_FILM),
+    mergeMap(({ payload: { _id, ...body } }) =>
+      from(axios.post(`/api/films/${_id}`, body)).pipe(
+        map(() => filmActions.updateFilm({ _id, ...body }))
       )
     )
   )
