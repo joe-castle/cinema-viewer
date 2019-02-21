@@ -5,7 +5,7 @@ import { StaticRouter } from 'react-router-dom'
 import { StaticRouterContext } from 'react-router'
 import { ThemeProvider } from 'styled-components'
 import { Request, Response } from 'express'
-import { State } from '../common/types'
+import { State, ReduxAction } from '../common/types'
 
 import { getAllFilms } from '../data/models/films'
 
@@ -18,7 +18,7 @@ import theme from '../components/styled/theme'
 
 export default async function render (req: Request, res: Response): Promise<void> {
   try {
-    const store: Store<State> = configureStore({
+    const store: Store<State, ReduxAction> = configureStore({
       films: await getAllFilms(req.user),
       user: req.user
     })

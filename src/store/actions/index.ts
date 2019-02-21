@@ -1,5 +1,5 @@
 import { combineReducers, Reducer } from 'redux'
-import { combineEpics } from 'redux-observable'
+import { combineEpics, Epic } from 'redux-observable'
 import { State, ReduxAction } from '../../common/types'
 
 import { filmActions, filmReducer, filmEpics } from './films'
@@ -15,7 +15,7 @@ export const rootReducer: Reducer<State, ReduxAction> = combineReducers({
   user: userReducer
 })
 
-export const rootEpic = combineEpics<ReduxAction>(
+export const rootEpic: Epic<ReduxAction> = combineEpics(
   ...filmEpics,
   ...userEpics
 )

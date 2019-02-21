@@ -1,4 +1,4 @@
-import { Film, Dimensions, Predicate, UserData } from "./types"
+import { Film, Dimensions, Predicate, UserData, ReduxAction, ReduxActionCreator, ReduxActionCreatorMap } from "./types"
 
 /**
  * Calculates screen dimensions for a specific 16:9 aspect ratio
@@ -46,20 +46,46 @@ export function formatDate (date: Date): string {
 }
 
 export function checkUserData (film: Film, ...conditions: (string|Predicate<UserData>)[]): boolean {
-  return film.userData && conditions.every((condition) => {
-    if (typeof condition === 'string') {
-      return condition.startsWith('!')
-        ? !film.userData[condition.slice(1)]
-        : film.userData[condition]
-    } else if (typeof condition === 'function') {
-      return condition(film.userData)
-    }
-    
-    console.log(`Unexpected condition passed to checkUserData, expected string|Function but got: ${typeof condition}`)
-    return false
-  }) 
+  const userData: UserData|undefined = film.userData
+
+  if (userData) {
+    return conditions.every((condition) => {
+      if (typeof condition === 'string') {
+        return condition.startsWith('!')
+          ? !userData[condition.slice(1)]
+          : userData[condition]
+      } else if (typeof condition === 'function') {
+        return condition(userData)
+      }
+      
+      console.log(`Unexpected condition passed to checkUserData, expected string|Function but got: ${typeof condition}`)
+    }) 
+  }
+
+  return false
 }
 
 export function notCheckUserData (film: Film, ...conditions: (string|Predicate<UserData>)[]): boolean {
   return !film.userData || checkUserData(film, ...conditions)
+}
+
+/**
+ * Redux helper functions
+ */
+export function camelCase (value: string): string {
+  return value
+    .toLowerCase()
+    .replace(/_(\w)/gi, (m, g1: string) => g1.toUpperCase())
+}
+
+export function actionCreatorFactory <T = any> (type: string): ReduxActionCreator<T> {
+  return (payload: T): ReduxAction<T> => ({
+    type,
+    payload
+  })
+}
+
+export function actionCreatorMapFactory <T = any> (...types: string[]): ReduxActionCreatorMap<T> {
+  return types
+    .reduce((prev, type) => ({ ...prev, [camelCase(type)]: actionCreatorFactory(type) }), {})
 }

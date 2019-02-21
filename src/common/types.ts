@@ -14,11 +14,11 @@ export interface ReduxAction <T = Object> extends Action<string> {
   payload: T
 }
 
-export interface ReduxActionCreator <T> {
+export interface ReduxActionCreator <T = Object> {
   (payload: T): ReduxAction<T>
 }
 
-export interface ReduxActionCreatorMap <T> {
+export interface ReduxActionCreatorMap <T = Object> {
   [key: string]: ReduxActionCreator<T>
 }
 
@@ -95,6 +95,7 @@ export interface Dimensions {
   width: number,
   height: number
 }
+
 /**
  * Generic inteface for a function that returns a boolean based on a value
  */

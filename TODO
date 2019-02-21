@@ -64,7 +64,11 @@ TODO:
         )
       )
     );
-  
+
+Typescript:
+  ☐ Tidy up type files, use namespaces?
+  ☐ Have different interfaces for mongo data and front end data / use namespaces(modules) to 'namespace' them
+
 FIX:
 	☐ fix film showtimes so that if only one format centers gracefully 
   ☐ Fix server rendering as its not rendering routes or styles properly, althought might be dev only issue
