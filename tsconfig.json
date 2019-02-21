@@ -7,13 +7,13 @@
       "allowSyntheticDefaultImports": true,
       "module": "commonjs",
       "target": "ESNext",
-      "jsx": "react",
-      "outDir": "__typescript"
+      "jsx": "react"
   },
   "include": [
       "./src/**/*"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "src/components/styled/*.tsx"
   ]
 }

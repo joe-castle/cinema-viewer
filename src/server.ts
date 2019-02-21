@@ -1,6 +1,5 @@
 import { Db } from 'mongodb'
 import mongo from './data/client'
-
 import app from './server.app'
 
 const { MONGO_URL = '', MONGO_DB = '', PORT = 3000 } = process.env

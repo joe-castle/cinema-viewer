@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 
 import { formatTime } from '../common/utils'
+import { IWatched } from '../types/data'
+import { IWatchedProps } from '../types/react'
 
-function Watched ({ watched }) {
-  const { dateTime, rating, notes, format } = watched
-  const date = new Date(dateTime)
+function Watched ({ watched }: IWatchedProps): ReactElement {
+  const { dateTime, rating, notes, format }: IWatched = watched
+  const date: Date = new Date(dateTime)
 
   return <div>
     <p><strong>Watched: </strong>{date.toDateString()} at {formatTime(date)}</p>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 
 import { RowCenter } from './styled/Film'
 
@@ -9,19 +9,20 @@ import {
 } from './styled/Showtimes'
 
 import { formatTime } from '../common/utils'
+import { IShowTimesProps } from '../types/react'
 
-function Showtimes ({ showtimes }) {
+function Showtimes ({ showtimes }: IShowTimesProps): ReactElement {
   return <RowCenter>
     {Object.keys(showtimes).map((format) =>
       <ShowCol lg={4} md={12}>
         <h3>{format}</h3>
         {Object.keys(showtimes[format]).map((date) => {
-          const today = new Date().toDateString() === date
+          const today: boolean = new Date().toDateString() === date
           return <>
             <ShowDate today={today}>{date}</ShowDate>
             {showtimes[format][date].map((date) => {
               // Mark as expired if show has been running for an hour
-              const expired = (Date.parse(date.time) + (60 * 60 * 1000)) < Date.now()
+              const expired: boolean = (Date.parse(date.time) + (60 * 60 * 1000)) < Date.now()
               return <ShowTime
                 today={today}
                 expired={expired}

@@ -1,13 +1,14 @@
-import React, { Component } from 'react'
+import React, { Component, ChangeEvent } from 'react'
 import { Row, Col, Button, Form, FormGroup, Label, Input } from 'reactstrap'
 
 import { formatTime, zeroPad } from '../common/utils'
+import { IWatchedFormProps, IWatchedFormState } from '../types/react'
 
-class WatchedForm extends Component {
-  constructor (props) {
+class WatchedForm extends Component<IWatchedFormProps, IWatchedFormState> {
+  constructor (props: IWatchedFormProps) {
     super(props)
 
-    const date = new Date()
+    const date: Date = new Date()
 
     this.state = {
       rating: 0,
@@ -18,14 +19,14 @@ class WatchedForm extends Component {
     }
   }
 
-  handleChange = (value) => {
+  handleChange = (value: string): (ev: ChangeEvent<HTMLInputElement>) => void => {
     return (ev) => {
       this.setState({ [value]: ev.target.value })
     }
   }
 
   render () {
-    const { rating, date, time, notes, format } = this.state
+    const { rating, date, time, notes, format }: IWatchedFormState = this.state
 
     return <Form onSubmit={(ev) => this.props.submitForm(ev, this.state)}>
       <FormGroup>
@@ -34,7 +35,7 @@ class WatchedForm extends Component {
       </FormGroup>
       <FormGroup>
         <Label for='format'>format:</Label>
-        <Input type='select' name='format' value={format} onChange={this.handleChange('format')} >
+        <Input type='select' name='format' value={format} onChange={(this.handleChange('format'))} >
           <option>2D</option>
           <option>3D</option>
           <option>IMAX</option>

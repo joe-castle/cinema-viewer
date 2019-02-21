@@ -5,7 +5,6 @@ import { StaticRouter } from 'react-router-dom'
 import { StaticRouterContext } from 'react-router'
 import { ThemeProvider } from 'styled-components'
 import { Request, Response } from 'express'
-import { State, ReduxAction } from '../common/types'
 
 import { getAllFilms } from '../data/models/films'
 
@@ -14,11 +13,12 @@ import template from './template'
 
 import App from '../components/App'
 import theme from '../components/styled/theme'
+import { IReduxAction, IState } from '../types/redux'
 
 
 export default async function render (req: Request, res: Response): Promise<void> {
   try {
-    const store: Store<State, ReduxAction> = configureStore({
+    const store: Store<IState, IReduxAction> = configureStore({
       films: await getAllFilms(req.user),
       user: req.user
     })
@@ -29,7 +29,11 @@ export default async function render (req: Request, res: Response): Promise<void
       template(
         <Provider store={store}>
           <StaticRouter location={req.url} context={context}>
+            {/* 
+            //@ts-ignore erros becuase of ignore comment... */}
             <ThemeProvider theme={theme}>
+              {/* 
+              //@ts-ignore router props passed in from context with withRouter in App.tsx */}
               <App />
             </ThemeProvider>
           </StaticRouter>

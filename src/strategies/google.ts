@@ -1,7 +1,10 @@
-import { Passport } from 'passport'
+import { Passport, Profile } from 'passport'
+// @ts-ignore no existing @types file
 import { Strategy } from 'passport-google-oauth20'
+import OAuth2Strategy from 'passport-oauth2'
+
 import { getUserAndAddIfNotExists, getUser } from '../data/models/users'
-import { User } from '../common/types';
+import { IUser } from '../types/data'
 
 const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, PRODUCTION } = process.env
 const passport = new Passport()
@@ -14,7 +17,7 @@ passport.use(new Strategy(
       ? 'http://www.example.com/auth/google/callback'
       : 'http://localhost:3001/auth/google/callback'
   },
-  async (accessToken, refreshToken, profile, cb) => {
+  async (accessToken: string, refreshToken: string, profile: Profile, cb: OAuth2Strategy.VerifyCallback) => {
     try {
       cb(null, await getUserAndAddIfNotExists(profile))
     } catch (err) {
@@ -23,7 +26,7 @@ passport.use(new Strategy(
   }
 ))
 
-passport.serializeUser((user: User, done) => {
+passport.serializeUser((user: IUser, done) => {
   done(null, user._id)
 })
 

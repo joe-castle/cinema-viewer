@@ -1,5 +1,4 @@
-
-import React from 'react'
+import React, { Component } from 'react'
 import {
   Collapse,
   NavbarToggler,
@@ -11,15 +10,16 @@ import { Link } from 'react-router-dom'
 // import GoogleLogin from '../assets/img/btn_google_light_normal_ios.svg'
 
 import { NavBarCustom } from './styled/Navigation'
+import { INavigationProps, INavigationState } from '../types/react';
 
-export default class Navigation extends React.Component {
-  constructor (props) {
+export default class Navigation extends Component<INavigationProps, INavigationState> {
+  constructor (props: INavigationProps) {
     super(props)
     this.state = { isOpen: false }
   }
 
   render () {
-    const { user } = this.props
+    const { user }: INavigationProps = this.props
 
     return (
       <NavBarCustom dark expand='md'>

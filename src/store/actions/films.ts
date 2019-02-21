@@ -4,15 +4,16 @@ import { from } from 'rxjs'
 import axios from 'axios'
 import { Reducer } from 'redux'
 
-import { Film, ReduxAction, ReduxActionCreatorMap } from '../../common/types'
-import { actionCreatorMapFactory } from '../../common/utils';
+import { actionCreatorMapFactory } from '../../common/utils'
+import { IReduxActionCreatorMap, IReduxAction } from '../../types/redux'
+import { IFilm } from '../../types/data'
 
 const UPDATE_FILM: string = 'UPDATE_FILM'
 const POST_UPDATE_FILM: string = 'POST_UPDATE_FILM'
 
-export const filmActions: ReduxActionCreatorMap<Film> = actionCreatorMapFactory(UPDATE_FILM, POST_UPDATE_FILM)
+export const filmActions: IReduxActionCreatorMap<IFilm> = actionCreatorMapFactory(UPDATE_FILM, POST_UPDATE_FILM)
 
-export const filmReducer: Reducer<Film[], ReduxAction<Film>> = (state = [], { type, payload: { _id, ...body }}): Film[] => {
+export const filmReducer: Reducer<IFilm[], IReduxAction<IFilm>> = (state = [], { type, payload: { _id, ...body }}): IFilm[] => {
   switch (type) {
     case UPDATE_FILM: {
       const index: number = state.findIndex((film) => film._id === _id)
@@ -35,8 +36,8 @@ export const filmReducer: Reducer<Film[], ReduxAction<Film>> = (state = [], { ty
   }
 }
 
-export const filmEpics: Epic<ReduxAction<Film>>[] = [
-  (action$: ActionsObservable<ReduxAction<Film>>) => action$.pipe(
+export const filmEpics: Epic<IReduxAction<IFilm>>[] = [
+  (action$: ActionsObservable<IReduxAction<IFilm>>) => action$.pipe(
     ofType(POST_UPDATE_FILM),
     mergeMap(({ payload: { _id, ...body } }) =>
       from(axios.post(`/api/films/${_id}`, body)).pipe(

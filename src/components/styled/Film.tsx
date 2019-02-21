@@ -1,5 +1,6 @@
-import { Col, Row, Modal } from 'reactstrap'
+import { Row, Modal } from 'reactstrap'
 import styled from 'styled-components'
+import { ITrailerModalProps, IIconProps } from '../../types/react'
 
 export const RowCenter = styled(Row)`
   text-align: center;
@@ -29,7 +30,7 @@ export const PlayIcon = styled.span.attrs({
   font-size: 8em;
 `
 
-export const TrailerModal = styled(Modal)`
+export const TrailerModal = styled(Modal)<ITrailerModalProps>`
   max-width: ${({ width }) => width}px;
 
   & .modal-content {
@@ -47,10 +48,10 @@ export const ReleaseDate = styled.sub`
   font-style: italic;
 `
 
-export const Icon = styled.span.attrs(({ type, icon }) => ({
+export const Icon = styled.span.attrs(({ type, icon }: IIconProps) => ({
   id: `icon-${type}`,
   className: `oi oi-${icon}`
-}))`
+}))<IIconProps>`
   color: ${({ favourite, hiddenIcon }) => favourite ? 'red' : hiddenIcon ? 'green' : ''};
   font-size: 2em;
   transition: color ease-in .1s;

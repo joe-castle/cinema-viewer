@@ -1,8 +1,7 @@
-import axios, { AxiosResponse } from 'axios'
-import { parseString } from 'xml2js'
-
-import { getAllFilms, insertOrUpdateMultipleFilms } from '../data/models/films'
-import { Film } from '../common/types'
+import axios, { AxiosResponse } from 'axios';
+import { parseString } from 'xml2js';
+import { getAllFilms, insertOrUpdateMultipleFilms } from '../data/models/films';
+import { IFilm } from '../types/data';
 
 const { YOUTUBE_API_KEY } = process.env
 
@@ -29,33 +28,33 @@ export default async function fetchFilms (): Promise<Object> {
       axios.get('https://www.cineworld.co.uk/syndication/film_times.xml'),
       axios.get('https://www.cineworld.co.uk/syndication/listings.xml')
     ])
-    const existingFilms: Film[] = await getAllFilms()
+    const existingFilms: IFilm[] = await getAllFilms()
 
-    const filmsXml: XmlFilmTimes = await parseXml<XmlFilmTimes>(films.data)
-    const listingsXml: XmlListings = await parseXml<XmlListings>(listings.data)
+    const filmsXml: IXmlFilmTimes = await parseXml<IXmlFilmTimes>(films.data)
+    const listingsXml: IXmlListings = await parseXml<IXmlListings>(listings.data)
 
-    const parsedFilms: { [key: string]: ParsedFilmTimes } = filmsXml.relatedData.row
+    const parsedFilms: { [key: string]: IParsedFilmTimes } = filmsXml.relatedData.row
       .filter((row) => row.$.key === '104')
-      .map(({ column }) => <ParsedFilmTimes> column.reduce((prev, curr) => ({ ...prev, [curr.$.name]: curr._ }), {}))
+      .map(({ column }) => <IParsedFilmTimes> column.reduce((prev, curr) => ({ ...prev, [curr.$.name]: curr._ }), {}))
       .reduce((prev, curr) => ({ ...prev, [curr.edi]: curr }), {})
 
-    const parsedListings: ParsedListing[] = listingsXml.cinemas.cinema
+    const parsedListings: IParsedListing[] = listingsXml.cinemas.cinema
       .filter((cinema) => cinema.$.id === '104')
-      .reduce((prev: XmlFilmListing[], curr: XmlListings['cinemas']['cinema'][0]): XmlFilmListing[] => [...prev, ...curr.listing[0].film], [])
-      .map((film) => <ParsedListing> ({ ...film.$, shows: film.shows[0].show.map((show) => ({ ...show.$, time: new Date(show.$.time) })) }))
+      .reduce((prev: IXmlFilmListing[], curr: IXmlListings['cinemas']['cinema'][0]): IXmlFilmListing[] => [...prev, ...curr.listing[0].film], [])
+      .map((film) => <IParsedListing> ({ ...film.$, shows: film.shows[0].show.map((show) => ({ ...show.$, time: new Date(show.$.time) })) }))
 
-    let processedFilms: Film[] = []
+    let processedFilms: IFilm[] = []
 
     parsedListings.forEach((film) => {
       const format: string = processTitle(film.title)
-      const existingFilm: Film | undefined = processedFilms.find((found) => found.title === parsedFilms[film.edi].Title)
+      const existingFilm: IFilm | undefined = processedFilms.find((found) => found.title === parsedFilms[film.edi].Title)
 
       if (existingFilm) {
         if (existingFilm.showtimes) {
           existingFilm.showtimes[format] = film.shows
         }
 
-        existingFilm.edis.push(film.edi)
+        existingFilm.edis && existingFilm.edis.push(film.edi)
       } else {
         processedFilms.push({
           edis: [film.edi],
@@ -72,9 +71,9 @@ export default async function fetchFilms (): Promise<Object> {
       }
     })
 
-    const expiredFilms: Film[] = existingFilms
+    const expiredFilms: IFilm[] = existingFilms
       .filter((film) => film.showtimes && !processedFilms.find((processed) => processed.title === film.title))
-      .map((film) => <Film> Object
+      .map((film) => <IFilm> Object
         .keys(film)
         .filter((key) => key !== '_id' && key !== 'dateAdded')
         .reduce((prev, curr) => ({
@@ -83,11 +82,11 @@ export default async function fetchFilms (): Promise<Object> {
         }), {})
       )
 
-    let newFilms: Film[] = processedFilms
+    let newFilms: IFilm[] = processedFilms
       .filter((processed) => !existingFilms.find((film) => film.title === processed.title))
 
-    const trailers: YoutubeSnippetSearch[] = (await axios
-      .all<AxiosResponse<YoutubeSnippetSearch>>(newFilms.map((film) => axios.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&q=${encodeURIComponent(`${film.title} trailer`)}&maxResults=1&key=${YOUTUBE_API_KEY}`))))
+    const trailers: IYoutubeSnippetSearch[] = (await axios
+      .all<AxiosResponse<IYoutubeSnippetSearch>>(newFilms.map((film) => axios.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&q=${encodeURIComponent(`${film.title} trailer`)}&maxResults=1&key=${YOUTUBE_API_KEY}`))))
       .map((trailer) => trailer.data)
 
     newFilms = newFilms.map((film, index) =>
@@ -116,143 +115,4 @@ export default async function fetchFilms (): Promise<Object> {
       error: err.message
     }
   }
-}
-
-/**
- * Interfaces for all various stages of parsing in the fetchfilms function
- */
-
-/**
- * Defines the structure of the parsed xml response from syndication/film_times.xml
- */
-interface XmlFilmTimes {
-  relatedData: {
-    row: [{
-      $: {
-        key: string
-      },
-      column: [{
-        _: string,
-        $: {
-          name: string
-          [key: string]: string
-        }
-      }]
-    }]
-  }
-}
-
-interface ParsedFilmTimes {
-  CinemaID: string,
-  CinemaName: string,
-  Title: string,
-  Rating: string,
-  Release: string,
-  length: string,
-  url: string,
-  edi: string,
-  poster: string,
-  director: string,
-  synopsis: string,
-  cast: string,
-  [key: string]: any
-}
-
-/**
- * Defines the structure of the parsed xml response from syndication/listings.xml
- */
-interface XmlListings {
-  cinemas: {
-    cinema: [{
-      $: {
-        name: string,
-        root: string,
-        url: string,
-        id: string,
-        phone: string,
-        address: string,
-        postcode: string
-      },
-      listing: [{
-        film: XmlFilmListing[]
-      }]
-    }]
-  }
-}
-
-interface XmlFilmListing {
-  $: {
-    title: string,
-    rating: string,
-    url: string,
-    edi: string,
-    release: string
-  },
-  shows: [{
-    show: [{
-      $: {
-        time: string,
-        url: string
-      }
-    }]
-  }]
-}
-
-interface ParsedListing {
-  title: string,
-  rating: string,
-  url: string,
-  edi: string,
-  release: string,
-  shows: [{
-    time: Date,
-    url: string
-  }]
-}
-
-/**
- * Youtube snipper searchdata API response
- */
-interface YoutubeSnippetSearch {
-  kind: string,
-  etag: string,
-  nextPageToken: string,
-  regionCode: string,
-  pageInfo: {
-    totalResults: number,
-    resultsPerPage: number
-  },
-  items: [{
-    kind: string,
-    etag: string,
-    id: {
-      kind: string,
-      videoId: string
-    },
-    snippet: {
-      publishedAt: string,
-      channelId: string,
-      title: string,
-      description: string,
-      thumbnails: {
-        default: {
-          url: string,
-          width: number,
-          height: number
-        },
-        medium: {
-          url: string,
-          width: number,
-          height: number
-        },
-        high: {
-          url: string,
-          width: number,
-          height: number
-        }
-      },
-      channelTitle: string,
-      liveBroadcastContent: string
-    }
-  }]
 }

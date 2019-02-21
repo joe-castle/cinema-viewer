@@ -872,7 +872,23 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-10.12.18.tgz#1d3ca764718915584fcd9f6344621b7672665c67"
   integrity sha512-fh+pAqt4xRzPfqA6eh3Z2y6fyZavRIumvjhaCL753+TVkGKGhpPeyrJG2JftD0T9q4GF00KjefsQ+PQNDdWQaQ==
 
-"@types/passport@^1.0.0":
+"@types/oauth@*":
+  version "0.9.1"
+  resolved "https://registry.yarnpkg.com/@types/oauth/-/oauth-0.9.1.tgz#e17221e7f7936b0459ae7d006255dff61adca305"
+  integrity sha512-a1iY62/a3yhZ7qH7cNUsxoI3U/0Fe9+RnuFrpTKr+0WVOzbKlSLojShCKe20aOD1Sppv+i8Zlq0pLDuTJnwS4A==
+  dependencies:
+    "@types/node" "*"
+
+"@types/passport-oauth2@^1.4.8":
+  version "1.4.8"
+  resolved "https://registry.yarnpkg.com/@types/passport-oauth2/-/passport-oauth2-1.4.8.tgz#b11cb3323970a88db3d170fe3d4dcdd0af02d8bf"
+  integrity sha512-tlX16wyFE5YJR2pHpZ308dgB1MV9/Ra2wfQh71eWk+/umPoD1Rca2D4N5M27W7nZm1wqUNGTk1I864nHvEgiFA==
+  dependencies:
+    "@types/express" "*"
+    "@types/oauth" "*"
+    "@types/passport" "*"
+
+"@types/passport@*", "@types/passport@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@types/passport/-/passport-1.0.0.tgz#747fa127a747a145ff279f3df3e07c425e5ff297"
   integrity sha512-R2FXqM+AgsMIym0PuKj08Ybx+GR6d2rU3b1/8OcHolJ+4ga2pRPX105wboV6hq1AJvMo2frQzYKdqXS5+4cyMw==
@@ -929,6 +945,13 @@
     "@types/history" "*"
     "@types/react" "*"
 
+"@types/react-youtube@^7.6.1":
+  version "7.6.1"
+  resolved "https://registry.yarnpkg.com/@types/react-youtube/-/react-youtube-7.6.1.tgz#5cc04110f721fb0766d69e0b233f56d6d20f9ec1"
+  integrity sha512-Or1oTR1pmMLkZR9X8UruVdWbrQ770a0L4v4PVUbz9ROSWVxsiQDsjvQTP+y/xA7f4SNCzDs5lguJ9cP2KBoLTw==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react@*":
   version "16.8.3"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-16.8.3.tgz#7b67956f682bea30a5a09b3242c0784ff196c848"
@@ -936,6 +959,22 @@
   dependencies:
     "@types/prop-types" "*"
     csstype "^2.2.0"
+
+"@types/react@^16.8.4":
+  version "16.8.4"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-16.8.4.tgz#134307f5266e866d5e7c25e47f31f9abd5b2ea34"
+  integrity sha512-Mpz1NNMJvrjf0GcDqiK8+YeOydXfD8Mgag3UtqQ5lXYTsMnOiHcKmO48LiSWMb1rSHB9MV/jlgyNzeAVxWMZRQ==
+  dependencies:
+    "@types/prop-types" "*"
+    csstype "^2.2.0"
+
+"@types/reactstrap@^7.1.3":
+  version "7.1.3"
+  resolved "https://registry.yarnpkg.com/@types/reactstrap/-/reactstrap-7.1.3.tgz#c88dfd9e48a808fba6fdc166316352ad7635b71f"
+  integrity sha512-WUYfvKLIOfJG/bZI5WmWLbrVk5Q1usloszE/+tmW/B0SQD8ZaiUkT9X1HIY54ysGvt6CTRoqxj5GMlFi5pPWYA==
+  dependencies:
+    "@types/react" "*"
+    popper.js "^1.14.1"
 
 "@types/serve-static@*":
   version "1.13.2"
