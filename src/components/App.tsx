@@ -1,5 +1,4 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React, { ReactElement } from 'react'
 import { connect } from 'react-redux'
 import { hot } from 'react-hot-loader/root'
 import { Switch, Route, withRouter } from 'react-router-dom'
@@ -9,12 +8,24 @@ import { actions } from '../store/actions'
 
 import Navigation from './Navigation'
 import FilmGroup from './FilmGroup'
-import Film from './film'
-import Footer, { CopyrightText } from './styled/footer'
+import Film from './Film'
+import Footer, { CopyrightText } from './styled/Footer'
 
 import { checkUserData, notCheckUserData } from '../common/utils'
+import { IState } from '../types/redux'
+import { IAppActionProps, IAppProps } from '../types/react'
 
-function App ({ favourite, hidden, available, watched, expired, films, location, user, postUpdateFilm, updateFilm }) {
+function App ({
+  favourite, 
+  hidden, 
+  available, 
+  watched, 
+  expired, 
+  films,
+  location, 
+  user, 
+  postUpdateFilm, 
+  updateFilm }: IAppProps): ReactElement {
   return <>
     <Navigation url={location.pathname} user={user} />
     <main>
@@ -41,10 +52,11 @@ function App ({ favourite, hidden, available, watched, expired, films, location,
             path='/films/:id'
             render={(props) =>
               <Film
+                {...props}
                 update={postUpdateFilm}
                 updateFilm={updateFilm}
                 user={user}
-                film={films.find((film) => film._id.toString() === props.match.params.id)}
+                film={films.find((film) => (film._id && film._id.toString()) === props.match.params.id)}
               />
             }
           />
@@ -57,29 +69,7 @@ function App ({ favourite, hidden, available, watched, expired, films, location,
   </>
 }
 
-function processShowtimes (films) {
-  return films.map((film) => {
-    const showtimes = film.showtimes && Object
-      .keys(film.showtimes)
-      .reduce((prev, format) => ({
-        ...prev,
-        [format]: film.showtimes[format].reduce((prev, curr) => {
-          const date = new Date(curr.time).toDateString()
-          return {
-            ...prev,
-            [date]: [...(prev[date] || []), curr]
-          }
-        }, {})
-      }), {})
-
-    return {
-      ...film,
-      showtimes
-    }
-  })
-}
-
-function mapStateToProps ({ films, ...props }) {
+function mapStateToProps ({ films, ...props }: IState & IAppActionProps): IAppProps {
   return {
     ...props,
     user: props.user && props.user.name ? props.user : null,
@@ -88,7 +78,7 @@ function mapStateToProps ({ films, ...props }) {
     hidden: films.filter((film) => film.showtimes && checkUserData(film, '!favourite', 'hidden', '!watched')),
     watched: films.filter((film) => checkUserData(film, 'watched')),
     expired: films.filter((film) => !film.showtimes && checkUserData(film, '!watched')),
-    films: processShowtimes(films)
+    films
   }
 }
 

@@ -11,7 +11,7 @@ import passport from './strategies/google'
 import render from './render'
 import controllers from './controllers'
 
-// import './cronjobs'
+import './cronjobs'
 
 const app = express()
 const MongoStore = connect(session)
@@ -23,6 +23,7 @@ export default function serverApp (db: Db) {
     .use(bodyParser.json())
     .use(cookieParser())
     .use(session({
+      // @ts-ignore connect-mongo depending on incompatible version of mongodb @types
       store: new MongoStore({ db }),
       secret: SESSION_SECRET,
       resave: false,

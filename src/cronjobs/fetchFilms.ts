@@ -1,7 +1,9 @@
-import axios, { AxiosResponse } from 'axios';
-import { parseString } from 'xml2js';
-import { getAllFilms, insertOrUpdateMultipleFilms } from '../data/models/films';
-import { IFilm } from '../types/data';
+import axios, { AxiosResponse } from 'axios'
+import { parseString } from 'xml2js'
+import { getAllFilms, insertOrUpdateMultipleFilms } from '../data/models/films'
+import { IFilm, IShowtime } from '../types/data'
+import { IXmlFilmTimes, IXmlListings, IParsedFilmTimes, IParsedListing, IXmlFilmListing, IYoutubeSnippetSearch } from '../types/apis'
+import { formatDate } from '../common/utils'
 
 const { YOUTUBE_API_KEY } = process.env
 
@@ -30,8 +32,8 @@ export default async function fetchFilms (): Promise<Object> {
     ])
     const existingFilms: IFilm[] = await getAllFilms()
 
-    const filmsXml: IXmlFilmTimes = await parseXml<IXmlFilmTimes>(films.data)
-    const listingsXml: IXmlListings = await parseXml<IXmlListings>(listings.data)
+    const filmsXml: IXmlFilmTimes = await parseXml(films.data)
+    const listingsXml: IXmlListings = await parseXml(listings.data)
 
     const parsedFilms: { [key: string]: IParsedFilmTimes } = filmsXml.relatedData.row
       .filter((row) => row.$.key === '104')
@@ -41,7 +43,13 @@ export default async function fetchFilms (): Promise<Object> {
     const parsedListings: IParsedListing[] = listingsXml.cinemas.cinema
       .filter((cinema) => cinema.$.id === '104')
       .reduce((prev: IXmlFilmListing[], curr: IXmlListings['cinemas']['cinema'][0]): IXmlFilmListing[] => [...prev, ...curr.listing[0].film], [])
-      .map((film) => <IParsedListing> ({ ...film.$, shows: film.shows[0].show.map((show) => ({ ...show.$, time: new Date(show.$.time) })) }))
+      .map((film) => ({ ...film.$, showtimes: film.shows[0].show.reduce((prev: IShowtime, curr) => {
+        const date = formatDate(new Date(curr.$.time))
+        return {
+          ...prev,
+          [date]: [...(prev[date] || []), { ...curr.$, time: new Date(curr.$.time) }]
+        }
+      }, {})}))
 
     let processedFilms: IFilm[] = []
 
@@ -51,7 +59,7 @@ export default async function fetchFilms (): Promise<Object> {
 
       if (existingFilm) {
         if (existingFilm.showtimes) {
-          existingFilm.showtimes[format] = film.shows
+          existingFilm.showtimes[format] = film.showtimes
         }
 
         existingFilm.edis && existingFilm.edis.push(film.edi)
@@ -65,7 +73,7 @@ export default async function fetchFilms (): Promise<Object> {
           url: `https://www.cineworld.co.uk${film.url}`,
           unlimited: /unlimited/gi.test(parsedFilms[film.edi].Title),
           showtimes: {
-            [format]: film.shows
+            [format]: film.showtimes
           }
         })
       }

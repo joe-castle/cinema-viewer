@@ -6,7 +6,7 @@ import { Db } from "mongodb";
  */
 export interface Connect {
   (url: string, db: string): Promise<Db | void>,
-  _db: Db|null
+  _db: Db | null
 }
 
 /**

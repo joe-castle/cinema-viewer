@@ -1,7 +1,9 @@
+import { IShowtime } from "./data";
+
 /**
  * Defines the structure of the parsed xml response from syndication/film_times.xml
  */
-interface IXmlFilmTimes {
+export interface IXmlFilmTimes {
   relatedData: {
     row: [{
       $: {
@@ -18,7 +20,7 @@ interface IXmlFilmTimes {
   }
 }
 
-interface IParsedFilmTimes {
+export interface IParsedFilmTimes {
   CinemaID: string,
   CinemaName: string,
   Title: string,
@@ -37,7 +39,7 @@ interface IParsedFilmTimes {
 /**
  * Defines the structure of the parsed xml response from syndication/listings.xml
  */
-interface IXmlListings {
+export interface IXmlListings {
   cinemas: {
     cinema: [{
       $: {
@@ -56,7 +58,7 @@ interface IXmlListings {
   }
 }
 
-interface IXmlFilmListing {
+export interface IXmlFilmListing {
   $: {
     title: string,
     rating: string,
@@ -68,28 +70,26 @@ interface IXmlFilmListing {
     show: [{
       $: {
         time: string,
-        url: string
+        url: string,
+        auditType?: string
       }
     }]
   }]
 }
 
-interface IParsedListing {
+export interface IParsedListing {
   title: string,
   rating: string,
   url: string,
   edi: string,
   release: string,
-  shows: [{
-    time: Date,
-    url: string
-  }]
+  showtimes: IShowtime
 }
 
 /**
  * Youtube snipper searchdata API response
  */
-interface IYoutubeSnippetSearch {
+export interface IYoutubeSnippetSearch {
   kind: string,
   etag: string,
   nextPageToken: string,

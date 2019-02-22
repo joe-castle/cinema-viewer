@@ -36,9 +36,12 @@ export interface IBadgeWrapperProps {
 /**
  * Film.tsx
  */
+export interface IFilmRouteProps {
+  id?: string
+}
 
-export interface IFilmProps extends RouteComponentProps {
-  film: IFilm | undefined,
+export interface IFilmProps extends RouteComponentProps<IFilmRouteProps> {
+  film?: IFilm,
   user: IUser | null,
   update: Function,
   updateFilm: IReduxActionCreator<IFilm>
@@ -79,7 +82,7 @@ export interface IFilmGroupProps extends RouteProps {
 }
 
 export interface IFilmGroupState {
-  collapse: boolean | undefined
+  collapse?: boolean
 }
 
 

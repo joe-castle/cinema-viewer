@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "webpack-dev-server --mode development --progress --colors",
     "serv": "cross-env NODE_ENV=development nodemon --exec babel-node -r node_modules/dotenv/config src/server.ts --extensions \".ts,.tsx,.js,.jsx\"",
-    "debug": "cross-env NODE_ENV=development babel-node -r node_modules/dotenv/config src/server.ts --inspect",
+    "debug": "cross-env NODE_ENV=development babel-node -r node_modules/dotenv/config src/server.ts --extensions \".ts,.tsx,.js,.jsx\" --inspect",
     "clean": "rimraf build/ dist/ lib/",
     "lint": "standard --parser babel-eslint --fix \"src/**/*.js\"",
     "test": "yarn jest",

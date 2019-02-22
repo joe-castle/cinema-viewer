@@ -29,16 +29,18 @@ export interface IFilm {
 }
 
 export interface IShowtimes {
-  [key: string]: IShowtime[]
+  [key: string]: IShowtime
 }
 
 /**
  * Defines the structure of a showtime object
  */
 export interface IShowtime {
-  time: Date|string,
-  url: string,
-  audioType?: string
+  [key: string]: {
+    time: Date|string,
+    url: string,
+    audioType?: string
+  }[]
 }
 
 /**

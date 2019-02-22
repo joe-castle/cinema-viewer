@@ -1,17 +1,17 @@
-import { ObjectID, FindAndModifyWriteOpResultObject } from 'mongodb'
+import { ObjectID } from 'mongodb'
 
 import { multiQ, singleQ } from '../utils/query'
-import { UserData } from '../../common/types';
+import { IUserData } from '../../types/data'
 
-const userDataM = multiQ<UserData>('film_user_data')
-const userDataS = singleQ<UserData>('film_user_data')
+const userDataM = multiQ<IUserData>('film_user_data')
+const userDataS = singleQ<IUserData>('film_user_data')
 
 /**
  * Gets all userData associated with specific user
  * 
  * @param userId The users id
  */
-export function getUserData (userId: string): Promise<UserData[]> {
+export function getUserData (userId: string): Promise<IUserData[]> {
   return userDataM((col) => col.find({ userId }))
 }
 
@@ -22,7 +22,7 @@ export function getUserData (userId: string): Promise<UserData[]> {
  * @param filmId The corresponding film id
  * @param userData The userdata to update
  */
-export function insertUpdateUserData (userId: string, filmId: string, userData: UserData): Promise<UserData> {
+export function insertUpdateUserData (userId: string, filmId: string, userData: IUserData): Promise<IUserData> {
   return userDataS((col) =>
     col.findOneAndUpdate(
       { userId, filmId: new ObjectID(filmId) },

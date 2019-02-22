@@ -1,6 +1,6 @@
-import React, { Component } from 'react'
+import React, { Component, FormEvent } from 'react'
 import { Row, Col, Button } from 'reactstrap'
-import { fromEvent } from 'rxjs'
+import { fromEvent, Subscription } from 'rxjs'
 import { pluck, debounceTime, tap, map } from 'rxjs/operators'
 import YouTube from 'react-youtube'
 
@@ -18,19 +18,21 @@ import {
 } from './styled/Film'
 
 import Showtimes from './Showtimes'
-import Watched from './watched'
+import Watched from './Watched'
 import WatchedForm from './WatchedForm'
 
 import { calculateDimensions, notCheckUserData, checkUserData } from '../common/utils'
+import { IFilmProps, IFilmState, IWatchedFormState } from '../types/react';
+import { IFilm } from '../types/data';
 
-class Film extends Component {
-  constructor (props) {
+class Film extends Component<IFilmProps, IFilmState> {
+  constructor (props: IFilmProps) {
     super(props)
 
     const state = {
       modal: false,
-      width: 640,
-      height: 320,
+      width: '640',
+      height: '320',
       watchedForm: false
     }
 
@@ -44,15 +46,19 @@ class Film extends Component {
     }
   }
 
+  resize: Subscription|null = null
+  favourite: Subscription|null = null
+  hidden: Subscription|null = null
+
   componentDidMount () {
     const { film, user, update } = this.props
 
     this.resize = fromEvent(window, 'resize')
       .pipe(
         debounceTime(500),
-        pluck('target', 'innerWidth')
+        pluck<Event, number>('target', 'innerWidth')
       )
-      .subscribe((width) => {
+      .subscribe((width: number) => {
         this.setState(calculateDimensions(width))
       })
 
@@ -60,40 +66,43 @@ class Film extends Component {
     this.hidden = this.createIconEvent('hidden')
 
     // Once viewied, remove new flag from film. Assuming signed in.
-    if (user && notCheckUserData(film, (ud) => ud.new !== false)) {
+    if (user && film && notCheckUserData(film, (ud) => ud.new !== false)) {
       update(this.createBody({ new: false }))
     }
   }
 
   componentWillUnmount () {
-    this.resize.unsubscribe()
-    this.favourite.unsubscribe()
-    this.hidden.unsubscribe()
+    this.resize && this.resize.unsubscribe()
+    this.favourite && this.favourite.unsubscribe()
+    this.hidden && this.hidden.unsubscribe()
   }
 
-  toggle = () => {
+  toggle = (): void => {
     this.setState((prevState) => ({
       modal: !prevState.modal
     }))
   }
 
-  createIconEvent = (type) => {
-    return fromEvent(document.getElementById(`icon-${type}`), 'click')
+  createIconEvent = (type: string): Subscription => {
+    // return () => {
+    //   this.props.updateFlag(this.createBody({ [type]: !checkUserData(this.props.film, type) }))
+    // }
+    return fromEvent(document.getElementById(`icon-${type}`) as HTMLElement, 'click')
       .pipe(
         map(() => this.createBody({ [type]: !checkUserData(this.props.film, type) })),
         tap((body) => this.props.updateFilm(body)),
         debounceTime(500)
       )
-      .subscribe((body) => {
+      .subscribe((body: IFilm) => {
         this.props.update(body)
       })
   }
 
-  createBody = (data) => {
-    return { id: this.props.film._id, ...data }
+  createBody = (data: IFilm): IFilm => {
+    return { _id: this.props.film._id, ...data }
   }
 
-  submitForm = (ev, state) => {
+  submitForm = (ev: FormEvent<HTMLFrameElement>, state: IWatchedFormState): void => {
     ev.preventDefault()
 
     const { rating, date, time, format, notes } = state
@@ -109,29 +118,35 @@ class Film extends Component {
   }
 
   render () {
-    const { film } = this.props
-    const { width, height, watchedForm } = this.state
+    const { film, match }: IFilmProps = this.props
+    const { width, height, watchedForm }: IFilmState = this.state
 
-    return <>
+    return !film
+      ? <h1>Unable to find film with id: {match.params.id}</h1>
+      : <>
       <Row>
         <Col
           lg={{ size: 4, offset: 0 }}
           md={{ size: 6, offset: 3 }}
           sm={{ size: 8, offset: 2 }}
         >
-          <PosterWrapper onClick={this.toggle}>
+          <PosterWrapper onClick={(ev) => this.toggle}>
             <Poster src={film.poster} />
             <PlayIcon />
           </PosterWrapper>
         </Col>
         <Col lg={8}>
           <Title>{film.title}</Title>
-          <ReleaseDate>Release Date: {new Date(film.dateAdded).toDateString()}</ReleaseDate>
+          <ReleaseDate>Release Date: {new Date(film.dateAdded as string).toDateString()}</ReleaseDate>
           <div className='mt-3'>
-            <Icon icon='heart' type='favourite' title='Favourite film' favourite={checkUserData(film, 'favourite')} />
-            <Icon icon='eye' type='hidden' title='Visible in available' hiddenIcon={!checkUserData(film, 'hidden')} />
+            {/* <Icon onClick={this.createIconEvent('favourite')} icon='heart' title='Favourite film' favourite={checkUserData(film, 'favourite')} />
+            <Icon onClick={this.createIconEvent('hidden')} icon='eye' title='Visible in available' hiddenIcon={!checkUserData(film, 'hidden')} /> */}
+            <Icon type='favourite' icon='heart' title='Favourite film' favourite={checkUserData(film, 'favourite')} />
+            <Icon type='hidden' icon='eye' title='Visible in available' hiddenIcon={!checkUserData(film, 'hidden')} />
           </div>
           <Synopsis>{film.synopsis}</Synopsis>
+          {/* 
+            // @ts-ignore undefined checked performed by checkUSerData */}
           {checkUserData(film, 'watched') && <Watched watched={film.userData.watched} />}
           {watchedForm && <WatchedForm submitForm={this.submitForm} />}
           {!watchedForm && !notCheckUserData(film, 'watched') &&
@@ -148,7 +163,7 @@ class Film extends Component {
       <TrailerModal width={width} isOpen={this.state.modal} toggle={this.toggle} centered>
         <YouTube
           opts={{ width, height }}
-          videoId={film.trailer.slice(film.trailer.indexOf('=') + 1, film.trailer.length)}
+          videoId={film.trailer && film.trailer.slice(film.trailer.indexOf('=') + 1, film.trailer.length)}
         />
       </TrailerModal>
     </>

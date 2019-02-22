@@ -19,6 +19,7 @@ Features:
     ☐ React native
     ☐ Seat and screen selection
     ☐ Custom film entry
+    ☐ automatically unfavourite film when submiting review
 
 Redux-observable:
   ☐ store
@@ -46,7 +47,9 @@ TODO:
   ☐ Have watched and expired in films page, have date watched on film badge
   ☐ chunk build and load asyncronously
   ☐ filter by date playing
-  ☐ styled-components theme ts
+  ☐ styled-components theme at top level ts
+  ☐ When clicking on a booking, pop with a booked? modal that then adds a booked object to the film?
+  ☐ have userData as sub reducer of films
   ☐ Do something about the showtimes processing, move it to the server and have it as part of the object? Kinda makes sense...
   ☐ Move ALL dispatch based RxJS code to epics, inclduing the debounce thing from Film.js
   ☐ Have spinners / errors for failures in async alls, use this pattern to call 

@@ -13,27 +13,30 @@ const POST_UPDATE_FILM: string = 'POST_UPDATE_FILM'
 
 export const filmActions: IReduxActionCreatorMap<IFilm> = actionCreatorMapFactory(UPDATE_FILM, POST_UPDATE_FILM)
 
-export const filmReducer: Reducer<IFilm[], IReduxAction<IFilm>> = (state = [], { type, payload: { _id, ...body }}): IFilm[] => {
-  switch (type) {
-    case UPDATE_FILM: {
-      const index: number = state.findIndex((film) => film._id === _id)
+export const filmReducer: Reducer<IFilm[], IReduxAction<IFilm>> = (state = [], { type, payload }): IFilm[] => {
+  if (payload) {
+    const { _id, ...body } = payload
 
-      return [
-        ...state.slice(0, index),
-        {
-          ...state[index],
-          userData: {
-            ...state[index].userData,
-            ...body
-          }
-        },
-        ...state.slice(index + 1, state.length)
-      ]
-    }
-    default: {
-      return state
+    switch (type) {
+      case UPDATE_FILM: {
+        const index: number = state.findIndex((film) => film._id === _id)
+  
+        return [
+          ...state.slice(0, index),
+          {
+            ...state[index],
+            userData: {
+              ...state[index].userData,
+              ...body
+            }
+          },
+          ...state.slice(index + 1, state.length)
+        ]
+      }
     }
   }
+
+  return state
 }
 
 export const filmEpics: Epic<IReduxAction<IFilm>>[] = [

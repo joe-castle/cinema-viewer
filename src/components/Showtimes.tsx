@@ -22,7 +22,7 @@ function Showtimes ({ showtimes }: IShowTimesProps): ReactElement {
             <ShowDate today={today}>{date}</ShowDate>
             {showtimes[format][date].map((date) => {
               // Mark as expired if show has been running for an hour
-              const expired: boolean = (Date.parse(date.time) + (60 * 60 * 1000)) < Date.now()
+              const expired: boolean = (Date.parse(date.time as string) + (60 * 60 * 1000)) < Date.now()
               return <ShowTime
                 today={today}
                 expired={expired}
