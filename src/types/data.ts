@@ -3,8 +3,8 @@
  */
 export interface IUser {
   _id?: string,
-  name: {
-    givenName: string,
+  name?: {
+    givenName?: string,
     familyName?: string
   }
 }

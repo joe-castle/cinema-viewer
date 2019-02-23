@@ -19,7 +19,7 @@ const { SESSION_SECRET = 'Secret' } = process.env
 
 export default function serverApp (db: Db) {
   return app
-    .use(express.static(path.resolve(__dirname, 'assets')))
+    .use('/assets', express.static(path.resolve(__dirname, 'assets')))
     .use(bodyParser.json())
     .use(cookieParser())
     .use(session({

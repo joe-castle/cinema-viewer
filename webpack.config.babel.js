@@ -20,7 +20,7 @@ export default (env, config) => {
     ),
     output: {
       filename: 'bundle.js',
-      path: path.resolve(__dirname, 'dist', 'assets'),
+      path: path.resolve(__dirname, 'lib', 'assets'),
       publicPath: '/assets'
     },
     resolve: {

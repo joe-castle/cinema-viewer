@@ -30,6 +30,7 @@ Redux-observable:
 TODO:
   ☐ Update ensureauthenticated middleware
   ☐ replace all axios calls with RxJS? ajax has post/get methods
+  ☐ rmeove async calls and move back to rxjs / acxios
   ☐ Add logging
   ☐ Add validation
   ☐ Use all-performances instead of film_times as it provides director, cast, length etc...
@@ -47,6 +48,7 @@ TODO:
   ☐ Have watched and expired in films page, have date watched on film badge
   ☐ chunk build and load asyncronously
   ☐ filter by date playing
+  ☐ chunk webpack file and async load it???????
   ☐ styled-components theme at top level ts
   ☐ When clicking on a booking, pop with a booked? modal that then adds a booked object to the film?
   ☐ have userData as sub reducer of films

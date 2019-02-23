@@ -17,7 +17,7 @@ passport.use(new Strategy(
       ? 'http://www.example.com/auth/google/callback'
       : 'http://localhost:3001/auth/google/callback'
   },
-  async (accessToken: string, refreshToken: string, profile: Profile, cb: OAuth2Strategy.VerifyCallback) => {
+  async function verifyFunction (accessToken: string, refreshToken: string, profile: Profile, cb: OAuth2Strategy.VerifyCallback) {
     try {
       cb(null, await getUserAndAddIfNotExists(profile))
     } catch (err) {

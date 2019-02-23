@@ -9,7 +9,7 @@ const REMOVE_USER = 'REMOVE_USER'
 
 export const userActions: IReduxActionCreatorMap<IUser> = actionCreatorMapFactory(ADD_USER, REMOVE_USER)
 
-export const userReducer: Reducer<IUser, IReduxAction<IUser>> = (state = { name: { givenName: '' } }, { type, payload }): IUser => {
+export const userReducer: Reducer<IUser, IReduxAction<IUser>> = (state = {}, { type, payload }): IUser => {
   switch (type) {
     case ADD_USER: {
       return payload
