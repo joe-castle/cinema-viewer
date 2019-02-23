@@ -14,7 +14,7 @@ passport.use(new Strategy(
     clientID: GOOGLE_CLIENT_ID,
     clientSecret: GOOGLE_CLIENT_SECRET,
     callbackURL: PRODUCTION
-      ? 'http://www.example.com/auth/google/callback'
+      ? 'https://cinema-viewer.herokuapp.com/'
       : 'http://localhost:3001/auth/google/callback'
   },
   async function verifyFunction (accessToken: string, refreshToken: string, profile: Profile, cb: OAuth2Strategy.VerifyCallback) {
