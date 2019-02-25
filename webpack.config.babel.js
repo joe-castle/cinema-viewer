@@ -20,7 +20,7 @@ export default (env, config) => {
     ),
     output: {
       filename: 'bundle.js',
-      path: path.resolve(__dirname, 'lib', 'assets'),
+      path: path.resolve(__dirname, 'build', 'assets'),
       publicPath: '/assets'
     },
     resolve: {
@@ -34,7 +34,7 @@ export default (env, config) => {
         ],
         // ifProduction
         [
-          new BundleAnalyzerPlugin()
+          new BundleAnalyzerPlugin({ analyzerMode: 'disabled' })
         ]
       )
     ],

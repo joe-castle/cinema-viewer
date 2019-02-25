@@ -1,18 +1,21 @@
 {
   "compilerOptions": {
-      "forceConsistentCasingInFileNames": true,
-      "noImplicitReturns": true,
-      "strict": true,
-      "noUnusedLocals": true,
-      "allowSyntheticDefaultImports": true,
-      "module": "commonjs",
-      "target": "ESNext",
-      "jsx": "react"
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitReturns": true,
+    "strict": true,
+    "noUnusedLocals": true,
+    "allowSyntheticDefaultImports": true,
+    "module": "commonjs",
+    "target": "ESNext",
+    "jsx": "react",
+    "skipLibCheck": true,
+    "outDir": "_typescript"
   },
   "include": [
-      "./src/**/*"
+    "./src/**/*"
   ],
   "exclude": [
     "node_modules"
-  ]
+  ],
+  
 }
