@@ -4,7 +4,7 @@
   "description": "Advanced cinema viewer",
   "main": "index.js",
   "scripts": {
-    "start": "node -r ./node_modules/dotenv/config lib/server.js",
+    "start": "node build/server.js",
     "dev": "webpack-dev-server --mode development --progress --colors",
     "serv": "cross-env NODE_ENV=development nodemon --exec babel-node -r node_modules/dotenv/config src/server.ts --extensions \".ts,.tsx,.js,.jsx\"",
     "debug": "cross-env NODE_ENV=development babel-node -r node_modules/dotenv/config src/server.ts --extensions \".ts,.tsx,.js,.jsx\" --inspect",
