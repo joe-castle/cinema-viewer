@@ -8,7 +8,7 @@ import {
   ShowDate
 } from './styled/Showtimes'
 
-import { formatTime } from '../common/utils'
+import { formatTime, formatDate } from '../common/utils'
 import { IShowTimesProps } from '../types/react'
 
 function Showtimes ({ showtimes }: IShowTimesProps): ReactElement {
@@ -17,7 +17,7 @@ function Showtimes ({ showtimes }: IShowTimesProps): ReactElement {
       <ShowCol lg={4} md={12}>
         <h3>{format}</h3>
         {Object.keys(showtimes[format]).map((date) => {
-          const today: boolean = new Date().toDateString() === date
+          const today: boolean = formatDate(new Date()) === date
           return <>
             <ShowDate today={today}>{date}</ShowDate>
             {showtimes[format][date].map((date) => {

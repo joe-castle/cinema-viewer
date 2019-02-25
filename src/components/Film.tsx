@@ -130,7 +130,7 @@ class Film extends Component<IFilmProps, IFilmState> {
           md={{ size: 6, offset: 3 }}
           sm={{ size: 8, offset: 2 }}
         >
-          <PosterWrapper onClick={(ev) => this.toggle}>
+          <PosterWrapper onClick={this.toggle}>
             <Poster src={film.poster} />
             <PlayIcon />
           </PosterWrapper>

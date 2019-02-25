@@ -80,6 +80,8 @@ FIX:
 	☐ fix film showtimes so that if only one format centers gracefully 
   ☐ Fix server rendering as its not rendering routes or styles properly, althought might be dev only issue
   ☐ Sort out footer
+  ✔ Trailer modal not popping up @done(19-02-25 09:18)
+  ✔ Todays date in showtime not highlighting @done(19-02-25 09:19)
   ✔ Fix play button so it centers properly in image @done(19-02-15 10:13)
   ✔ When refreshing the page on a specific film, server crashes with poster undefined @done(19-02-08 11:23)
     Id returned was a object so was failing on type check
