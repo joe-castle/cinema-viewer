@@ -8,9 +8,9 @@ import { Connect } from '../types/common'
  * @param url mongo url
  * @param db db name
  */
-const connect: Connect = (url: string, db: string): Promise<Db | void> => {
-  return MongoClient.connect(url, { useNewUrlParser: true })
-    .then<Db>((client: MongoClient): Db => {
+const connect: Connect = (uri: string, db?: string): Promise<Db | void> => {
+  return MongoClient.connect(uri, { useNewUrlParser: true })
+    .then((client: MongoClient): Db => {
       connect._db = client.db(db)
       return connect._db
     })

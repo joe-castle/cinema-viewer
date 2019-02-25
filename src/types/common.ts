@@ -5,7 +5,7 @@ import { Db } from "mongodb";
  * Connection interface for mongodb client connection
  */
 export interface Connect {
-  (url: string, db: string): Promise<Db | void>,
+  (uri: string, db?: string): Promise<Db | void>,
   _db: Db | null
 }
 

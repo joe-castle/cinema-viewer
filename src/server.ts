@@ -1,9 +1,9 @@
 import mongo from './data/client'
 import app from './server.app'
 
-const { MONGO_URL = '', MONGO_DB = '', PORT = 3000 } = process.env
+const { MONGODB_URI = '', PORT = 3000 } = process.env
 
-mongo(MONGO_URL, MONGO_DB)
+mongo(MONGODB_URI)
   .then((db) => {
     const port: number | string = PORT || 3000
 

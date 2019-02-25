@@ -6,11 +6,11 @@ import { Router, Request, Response } from 'express'
 
 export default function filmsController (router: Router): void {
   router.get('/api/films', async (req: Request, res: Response) => {
-    res.json(await fetchFilms())
-  })
-
-  router.get('/api/films/fetchfilms', async (req: Request, res: Response) => {
     res.json(await getAllFilms())
+  })
+  
+  router.get('/api/films/fetchfilms', async (req: Request, res: Response) => {
+    res.json(await fetchFilms())
   })
 
   router.post('/api/films/:id', ensureAuthenticated, async (req: Request, res: Response) => {

@@ -9,7 +9,7 @@
     "serv": "cross-env NODE_ENV=development nodemon --exec babel-node -r node_modules/dotenv/config src/server.ts --extensions \".ts,.tsx,.js,.jsx\"",
     "debug": "cross-env NODE_ENV=development babel-node -r node_modules/dotenv/config src/server.ts --extensions \".ts,.tsx,.js,.jsx\" --inspect",
     "clean": "rimraf build/ dist/ lib/",
-    "lint": "standard --parser babel-eslint --fix \"src/**/*.js\"",
+    "lint": "standard --parser babel-eslint --fix \"src/**/*\"",
     "test": "yarn jest",
     "test:watch": "yarn test --watch",
     "cypress:open": "yarn cypress open",
