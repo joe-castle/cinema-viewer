@@ -73,12 +73,14 @@ TODO:
     );
 
 Typescript:
-  ☐ Tidy up type files, use namespaces?
-  ☐ Have different interfaces for mongo data and front end data / use namespaces(modules) to 'namespace' them
+  ✔ Tidy up type files, use namespaces? @done(19-02-25 13:34)
+  ✔ Have different interfaces for mongo data and front end data / use namespaces(modules) to 'namespace' them @done(19-02-25 13:34)
 
 FIX:
+  ☐ add react router link to home page link
   ☐ icons not loading in production
   ☐ code splitting to reduce module size: https://webpack.js.org/guides/code-splitting/
+    ☐ have bootstrap and OI as seperate css tags from a CDN, they take up quite a large portion of the bundle
 	☐ fix film showtimes so that if only one format centers gracefully 
   ☐ Fix server rendering as its not rendering routes or styles properly, althought might be dev only issue
   ☐ Sort out footer
