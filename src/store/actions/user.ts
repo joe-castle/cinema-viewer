@@ -1,8 +1,8 @@
-import { Epic } from 'redux-observable';
-import { actionCreatorMapFactory } from '../../common/utils';
-import { Reducer } from 'redux';
-import { IReduxActionCreatorMap, IReduxAction } from '../../types/redux';
-import { IUser } from '../../types/data';
+import { Epic } from 'redux-observable'
+import { actionCreatorMapFactory } from '../../common/utils'
+import { Reducer } from 'redux'
+import { IReduxActionCreatorMap, IReduxAction } from '../../types/redux'
+import { IUser } from '../../types/data'
 
 const ADD_USER = 'ADD_USER'
 const REMOVE_USER = 'REMOVE_USER'

@@ -1,4 +1,4 @@
-import  React from 'react'
+import React from 'react'
 import { Store } from 'redux'
 import { Provider } from 'react-redux'
 import { StaticRouter } from 'react-router-dom'
@@ -15,7 +15,6 @@ import App from '../components/App'
 import theme from '../components/styled/theme'
 import { IReduxAction, IState } from '../types/redux'
 
-
 export default async function render (req: Request, res: Response): Promise<void> {
   try {
     const store: Store<IState, IReduxAction> = configureStore({
@@ -29,10 +28,10 @@ export default async function render (req: Request, res: Response): Promise<void
       template(
         <Provider store={store}>
           <StaticRouter location={req.url} context={context}>
-            {/* 
+            {/*
             //@ts-ignore erros becuase of ignore comment... */}
             <ThemeProvider theme={theme}>
-              {/* 
+              {/*
               //@ts-ignore router props passed in from context with withRouter in App.tsx */}
               <App />
             </ThemeProvider>

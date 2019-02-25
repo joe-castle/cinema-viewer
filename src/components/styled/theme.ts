@@ -1,4 +1,4 @@
-import { ITheme } from "../../types/react"
+import { ITheme } from '../../types/react'
 
 const theme: ITheme = {
   primary: '0, 126, 167', // CERULEAN

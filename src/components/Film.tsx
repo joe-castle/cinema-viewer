@@ -89,6 +89,7 @@ class Film extends Component<IFilmProps, IFilmState> {
     // }
     return fromEvent(document.getElementById(`icon-${type}`) as HTMLElement, 'click')
       .pipe(
+        // @ts-ignore impossible to call this function if film is missing
         map(() => this.createBody({ [type]: !checkUserData(this.props.film, type) })),
         tap((body) => this.props.updateFilm(body)),
         debounceTime(500)
@@ -99,6 +100,7 @@ class Film extends Component<IFilmProps, IFilmState> {
   }
 
   createBody = (data: IFilm): IFilm => {
+    // @ts-ignore impossible to call this function if film is missing
     return { _id: this.props.film._id, ...data }
   }
 

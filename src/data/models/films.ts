@@ -1,7 +1,7 @@
 import { ObjectID, UpdateQuery, UnorderedBulkOperation } from 'mongodb'
 
 import { multiQ, singleQ } from '../utils/query'
-import { IFilm } from '../../types/data';
+import { IFilm } from '../../types/data'
 
 const filmsM = multiQ<IFilm>('films')
 const filmsS = singleQ<IFilm>('films')
@@ -21,7 +21,7 @@ export function getAllFilms (user?: any): Promise<IFilm[]> {
 /**
  * Gets all films and aggergates the result with the user specific data:
  * Rating, review, favourite etc...
- * 
+ *
  * @param userId the user id
  */
 export function getFilmsWithUserData (userId: string): Promise<IFilm[]> {
@@ -42,7 +42,7 @@ export function getFilmsWithUserData (userId: string): Promise<IFilm[]> {
 
 /**
  * Gets one film from the DB
- * 
+ *
  * @param filmId the film id
  */
 export function getOneFilm (filmId: string): Promise<IFilm> {
@@ -51,7 +51,7 @@ export function getOneFilm (filmId: string): Promise<IFilm> {
 
 /**
  * Inserts multiple films into the DB
- * 
+ *
  * @param films an array of films
  * @param updateFn function to send to the update query
  */

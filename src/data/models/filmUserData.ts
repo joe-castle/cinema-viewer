@@ -8,7 +8,7 @@ const userDataS = singleQ<IUserData>('film_user_data')
 
 /**
  * Gets all userData associated with specific user
- * 
+ *
  * @param userId The users id
  */
 export function getUserData (userId: string): Promise<IUserData[]> {
@@ -17,7 +17,7 @@ export function getUserData (userId: string): Promise<IUserData[]> {
 
 /**
  * Updates userdata for specific film in the db
- * 
+ *
  * @param userId The users id
  * @param filmId The corresponding film id
  * @param userData The userdata to update

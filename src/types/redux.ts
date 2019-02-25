@@ -1,5 +1,5 @@
 import { Action } from 'redux'
-import { IUser, IFilm } from './data';
+import { IUser, IFilm } from './data'
 
 export interface IState {
   films: IFilm[],

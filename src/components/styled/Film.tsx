@@ -30,7 +30,7 @@ export const PlayIcon = styled.span.attrs({
   font-size: 8em;
 `
 
-export const TrailerModal = styled(Modal)<ITrailerModalProps>`
+export const TrailerModal = styled(Modal) < ITrailerModalProps > `
   max-width: ${({ width }) => width}px;
 
   & .modal-content {
@@ -51,7 +51,7 @@ export const ReleaseDate = styled.sub`
 export const Icon = styled.span.attrs(({ type, icon }: IIconProps) => ({
   id: `icon-${type}`,
   className: `oi oi-${icon}`
-}))<IIconProps>`
+})) < IIconProps > `
   color: ${({ favourite, hiddenIcon }) => favourite ? 'red' : hiddenIcon ? 'green' : ''};
   font-size: 2em;
   transition: color ease-in .1s;

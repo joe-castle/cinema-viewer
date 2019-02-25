@@ -24,7 +24,7 @@ ReactDOM.render(
     <BrowserRouter>
       <ThemeProvider theme={theme}>
         <ScrollToTop>
-          {/* 
+          {/*
           // @ts-ignore router props injected from withRouter in App.tsx */}
           <App />
         </ScrollToTop>

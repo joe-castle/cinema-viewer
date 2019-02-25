@@ -7,7 +7,7 @@ export const ShowCol = styled(Col)`
   margin-top: 2em;
 `
 
-export const ShowTime = styled.a<IShowTimesStyledProps>`
+export const ShowTime = styled.a < IShowTimesStyledProps > `
   background: ${({ expired, today, theme: { dark, secondary } }) =>
     expired ? `rgba(${secondary})` : `rgba(${today ? dark : '0,0,0,0.8'})`};
   border-radius: 10px;
@@ -30,7 +30,7 @@ export const ShowTime = styled.a<IShowTimesStyledProps>`
   }
 `
 
-export const ShowDate = styled.h5<IShowTimesStyledProps>`
+export const ShowDate = styled.h5 < IShowTimesStyledProps > `
   ${({ today, theme: { primary } }) => today && `
     color: rgb(${primary});
     font-weight: bold;

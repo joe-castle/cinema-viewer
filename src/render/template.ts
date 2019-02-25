@@ -1,8 +1,8 @@
 import { renderToString } from 'react-dom/server'
 import { ServerStyleSheet } from 'styled-components'
 
-import { ReactNode } from 'react';
-import { IState } from '../types/redux';
+import { ReactNode } from 'react'
+import { IState } from '../types/redux'
 
 export default function template (el: ReactNode, state: IState): string {
   const sheet: ServerStyleSheet = new ServerStyleSheet()

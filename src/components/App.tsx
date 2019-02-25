@@ -16,15 +16,15 @@ import { IState } from '../types/redux'
 import { IAppActionProps, IAppProps } from '../types/react'
 
 function App ({
-  favourite, 
-  hidden, 
-  available, 
-  watched, 
-  expired, 
+  favourite,
+  hidden,
+  available,
+  watched,
+  expired,
   films,
-  location, 
-  user, 
-  postUpdateFilm, 
+  location,
+  user,
+  postUpdateFilm,
   updateFilm }: IAppProps): ReactElement {
   return <>
     <Navigation url={location.pathname} user={user} />

@@ -1,6 +1,6 @@
 import passport from '../strategies/google'
 import { getUserData } from '../data/models/filmUserData'
-import { Router, Response, Request } from 'express';
+import { Router, Response, Request } from 'express'
 
 export default function usersController (router: Router): void {
   router.get('/api/user', (req: Request, res: Response) => {

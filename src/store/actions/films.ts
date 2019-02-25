@@ -20,7 +20,7 @@ export const filmReducer: Reducer<IFilm[], IReduxAction<IFilm>> = (state = [], {
     switch (type) {
       case UPDATE_FILM: {
         const index: number = state.findIndex((film) => film._id === _id)
-  
+
         return [
           ...state.slice(0, index),
           {

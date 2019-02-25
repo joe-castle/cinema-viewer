@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom'
 // import GoogleLogin from '../assets/img/btn_google_light_normal_ios.svg'
 
 import { NavBarCustom } from './styled/Navigation'
-import { INavigationProps, INavigationState } from '../types/react';
+import { INavigationProps, INavigationState } from '../types/react'
 
 export default class Navigation extends Component<INavigationProps, INavigationState> {
   constructor (props: INavigationProps) {
@@ -38,7 +38,7 @@ export default class Navigation extends Component<INavigationProps, INavigationS
             </NavItem>
           </Nav>
           <Nav className='ml-auto' navbar>
-            {user && <span className='nav-item navbar-text mr-4'>Hello {user.name.givenName}</span>}
+            {user && user.name && <span className='nav-item navbar-text mr-4'>Hello {user.name.givenName}</span>}
             <NavItem>
               {/* TODO: FIX THE LOGIN BUTTON dangerouslySetInnerHTML={{ __html: GoogleLogin }} */}
               {!user && <a className='btn btn-outline-success' href='/auth/google'>Login with Google</a>}

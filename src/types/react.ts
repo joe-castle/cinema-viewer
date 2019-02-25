@@ -1,27 +1,26 @@
-import { RouteComponentProps, RouteProps } from "react-router"
+import { RouteComponentProps, RouteProps } from 'react-router'
 
-import { IFilm, IUser, IShowtimes, IWatched } from "./data"
-import { IReduxActionCreator } from "./redux"
+import { IFilm, IUser, IShowtimes, IWatched } from './data'
+import { IReduxActionCreator } from './redux'
 
 /**
  * App.tsx
  */
 
 export interface IAppProps extends IAppActionProps {
-  favourite: IFilm[], 
-  hidden: IFilm[], 
-  available: IFilm[], 
-  watched: IFilm[], 
-  expired: IFilm[], 
+  favourite: IFilm[],
+  hidden: IFilm[],
+  available: IFilm[],
+  watched: IFilm[],
+  expired: IFilm[],
   films: IFilm[],
   user: IUser|null
 }
 
 export interface IAppActionProps extends RouteComponentProps {
-  postUpdateFilm: IReduxActionCreator<IFilm>, 
+  postUpdateFilm: IReduxActionCreator<IFilm>,
   updateFilm: IReduxActionCreator<IFilm>
 }
-
 
 /**
  * BadgeWrapper.tsx
@@ -31,7 +30,6 @@ export interface IBadgeWrapperProps {
   film: IFilm,
   [key: string]: any
 }
-
 
 /**
  * Film.tsx
@@ -69,7 +67,6 @@ export interface IIconProps {
   hiddenIcon?: boolean
 }
 
-
 /**
  * FilmGroup.tsx
  */
@@ -85,7 +82,6 @@ export interface IFilmGroupState {
   collapse?: boolean
 }
 
-
 /**
  * Navigation.tsx
  */
@@ -98,7 +94,6 @@ export interface INavigationProps {
 export interface INavigationState {
   isOpen: boolean
 }
-
 
 /**
  * Showtimes.tsx
@@ -114,7 +109,6 @@ export interface IShowTimesStyledProps {
   today?: boolean
 }
 
-
 /**
  * Watched.tsx
  */
@@ -122,7 +116,6 @@ export interface IShowTimesStyledProps {
 export interface IWatchedProps {
   watched: IWatched
 }
-
 
 /**
  * WatchedForm.tsx

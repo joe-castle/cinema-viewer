@@ -8,7 +8,7 @@ export default function filmsController (router: Router): void {
   router.get('/api/films', async (req: Request, res: Response) => {
     res.json(await getAllFilms())
   })
-  
+
   router.get('/api/films/fetchfilms', async (req: Request, res: Response) => {
     res.json(await fetchFilms())
   })
