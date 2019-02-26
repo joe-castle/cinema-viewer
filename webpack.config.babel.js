@@ -2,10 +2,13 @@ import path from 'path'
 import webpack from 'webpack'
 import FriendlyErrorsWebpackPlugin from 'friendly-errors-webpack-plugin'
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
-import { getIfUtils } from 'webpack-config-utils'
+import { getIfUtils, removeEmpty } from 'webpack-config-utils'
+import MiniCssExtractPlugin from 'mini-css-extract-plugin'
+import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin'
+import UglifyJsPlugin from 'uglifyjs-webpack-plugin'
 
 export default (env, config) => {
-  const { ifDevelopment } = getIfUtils(config.mode)
+  const { ifDevelopment, ifProduction } = getIfUtils(config.mode)
 
   return {
     entry: ifDevelopment(
@@ -15,26 +18,42 @@ export default (env, config) => {
         'react-hot-loader/patch',
         './src/client'
       ],
-      // ifProduction
       './src/client'
     ),
     output: {
       filename: 'bundle.js',
+      chunkFilename: '[name].bundle.js',
       path: path.resolve(__dirname, 'build', 'assets'),
       publicPath: '/assets'
     },
     resolve: {
       extensions: ['.ts', '.tsx', '.js', '.json']
     },
+    ...{ optimization: removeEmpty({
+      splitChunks: ifProduction({
+        chunks: 'all'
+      }),
+      minimizer: ifProduction([
+        new UglifyJsPlugin({
+          cache: true,
+          parallel: true,
+          sourceMap: true
+        }),
+        new OptimizeCSSAssetsPlugin({})
+      ])
+    }) },
     plugins: [
       ...ifDevelopment(
         [
           new webpack.HotModuleReplacementPlugin(),
           new FriendlyErrorsWebpackPlugin()
         ],
-        // ifProduction
         [
-          new BundleAnalyzerPlugin({ analyzerMode: 'disabled' })
+          new BundleAnalyzerPlugin({ analyzerMode: 'static' }),
+          new MiniCssExtractPlugin({
+            filename: '[name].css',
+            chunkFilename: '[name].css'
+          })
         ]
       )
     ],
@@ -53,7 +72,7 @@ export default (env, config) => {
         {
           test: /\.styl$/,
           use: [
-            'style-loader',
+            ifDevelopment('style-loader', MiniCssExtractPlugin.loader),
             'css-loader',
             'postcss-loader',
             'stylus-loader'
@@ -63,7 +82,7 @@ export default (env, config) => {
         {
           test: /\.css$/,
           use: [
-            'style-loader',
+            ifDevelopment('style-loader', MiniCssExtractPlugin.loader),
             'css-loader',
             'postcss-loader'
           ]
@@ -76,7 +95,6 @@ export default (env, config) => {
     },
     devtool: ifDevelopment(
       '#cheap-module-eval-source-map',
-      // ifProduction
       '#source-map'
     ),
     devServer: {
