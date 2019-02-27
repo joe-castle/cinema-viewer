@@ -1,13 +1,22 @@
+import path from 'path'
 import { renderToString } from 'react-dom/server'
 import { ServerStyleSheet } from 'styled-components'
+import { ChunkExtractor } from '@loadable/server'
 
 import { ReactNode } from 'react'
 import { IState } from '../types/redux'
 
+const { NODE_ENV } = process.env
+
 export default function template (el: ReactNode, state: IState): string {
+  const statsFile: string = path.resolve(`${NODE_ENV === 'development' ? './build/' : './'}assets/loadable-stats.json`)
+  const extractor: ChunkExtractor = new ChunkExtractor({ statsFile })
   const sheet: ServerStyleSheet = new ServerStyleSheet()
-  const html: string = renderToString(sheet.collectStyles(el))
-  const styleTags: string = sheet.getStyleTags()
+  const html: string = renderToString(extractor.collectChunks(sheet.collectStyles(el)))
+  const scriptTags: string = extractor.getScriptTags()
+  const linkeTags: string = extractor.getLinkTags()
+  const styleTags: string = extractor.getStyleTags()
+  const styledComponentTags: string = sheet.getStyleTags()
 
   return (
     `<!DOCTYPE html>
@@ -18,13 +27,15 @@ export default function template (el: ReactNode, state: IState): string {
     <meta name="description" content="Cinema viewier with rating and hiding ability">
     <title>Cinema Viewer</title>
     ${styleTags}
+    ${styledComponentTags}
+    ${linkeTags}
   </head>
   <body>
     <div id="root">${html}</div>
     <script>
       window.__PRELOADED_STATE__ = ${JSON.stringify(state)};
     </script>
-    <script src="/assets/bundle.js"></script>
+    ${scriptTags}
   </body>
 </html>`
   )

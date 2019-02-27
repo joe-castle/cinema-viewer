@@ -3,17 +3,27 @@ import { connect } from 'react-redux'
 import { hot } from 'react-hot-loader/root'
 import { Switch, Route, withRouter } from 'react-router-dom'
 import { Container } from 'reactstrap'
+import loadable, { LoadableComponent } from '@loadable/component'
+// import delay from 'p-min-delay'
+// @ts-ignore no @types avalabile
+
+import Loader from './utils/Loader'
 
 import { actions } from '../store/actions'
 
 import Navigation from './Navigation'
-import FilmGroup from './FilmGroup'
-import Film from './Film'
 import Footer, { CopyrightText } from './styled/Footer'
 
 import { checkUserData, notCheckUserData } from '../common/utils'
 import { IState } from '../types/redux'
-import { IAppActionProps, IAppProps } from '../types/react'
+import { IAppActionProps, IAppProps, IFilmGroupProps } from '../types/react'
+
+const FilmGroup = loadable(() => import(/* webpackPrefetch: true */ './FilmGroup') as unknown as Promise<LoadableComponent<IFilmGroupProps>>, {
+  fallback: <Loader />
+})
+const Film = loadable(() => import(/* webpackPrefetch: true */ './Film'), {
+  fallback: <Loader />
+})
 
 function App ({
   favourite,

@@ -9,6 +9,7 @@
     "@babel/plugin-transform-async-to-generator",
     "@babel/plugin-transform-runtime",
     "babel-plugin-styled-components",
+    "@loadable/babel-plugin",
     "react-hot-loader/babel"
   ]
 }
