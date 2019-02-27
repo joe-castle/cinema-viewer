@@ -20,7 +20,12 @@ export default (env, config) => {
         // 'react-hot-loader/patch',
         './src/client'
       ],
-      './src/client'
+      {
+        main: './src/client',
+        Navigation: './src/components/Navigation',
+        App: './src/components/App',
+        ScrollToTop: './src/components/utils/ScrollToTop'
+      }
     ),
     output: {
       filename: ifDevelopment(
@@ -34,6 +39,7 @@ export default (env, config) => {
       extensions: ['.ts', '.tsx', '.js', '.json']
     },
     optimization: removeEmpty({
+      runtimeChunk: ifProduction('single'),
       splitChunks: ifProduction({
         chunks: 'all',
         maxInitialRequests: Infinity,
@@ -71,6 +77,7 @@ export default (env, config) => {
           new FriendlyErrorsWebpackPlugin()
         ],
         [
+          new webpack.HashedModuleIdsPlugin(),
           new BundleAnalyzerPlugin({ analyzerMode: 'static' }),
           new MiniCssExtractPlugin({
             filename: '[name].css',
