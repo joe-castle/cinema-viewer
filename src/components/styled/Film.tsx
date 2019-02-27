@@ -30,15 +30,6 @@ export const PlayIcon = styled.span.attrs({
   font-size: 8em;
 `
 
-export const TrailerModal = styled(Modal) < ITrailerModalProps > `
-  max-width: ${({ width }) => width}px;
-
-  & .modal-content {
-    background: none;
-    border: none;
-  }
-`
-
 export const Title = styled.h1`
   margin-bottom: 0;
 `

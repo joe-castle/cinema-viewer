@@ -7,6 +7,7 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin'
 import UglifyJsPlugin from 'uglifyjs-webpack-plugin'
 import LoadablePlugin from '@loadable/webpack-plugin'
+import CompressionPlugin from 'compression-webpack-plugin'
 
 export default (env, config) => {
   const { ifDevelopment, ifProduction } = getIfUtils(config.mode)
@@ -22,15 +23,37 @@ export default (env, config) => {
       './src/client'
     ),
     output: {
-      filename: 'bundle.js',
-      chunkFilename: '[name].bundle.js',
+      filename: ifDevelopment(
+        '[name].bundle.js',
+        '[name].[contenthash].bundle.js'
+      ),
       path: path.resolve(__dirname, 'build', 'assets'),
-      publicPath: '/assets'
+      publicPath: '/assets/'
     },
     resolve: {
       extensions: ['.ts', '.tsx', '.js', '.json']
     },
     optimization: removeEmpty({
+      splitChunks: ifProduction({
+        chunks: 'all',
+        maxInitialRequests: Infinity,
+        minSize: 0,
+        cacheGroups: {
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name (module) {
+              try {
+                // get the name. E.g. node_modules/packageName/not/this/part.js
+                // or node_modules/packageName
+                const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1]
+
+                // npm package names are URL-safe, but some servers don't like @ symbols
+                return `npm.${packageName.replace('@', '')}`
+              } catch (err) { /* Picking up non node_modules stuff for some reason */ }
+            }
+          }
+        }
+      }),
       minimizer: ifProduction([
         new UglifyJsPlugin({
           cache: true,
@@ -52,6 +75,11 @@ export default (env, config) => {
           new MiniCssExtractPlugin({
             filename: '[name].css',
             chunkFilename: '[name].css'
+          }),
+          new CompressionPlugin({
+            test: /\.js$|\.css$|\.html$/,
+            threshold: 0,
+            minRatio: 1
           })
         ]
       )

@@ -5,6 +5,8 @@ import connect from 'connect-mongo'
 import cookieParser from 'cookie-parser'
 import bodyParser from 'body-parser'
 import { Db } from 'mongodb'
+// @ts-ignore @types don't exist
+import gzipStatic from 'connect-gzip-static'
 
 import passport from './strategies/google'
 
@@ -19,7 +21,7 @@ const { SESSION_SECRET = 'Secret' } = process.env
 
 export default function serverApp (db: Db) {
   return app
-    .use('/assets', express.static(path.resolve(__dirname, 'assets')))
+    .use('/assets', gzipStatic(path.resolve(__dirname, 'assets')))
     .use(bodyParser.json())
     .use(cookieParser())
     .use(session({

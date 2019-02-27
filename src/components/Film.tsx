@@ -2,14 +2,13 @@ import React, { Component, FormEvent } from 'react'
 import { Row, Col, Button } from 'reactstrap'
 import { fromEvent, Subscription } from 'rxjs'
 import { pluck, debounceTime, tap, map } from 'rxjs/operators'
-import YouTube from 'react-youtube'
+import loadable, { LoadableComponent } from '@loadable/component'
 
 import {
   RowCenter,
   PosterWrapper,
   Poster,
   PlayIcon,
-  TrailerModal,
   Title,
   ReleaseDate,
   Icon,
@@ -19,11 +18,19 @@ import {
 
 import Showtimes from './Showtimes'
 import Watched from './Watched'
-import WatchedForm from './WatchedForm'
+import Loader from './utils/Loader'
 
 import { calculateDimensions, notCheckUserData, checkUserData } from '../common/utils'
-import { IFilmProps, IFilmState, IWatchedFormState } from '../types/react';
-import { IFilm } from '../types/data';
+import { IFilmProps, IFilmState, IWatchedFormState, ITrailerModalProps, IWatchedFormProps } from '../types/react'
+import { IFilm } from '../types/data'
+
+const TrailerModal: LoadableComponent<ITrailerModalProps> = loadable(() => import(/* webpackPrefetch: true */ './TrailerModal'), {
+  fallback: <Loader />
+})
+
+const WatchedForm: LoadableComponent<IWatchedFormProps> = loadable(() => import(/* webpackPrefetch: true */ './WatchedForm'), {
+  fallback: <Loader />
+})
 
 class Film extends Component<IFilmProps, IFilmState> {
   constructor (props: IFilmProps) {
@@ -162,12 +169,13 @@ class Film extends Component<IFilmProps, IFilmState> {
         </Col>
       </RowCenter>}
       {film.showtimes && <Showtimes showtimes={film.showtimes} />}
-      <TrailerModal width={width} isOpen={this.state.modal} toggle={this.toggle} centered>
-        <YouTube
-          opts={{ width, height }}
-          videoId={film.trailer && film.trailer.slice(film.trailer.indexOf('=') + 1, film.trailer.length)}
-        />
-      </TrailerModal>
+      <TrailerModal 
+        width={width}
+        height={height}
+        open={this.state.modal}
+        toggle={this.toggle}
+        trailer={film.trailer}
+      />
     </>
   }
 }

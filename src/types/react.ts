@@ -56,8 +56,16 @@ export interface IDimensions {
   height: string
 }
 
+export interface ITrailerProps {
+  width: string,
+}
+
 export interface ITrailerModalProps {
   width: string,
+  height: string
+  open: boolean,
+  toggle: () => void,
+  trailer?: string
 }
 
 export interface IIconProps {

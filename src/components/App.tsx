@@ -16,12 +16,12 @@ import Footer, { CopyrightText } from './styled/Footer'
 
 import { checkUserData, notCheckUserData } from '../common/utils'
 import { IState } from '../types/redux'
-import { IAppActionProps, IAppProps, IFilmGroupProps } from '../types/react'
+import { IAppActionProps, IAppProps, IFilmGroupProps, IFilmProps } from '../types/react'
 
-const FilmGroup = loadable(() => import(/* webpackPrefetch: true */ './FilmGroup') as unknown as Promise<LoadableComponent<IFilmGroupProps>>, {
+const FilmGroup: LoadableComponent<IFilmGroupProps> = loadable(() => import(/* webpackPrefetch: true */ './FilmGroup') as unknown as Promise<LoadableComponent<IFilmGroupProps>>, {
   fallback: <Loader />
 })
-const Film = loadable(() => import(/* webpackPrefetch: true */ './Film'), {
+const Film: LoadableComponent<IFilmProps> = loadable(() => import(/* webpackPrefetch: true */ './Film'), {
   fallback: <Loader />
 })
 
