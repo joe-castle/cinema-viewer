@@ -76,10 +76,14 @@ TODO:
       )
     );
 
-Code Splitting:
+Code Splitting / performance:
   ☐ Epics
-  ☐ prefetch modules not appending / to path, so its /asssetsFilm....
+  ✔ prefetch modules not appending / to path, so its /asssetsFilm.... @done(19-02-28 08:25)
+    wepback.output.publicPath - /assets /assets/
   ☐ error boundries around loadable components
+  ☐ tests
+  ☐ move back to promises rather then async
+  ☐ http2 / server push
 
 Typescript:
   ✔ Tidy up type files, use namespaces? @done(19-02-25 13:34)
@@ -87,12 +91,14 @@ Typescript:
 
 FIX:
   ☐ trailer not going full size due to reszie, maybe use lodash to debounce?
-  ☐ figure out why css isn't loading on first page load, looks like bootstrap...
+  ✔ figure out why css isn't loading on first page load, looks like bootstrap... @done(19-02-28 09:56)
+    because it wasn't extracted out to a css file, will only work in production
   ☐ add react router link to home page link
-  ☐ icons not loading in production
+  ✔ icons not loading in production @done(19-02-28 09:56)
+    this seems to have fixed itself, probably because of css extraction
 	☐ fix film showtimes so that if only one format centers gracefully 
-  ☐ Fix server rendering as its not rendering routes or styles properly, althought might be dev only issue
-  ☐ Sort out footer
+  ✘ Fix server rendering as its not rendering routes or styles properly, althought might be dev only issue @cancelled(19-02-28 09:57)
+  ☐ Sort out footer, not sticking to bottom of page
   ✔ Trailer modal not popping up @done(19-02-25 09:18)
   ✔ Todays date in showtime not highlighting @done(19-02-25 09:19)
   ✔ Fix play button so it centers properly in image @done(19-02-15 10:13)

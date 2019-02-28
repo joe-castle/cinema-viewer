@@ -1,6 +1,6 @@
-import { Row, Modal } from 'reactstrap'
+import { Row } from 'reactstrap'
 import styled from 'styled-components'
-import { ITrailerModalProps, IIconProps } from '../../types/react'
+import { IIconProps } from '../../types/react'
 
 export const RowCenter = styled(Row)`
   text-align: center;

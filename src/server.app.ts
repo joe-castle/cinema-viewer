@@ -1,5 +1,5 @@
 import path from 'path'
-import express from 'express'
+import express, { Express } from 'express'
 import session from 'express-session'
 import connect from 'connect-mongo'
 import cookieParser from 'cookie-parser'
@@ -7,6 +7,8 @@ import bodyParser from 'body-parser'
 import { Db } from 'mongodb'
 // @ts-ignore @types don't exist
 import gzipStatic from 'connect-gzip-static'
+// @ts-ignore @types don't exist
+import enforce from 'express-sslify'
 
 import passport from './strategies/google'
 
@@ -19,8 +21,9 @@ const app = express()
 const MongoStore = connect(session)
 const { SESSION_SECRET = 'Secret' } = process.env
 
-export default function serverApp (db: Db) {
+export default function serverApp (db: Db): Express {
   return app
+    .use(enforce.HTTPS({ trustProtoHeader: true }))
     .use('/assets', gzipStatic(path.resolve(__dirname, 'assets')))
     .use(bodyParser.json())
     .use(cookieParser())
