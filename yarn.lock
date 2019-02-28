@@ -3903,11 +3903,6 @@ express-session@^1.15.6:
     uid-safe "~2.1.5"
     utils-merge "1.0.1"
 
-express-sslify@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/express-sslify/-/express-sslify-1.2.0.tgz#30e84bceed1557eb187672bbe1430a0a2a100d9c"
-  integrity sha1-MOhLzu0VV+sYdnK74UMKCioQDZw=
-
 express@^4.16.2, express@^4.16.3, express@^4.16.4:
   version "4.16.4"
   resolved "https://registry.yarnpkg.com/express/-/express-4.16.4.tgz#fddef61926109e24c515ea97fd2f1bdbf62df12e"

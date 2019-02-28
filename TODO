@@ -1,21 +1,22 @@
 Features:
     ☐ Choose cinema
     ☐ List available showsings, (imax, 4dx, etc)
-    ☐ Hide films not interested
-    ☐ Show films that are new to booking, and have come back, i.e. already exist in the DB but have since dropped out of booking.
-    ☐ have a "stamp" for unlimited content
+    ✔ Hide films not interested @done(19-02-28 15:48)
+    ✔ Show films that are new to booking, @done(19-02-28 15:48)
+    ☐ show films that have come back, i.e. already exist in the DB but have since dropped out of booking.
+    ✔ have a "stamp" for unlimited content @done(19-02-28 15:48)
     ☐ mark a film as watched and specify a rating, the format, seats (and seat rating / notes), date / time watched and any extra notes
-    ☐ favourite films interested in
+    ✔ favourite films interested in @done(19-02-28 16:14)
     ☐ Also grab films that aren't at basildon?
     ☐ Films api fetches from DB with parsed data and stored information about film?
-    ☐ Check for new films daily and update db?
-    ☐ Have seperate table for user information on each film, rating, description etc...
-    ☐ USE TYPESCRIPT FOR THE LOVE OF GOD, maybe?
-    ☐ When rating a film, have a pop up that shows what would be below and above the score
+    ✔ Check for new films daily and update db? @done(19-02-28 16:14)
+    ✘ Have seperate table for user information on each film, rating, description etc... @cancelled(19-02-28 16:14)
+    ✔ USE TYPESCRIPT FOR THE LOVE OF GOD, maybe? @done(19-02-28 15:48)
+    ☐ When rating a film, have a pop up list that shows what would be below and above the score
     ☐ Coming soon films
     ☐ Have a sort/filter/search feature
     ☐ Bulk mark as favourite/hidden
-    ☐ 'Delete' film so that aggregation result removes it from return
+    ☐ 'Delete' film so that aggregation result removes it from return, i.e. mark as deleted in user part of the database, but don't actually delete it
     ☐ React native
     ☐ Seat and screen selection
     ☐ Custom film entry
@@ -31,11 +32,14 @@ Redux-observable:
 TODO:
   ☐ Update ensureauthenticated middleware
   ☐ replace all axios calls with RxJS? ajax has post/get methods
-  ☐ rmeove async calls and move back to rxjs / acxios
+  ✘ rmeove async calls and move back to rxjs / acxios @cancelled(19-02-28 16:17)
+    these are only server side so leaving them as is.
   ☐ Add logging
   ☐ Add validation
   ☐ Use all-performances instead of film_times as it provides director, cast, length etc...
-  ☐ Use .toLocaleString() for all date calls
+    film_times does provide these?
+  ✘ Use .toLocaleString() for all date calls @cancelled(19-02-28 16:16)
+    using custom formatDate function
   ☐ Have logout call redux so its more responsive
   ☐ Connect only whats needed in lower apps, rather than passing props all the way through
     ✔ Also tidy up filters in App.mapStateToProps @done(19-02-15 13:02)
@@ -44,19 +48,20 @@ TODO:
   ☐ List next showing in overview page, have 3 wide colums rather than 2
   ✔ Extract utility functions in components into components/utils/index.js @done(19-02-15 10:27)
   ☐ Add cancel button for 'Watched' form
+  ☐ Move rating and watched next to / under title move review under poster
   ☐ Add edit button for Watched films
   ✔ Update render to use configurestore instead? @done(19-01-18 16:41)
   ☐ Have watched and expired in films page, have date watched on film badge
-  ☐ chunk build and load asyncronously
+  ✔ chunk build and load asyncronously @done(19-02-28 16:18)
   ☐ filter by date playing
-  ☐ chunk webpack file and async load it???????
+  ✔ chunk webpack file and async load it??????? @done(19-02-28 16:18)
   ☐ TESTSSS!!!
   ☐ update look of login with google
-  ☐ split cron job into seperate service and run on server instead of on heroku
+  ☐ split cron job into seperate service and run on home server instead of on heroku
   ☐ styled-components theme at top level ts
-  ☐ When clicking on a booking, pop with a booked? modal that then adds a booked object to the film?
+  ☐ When clicking on a booking, pop up with a booked? modal that then adds a booked object to the film?
   ☐ have userData as sub reducer of films
-  ☐ Do something about the showtimes processing, move it to the server and have it as part of the object? Kinda makes sense...
+  ✔ Do something about the showtimes processing, move it to the server and have it as part of the object? Kinda makes sense... @done(19-02-28 16:19)
   ☐ Move ALL dispatch based RxJS code to epics, inclduing the debounce thing from Film.js
   ☐ Have spinners / errors for failures in async alls, use this pattern to call 
     action$.pipe(
@@ -82,8 +87,12 @@ Code Splitting / performance:
     wepback.output.publicPath - /assets /assets/
   ☐ error boundries around loadable components
   ☐ tests
-  ☐ move back to promises rather then async
-  ☐ http2 / server push
+  ✘ move back to promises rather then async @cancelled(19-02-28 15:47)
+    all async calls are server side, rather then in the bundles
+  http2 / server push:
+    ☐ redux state
+    ☐ react renderToString
+    ☐ other js assets
 
 Typescript:
   ✔ Tidy up type files, use namespaces? @done(19-02-25 13:34)
@@ -105,14 +114,9 @@ FIX:
   ✔ When refreshing the page on a specific film, server crashes with poster undefined @done(19-02-08 11:23)
   Id returned was a object so was failing on type check
   
-Optimization:
-  ☐ move async functions back to promises, use node-fetch / rxjs rather then axios?
-  ☐ code splitting to reduce module size: https://webpack.js.org/guides/code-splitting/
-    ☐ have bootstrap and OI as seperate css tags from a CDN, they take up quite a large portion of the bundle
-
 Build:
-    ☐ Add build step for backend -> lib?
-    ☐ Add start script for production
+    ✔ Add build step for backend -> lib? @done(19-02-28 15:48)
+    ✔ Add start script for production @done(19-02-28 15:48)
 
 Archive:
   ✔ Users: @done(19-01-18 11:14) @project(Features)
