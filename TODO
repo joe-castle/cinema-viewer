@@ -30,12 +30,13 @@ Redux-observable:
     ☐ configure store, takes the reducers and epics and configures them in the store
 
 TODO:
-  ☐ Update ensureauthenticated middleware
+  ☐ distinguishing break between filmgroups, a line, or some sore of boxshadow???
+  ✔ Update ensureauthenticated middleware @done(19-02-28 16:37)
   ☐ replace all axios calls with RxJS? ajax has post/get methods
   ✘ rmeove async calls and move back to rxjs / acxios @cancelled(19-02-28 16:17)
     these are only server side so leaving them as is.
   ☐ Add logging
-  ☐ Add validation
+  ☐ Add validation to rest end points
   ☐ Use all-performances instead of film_times as it provides director, cast, length etc...
     film_times does provide these?
   ✘ Use .toLocaleString() for all date calls @cancelled(19-02-28 16:16)

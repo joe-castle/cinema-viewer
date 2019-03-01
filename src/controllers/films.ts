@@ -1,7 +1,7 @@
 import { getAllFilms } from '../data/models/films'
 import { insertUpdateUserData } from '../data/models/filmUserData'
 import { ensureAuthenticated } from '../middleware'
-import fetchFilms from '../cronjobs/fetchFilms'
+import fetchFilms from '../api/fetchFilms'
 import { Router, Request, Response } from 'express'
 
 export default function filmsController (router: Router): void {
