@@ -98,7 +98,10 @@ export default async function fetchFilms (): Promise<Object> {
       .map((trailer) => trailer.data)
 
     newFilms = newFilms.map((film, index) =>
-      ({ ...film, trailer: `https://www.youtube.com/watch?v=${trailers[index].items[0].id.videoId}` }))
+      ({ ...film, trailer: trailers[index].items.length > 0 
+        ? `https://www.youtube.com/watch?v=${trailers[index].items[0].id.videoId}` 
+        : 'TRAILER NOT FOUND'
+      }))
 
     insertOrUpdateMultipleFilms(
       [

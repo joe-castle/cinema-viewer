@@ -30,6 +30,7 @@ Redux-observable:
     ☐ configure store, takes the reducers and epics and configures them in the store
 
 TODO:
+  ☐ implement cookie consent
   ☐ distinguishing break between filmgroups, a line, or some sore of boxshadow???
   ✔ Update ensureauthenticated middleware @done(19-02-28 16:37)
   ☐ replace all axios calls with RxJS? ajax has post/get methods
@@ -100,6 +101,7 @@ Typescript:
   ✔ Have different interfaces for mongo data and front end data / use namespaces(modules) to 'namespace' them @done(19-02-25 13:34)
 
 FIX:
+  ☐ have better handling of if trailer not found
   ☐ trailer not going full size due to reszie, maybe use lodash to debounce?
   ✔ figure out why css isn't loading on first page load, looks like bootstrap... @done(19-02-28 09:56)
     because it wasn't extracted out to a css file, will only work in production
