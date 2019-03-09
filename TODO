@@ -1,4 +1,5 @@
 Features:
+    ☐ link to imdb page iwth rating, pull trailer from there rather then youtube?
     ☐ Choose cinema
     ☐ List available showsings, (imax, 4dx, etc)
     ✔ Hide films not interested @done(19-02-28 15:48)
@@ -38,8 +39,8 @@ TODO:
     these are only server side so leaving them as is.
   ☐ Add logging
   ☐ Add validation to rest end points
-  ☐ Use all-performances instead of film_times as it provides director, cast, length etc...
-    film_times does provide these?
+  ✘ Use all-performances instead of film_times as it provides director, cast, length etc... @cancelled(19-03-09 18:07)
+    film_times does provide these, used film times
   ✘ Use .toLocaleString() for all date calls @cancelled(19-02-28 16:16)
     using custom formatDate function
   ☐ Have logout call redux so its more responsive

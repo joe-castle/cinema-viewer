@@ -15,6 +15,10 @@ export interface IUser {
 export interface IFilm {
   _id?: string|Object,
   title?: string,
+  director?: string,
+  cast?: string,
+  length?: string,
+  rating?: string,
   dateAdded?: Date|string,
   edis?: string[],
   poster?: string,

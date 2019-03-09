@@ -68,6 +68,10 @@ export default async function fetchFilms (): Promise<Object> {
           edis: [film.edi],
           title: parsedFilms[film.edi].Title,
           synopsis: parsedFilms[film.edi].synopsis,
+          director: parsedFilms[film.edi].director,
+          cast: parsedFilms[film.edi].cast,
+          rating: parsedFilms[film.edi].Rating,
+          length: parsedFilms[film.edi].length,
           releaseDate: new Date(film.release.replace(/(\d+)\/(\d+)\/(\d+)/, '$3/$2/$1')),
           poster: `https://www.cineworld.co.uk${parsedFilms[film.edi].poster}`,
           url: `https://www.cineworld.co.uk${film.url}`,
@@ -120,7 +124,7 @@ export default async function fetchFilms (): Promise<Object> {
       processedFilms
     }
   } catch (err) {
-    console.log('Error whilst fetching films: ', err.message, '\n', err.stack)
+    console.error('Error whilst fetching films: ', err.message, '\n', err.stack)
     
     return {
       error: err.message

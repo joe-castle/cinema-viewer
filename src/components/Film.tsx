@@ -10,7 +10,7 @@ import {
   Poster,
   PlayIcon,
   Title,
-  ReleaseDate,
+  SubInfo,
   Icon,
   Synopsis,
   ShowtimesHeader
@@ -20,7 +20,7 @@ import Showtimes from './Showtimes'
 import Watched from './Watched'
 import Loader from './utils/Loader'
 
-import { calculateDimensions, notCheckUserData, checkUserData } from '../common/utils'
+import { calculateDimensions, notCheckUserData, checkUserData, formatDate } from '../common/utils'
 import { IFilmProps, IFilmState, IWatchedFormState, ITrailerModalProps, IWatchedFormProps } from '../types/react'
 import { IFilm } from '../types/data'
 
@@ -126,6 +126,10 @@ class Film extends Component<IFilmProps, IFilmState> {
     this.setState({ watchedForm: false })
   }
 
+  generateSubInfo = (...info: (string|undefined)[]) => {
+    return info.filter(Boolean).join(' | ')
+  }
+
   render () {
     const { film, match }: IFilmProps = this.props
     const { width, height, watchedForm }: IFilmState = this.state
@@ -146,13 +150,15 @@ class Film extends Component<IFilmProps, IFilmState> {
         </Col>
         <Col lg={8}>
           <Title>{film.title}</Title>
-          <ReleaseDate>Release Date: {new Date(film.dateAdded as string).toDateString()}</ReleaseDate>
-          <div className='mt-3'>
+          <SubInfo>{this.generateSubInfo(film.rating, film.length, formatDate(new Date(film.dateAdded as string)))}</SubInfo>
+          <div className='mt-3 mb-3'>
             {/* <Icon onClick={this.createIconEvent('favourite')} icon='heart' title='Favourite film' favourite={checkUserData(film, 'favourite')} />
             <Icon onClick={this.createIconEvent('hidden')} icon='eye' title='Visible in available' hiddenIcon={!checkUserData(film, 'hidden')} /> */}
             <Icon type='favourite' icon='heart' title='Favourite film' favourite={checkUserData(film, 'favourite')} />
             <Icon type='hidden' icon='eye' title='Visible in available' hiddenIcon={!checkUserData(film, 'hidden')} />
           </div>
+          {film.director && <><strong>Director: </strong><p>{film.director}</p></>}
+          {film.cast && <><strong>Cast: </strong><p>{film.cast}</p></>}
           <Synopsis>{film.synopsis}</Synopsis>
           {/* 
             // @ts-ignore undefined checked performed by checkUSerData */}

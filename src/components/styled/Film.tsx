@@ -34,9 +34,8 @@ export const Title = styled.h1`
   margin-bottom: 0;
 `
 
-export const ReleaseDate = styled.sub`
+export const SubInfo = styled.sub`
   font-weight: bold;
-  font-style: italic;
 `
 
 export const Icon = styled.span.attrs(({ type, icon }: IIconProps) => ({
