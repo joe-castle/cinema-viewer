@@ -1,6 +1,6 @@
 import React, { Component, FormEvent } from 'react'
 import { Row, Col, Button } from 'reactstrap'
-import { fromEvent, Subscription } from 'rxjs'
+import { fromEvent, Subscription, animationFrameScheduler } from 'rxjs'
 import { pluck, debounceTime, tap, map } from 'rxjs/operators'
 import loadable, { LoadableComponent } from '@loadable/component'
 
@@ -36,20 +36,9 @@ class Film extends Component<IFilmProps, IFilmState> {
   constructor (props: IFilmProps) {
     super(props)
 
-    const state = {
-      modal: false,
-      width: '640',
-      height: '320',
-      watchedForm: false
-    }
-
-    try {
-      this.state = {
-        ...state,
-        ...calculateDimensions(window.innerWidth)
-      }
-    } catch {
-      this.state = state
+    this.state = {
+      watchedForm: false,
+      modal: false
     }
   }
 
@@ -59,15 +48,6 @@ class Film extends Component<IFilmProps, IFilmState> {
 
   componentDidMount () {
     const { film, user, update } = this.props
-
-    this.resize = fromEvent(window, 'resize')
-      .pipe(
-        debounceTime(500),
-        pluck<Event, number>('target', 'innerWidth')
-      )
-      .subscribe((width: number) => {
-        this.setState(calculateDimensions(width))
-      })
 
     this.favourite = this.createIconEvent('favourite')
     this.hidden = this.createIconEvent('hidden')
@@ -82,12 +62,6 @@ class Film extends Component<IFilmProps, IFilmState> {
     this.resize && this.resize.unsubscribe()
     this.favourite && this.favourite.unsubscribe()
     this.hidden && this.hidden.unsubscribe()
-  }
-
-  toggle = (): void => {
-    this.setState((prevState) => ({
-      modal: !prevState.modal
-    }))
   }
 
   createIconEvent = (type: string): Subscription => {
@@ -130,9 +104,15 @@ class Film extends Component<IFilmProps, IFilmState> {
     return info.filter(Boolean).join(' | ')
   }
 
+  toggleModal = (): void => {
+    this.setState((prevState) => ({
+      modal: !prevState.modal
+    }))
+  }
+
   render () {
     const { film, match }: IFilmProps = this.props
-    const { width, height, watchedForm }: IFilmState = this.state
+    const { watchedForm, modal }: IFilmState = this.state
 
     return !film
       ? <h1>Unable to find film with id: {match.params.id}</h1>
@@ -143,7 +123,7 @@ class Film extends Component<IFilmProps, IFilmState> {
           md={{ size: 6, offset: 3 }}
           sm={{ size: 8, offset: 2 }}
         >
-          <PosterWrapper onClick={this.toggle}>
+          <PosterWrapper onClick={this.toggleModal}>
             <Poster src={film.poster} />
             <PlayIcon />
           </PosterWrapper>
@@ -187,11 +167,9 @@ class Film extends Component<IFilmProps, IFilmState> {
         </Col>
       </RowCenter>}
       {film.showtimes && <Showtimes showtimes={film.showtimes} />}
-      <TrailerModal 
-        width={width}
-        height={height}
-        open={this.state.modal}
-        toggle={this.toggle}
+      <TrailerModal
+        toggle={this.toggleModal}
+        open={modal}
         trailer={film.trailer}
       />
     </>

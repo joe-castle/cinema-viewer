@@ -45,7 +45,7 @@ export interface IFilmProps extends RouteComponentProps<IFilmRouteProps> {
   updateFilm: IReduxActionCreator<IFilm>
 }
 
-export interface IFilmState extends IDimensions {
+export interface IFilmState {
   modal: boolean,
   watchedForm: boolean
 }
@@ -61,10 +61,8 @@ export interface ITrailerProps {
 }
 
 export interface ITrailerModalProps {
-  width: string,
-  height: string
-  open: boolean,
   toggle: () => void,
+  open: boolean,
   trailer?: string
 }
 

@@ -111,7 +111,7 @@ Typescript:
 
 FIX:
   ☐ have better handling of if trailer not found
-  ☐ trailer not going full size due to reszie, maybe use lodash to debounce?
+  ✔ trailer not going full size due to reszie, maybe use lodash to debounce? @done(19-03-16 09:25)
   ✔ figure out why css isn't loading on first page load, looks like bootstrap... @done(19-02-28 09:56)
     because it wasn't extracted out to a css file, will only work in production
   ☐ add react router link to home page link

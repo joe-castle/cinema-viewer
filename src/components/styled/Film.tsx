@@ -1,6 +1,5 @@
 import { Row } from 'reactstrap'
 import styled from 'styled-components'
-import { IIconProps } from '../../types/react'
 
 export const RowCenter = styled(Row)`
   text-align: center;
@@ -37,24 +36,6 @@ export const Title = styled.h1`
 export const SubInfo = styled.sub`
   font-weight: bold;
 `
-
-// export const Icon = styled.span.attrs(({ type, icon }: IIconProps) => ({
-//   id: `icon-${type}`,
-//   className: `oi oi-${icon}`
-// })) < IIconProps > `
-//   color: ${({ favourite, hiddenIcon }) => favourite ? 'red' : hiddenIcon ? 'green' : ''};
-//   font-size: 2em;
-//   transition: color ease-in .1s;
-  
-//   &:not(:first-child) {
-//     margin-left: .5em;
-//   }
-
-//   &:hover {
-//     cursor: pointer;
-//     color: ${({ favourite, hiddenIcon }) => favourite ? 'rgba(255,0,0,.5)' : hiddenIcon ? 'rgba(0,128,0,.5)' : 'rgba(0,0,0,.5)'}
-//   }
-// `
 
 export const Synopsis = styled.p`
   margin-top: 1.5em;
