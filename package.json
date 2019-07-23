@@ -23,6 +23,7 @@
     "check:src": "yarn lint && yarn test",
     "check:types": "yarn tsc --noEmit && rimraf _typescript/",
     "check": "yarn check:src && yarn check:types",
+    "commit": "yarn git-cz",
     "build:bundle": "webpack --mode production --progress --colors",
     "build:server": "cross-env NODE_ENV=production babel src --out-dir build --extensions \".ts,.tsx,.js,.jsx\"",
     "build": "yarn clean && yarn run check && yarn build:server && yarn build:bundle",
@@ -103,9 +104,11 @@
     "babel-eslint": "^10.0.1",
     "babel-loader": "^8.0.5",
     "babel-plugin-styled-components": "^1.10.0",
+    "commitizen": "^4.0.3",
     "compression-webpack-plugin": "^2.0.0",
     "cross-env": "^5.2.0",
     "css-loader": "^2.1.0",
+    "cz-conventional-changelog": "3.0.2",
     "enzyme": "^3.8.0",
     "enzyme-adapter-react-16": "^1.7.1",
     "enzyme-to-json": "^3.3.5",
@@ -165,5 +168,10 @@
       "src/client.ts"
     ],
     "ext": "js,jsx,ts,tsx"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
