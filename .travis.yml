@@ -1,5 +1,30 @@
 language: node_js
+
+script: yarn build
+
+cache: yarn
+
+branches:
+  only:
+    - master
+    - develop
+    - /feature-.+/
+    # release
+    # hotfix
+
+after_install: test
+
+# before_deploy: ./build-scripts/test.js
+
 deploy:
   provider: heroku
   api_key:
     secure: drWMxoh3RJgLyXD24o+yKagWz4pcwCCTPUWaDeSM189Zl7vmFhh+R1IP3Tcfj537Y37uy8z6bWpN9zitssHSFOkgkMVY+6V3YB24Ym4f1a7OTj6Z30tySmDgkKfqvXTdcin/nHxFijnY+uyiXgIVdNjUjvwZaAagRpS+Q0sSxb9kFZV4dl25ONLw/GhXHVlPMgBr0Hjwh3/3STvZJNncu7Tgcwl1De4kG+w5mmWUrTvRy3ulzJXBlz1gGq9+/ppAzh6xi4yEbK1tIEs3NsBfuQ3iux6RSzwmlMfqZMVqLRjJN/Tg5yoC0J91dsNopDy3qA/3Zxs7ZhcQYkHo9SJDtkPIgoeaXjNccT85/6iGgsVbsStzFaTW8I9ch3qzOrVola5k+WVpIU3Gg0OBitXQ31YoOMQzFNB/EUh4GIONARnMuLPRDcNPvgpkcdrp5uFLubDoNYfScQkJgZcy1DEBVzo4uUdT6OioGtMCcUSAzMBrBig5/kg0srugrHPQMiLyhtocXwgQUecx70mR7cIiCE2DEgf/URBtW1Llazq4022Uo3wqVUv7tnAJKO/3l5luBZ5WpLurItrXQpU53eoKA9aVvq6vYYW7kJx4su9iSPNEVBtIC1FOc9VA132qj2phQMvW2sVfVD/hI+x+kvaDcJxODfsoT224xe/tmlSb39s=
+  on: master
+
+
+# Version change before deploy
+#   - Script that asks for patch/minor/major bump and acts accordingly.
+#   - Tags that verison
+#   - Wont build if version is same as old version
+
