@@ -25,7 +25,7 @@
     "check": "yarn check:src && yarn check:types",
     "build:bundle": "webpack --mode production --progress --colors",
     "build:server": "cross-env NODE_ENV=production babel src --out-dir build --extensions \".ts,.tsx,.js,.jsx\"",
-    "build": "yarn clean && yarn run check &&  yarn build:server && yarn build:bundle",
+    "build": "yarn clean && yarn run check && yarn build:server && yarn build:bundle",
     "heroku-postbuild": "yarn build"
   },
   "author": "Joe Smith <joesmith0488@gmail.com>",

@@ -1,5 +1,7 @@
 language: node_js
 
+node_js: node
+
 script: yarn build
 
 cache: yarn
@@ -9,10 +11,10 @@ branches:
     - master
     - develop
     - /feature-.+/
-    # release
-    # hotfix
+    - /release-.+/
+    - /hotfix-.+/
 
-after_install: test
+after_install: bumpVersion.js
 
 # before_deploy: ./build-scripts/test.js
 
