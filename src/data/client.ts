@@ -14,7 +14,7 @@ const connect: Connect = (uri: string, db?: string): Promise<Db | void> => {
       connect._db = client.db(db)
       return connect._db
     })
-    .catch((err: MongoError) => console.log(err))
+    .catch((err: MongoError) => console.error(err))
 }
 
 // @ts-ignore FIX: Thinks _db is any type but seems to understand it in the callback...

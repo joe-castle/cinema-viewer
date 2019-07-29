@@ -1,0 +1,123 @@
+#!/usr/bin/env node
+
+/**
+ * To install hook, run: 'yarn'
+ *
+ * Git commit hook:
+ *    .git/hooks/commit-msg
+ *
+ * Check commit message according to angularjs guidelines:
+ *    https://docs.google.com/document/d/1QrDFcIiPjSLDn3EL15IJygNPiHORgU1_OOAqWjiDU5Y/edit#
+ */
+
+const fs = require('fs');
+
+const validCommitTypes = ['feat', 'fix', 'docs', 'style', 'refactor', 
+  'perf', 'test', 'build', 'ci', 'chore', 'revert']
+const validIssueKeywords = ['close', 'closes', 'closed', 'fix', 'fixes',
+  'fixed', 'resolve', 'resolves', 'resolved']
+
+fs.readFile(process.argv[2], 'utf8', (err, message) => {
+  function checkFailureCondition (condition, failureMessage) {
+    if (condition()) {
+      console.log(`\n${failureMessage}`)
+      console.log('\n - Please use "yarn commit" to commit git messages.\n')
+      console.log('Full commit message:\n' + lines.join('\n'))
+      process.exit(1)
+    }
+  }
+  
+  if (err) {
+    console.error(err)
+    process.exit(1)
+  }
+
+  const lines = message
+    .trim()
+    .split('\n')
+    // remove all unecessary whitespace from each line
+    .map(line => line.trim())
+    // Removes commented out lines, these are auto ignored by GIT so won't make up the commit message
+    .filter(line => !line.startsWith('#'))
+
+  // Commit message must not be empty
+  checkFailureCondition(() => lines.length === 0,
+    'Empty commit message')
+
+  // Each line must be no longer than 100 characters
+  lines.forEach((line, index) => {
+    checkFailureCondition(() => line.length > 100,
+      `Line length must not be greater than 100 characters. Check line number: ${index + 1}`)
+  })
+  
+  /************
+   ** HEADER **
+   ************/
+  const headerRegEx = '^([a-z]+?)(\\([^()]*\\))?: (.+)$'
+  const headerMatch = lines[0].match(new RegExp(headerRegEx))
+  const headerGroups = headerMatch && headerMatch.slice(1)
+
+  if (headerGroups) {
+    var [type, scope, subject] = headerGroups
+  }
+
+  // revert commits
+  if (lines[0].startsWith('revert:')) {
+    // revert commits should have the previous header commit in their header
+    checkFailureCondition(() => !(new RegExp('^revert: ' + headerRegEx.slice(1)).test(lines[0])),
+      'Revert commits should follow the format: "revert: <commit to revert header>"')
+
+    // revert commits require a body so second line must be empty
+    checkFailureCondition(() => lines[1] == undefined || lines[1].trim(),
+      'Revert commits requries a body so second line must be empty')
+
+    // revert commits required a special paragraph in the body that starts: This reverts commit <hash>
+    checkFailureCondition(() => lines[2] == undefined || !(/^This reverts commit [a-z0-9]+$/.test(lines[2])),
+      'Revert commits require the start of the body to say: ' +
+      'This reverts commit <commit-to-revert-hash>')
+  }
+
+  // header doesn't fit the overall structure
+  checkFailureCondition(() => !headerMatch,
+    'Header (first line) does not follow format: "type(scope): subject". (scope) is optional')
+
+  // header type should be one of the pre-defined types
+  checkFailureCondition(() => !validCommitTypes.includes(type),
+    `Header type is not valid. Valid types: ${validCommitTypes.join(' ')}`)
+
+  // header subject must not have the first letter capitalized
+  checkFailureCondition(() => subject[0] === subject[0].toUpperCase(),
+    'Header subject must not have first letter capitalized')
+
+  // header subject must not end with a .
+  checkFailureCondition(() => subject[subject.length - 1] === '.',
+    'Header subject must not end with a "."')
+  
+  
+  /************
+   **  BODY  **
+   ************/
+  // line before the body must be empty
+  checkFailureCondition(() => lines.length > 1 && lines[1].trim(),
+    'If adding a body, second commit message line must be empty')
+
+  checkFailureCondition(() => lines.length > 2 && !lines[2].trim(),
+    'When adding a body, it must not be empty')
+  
+  /************
+   ** FOOTER **
+   ************/
+
+   // find last space, shouldn't be first space
+   //   next line should be either breaking change or issues
+   // if no space, look for breaking change, if exits, advise need space before
+  const breakingChangeLine = lines.findIndex(line => line.startsWith('BREAKING CHANGE:'))
+  // const issueFixLine = lines.findIndex(line => )
+
+  checkFailureCondition(() => breakingChangeLine > 0 && lines[breakingChangeLine - 1].trim(),
+    'Breaking changes should be declared in the footer, with a newline preceeding them.')
+
+  // TODO: do line checking
+  // checkFailureCondition(() => )
+
+});
