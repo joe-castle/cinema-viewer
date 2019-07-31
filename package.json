@@ -20,7 +20,7 @@
     "serv": "cross-env NODE_ENV=development nodemon --exec babel-node -r node_modules/dotenv/config src/server.ts --extensions \".ts,.tsx,.js,.jsx\"",
     "debug": "cross-env NODE_ENV=development babel-node -r node_modules/dotenv/config src/server.ts --extensions \".ts,.tsx,.js,.jsx\" --inspect",
     "postinstall": "node build-script/setup.js",
-    "commit": "yarn git-cz",
+    "commit": "yarn build && yarn clean && yarn git-cz && yarn push",
     "clean": "rimraf build/ dist/ lib/",
     "lint": "standard --parser babel-eslint --fix \"*.ts,*.tsx\"",
     "test": "yarn jest",
@@ -158,7 +158,7 @@
     ]
   },
   "jest": {
-    "setupTestFrameworkScriptFile": "./jest.setup.js",
+    "setupFilesAfterEnv": ["./jest.setup.js"],
     "testEnvironment": "enzyme",
     "testEnvironmentOptions": {
       "enzymeAdapter": "react16"

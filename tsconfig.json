@@ -2,6 +2,7 @@
   "compilerOptions": {
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
+    "noImplicitAny": true,
     "strict": true,
     "noUnusedLocals": true,
     "allowSyntheticDefaultImports": true,

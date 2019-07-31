@@ -9,6 +9,7 @@ const {
 mongo(MONGODB_URI)
   .then((db) => {    
     if (db) {
+      // @ts-ignore seems to think the listen callback takes no parameters...
       app(db).listen(PORT, (err: Error) => {
         if (err) {
           console.error(err)
