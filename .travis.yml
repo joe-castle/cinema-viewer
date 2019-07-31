@@ -9,9 +9,7 @@ branches:
   - "/feature-.+/"
   - "/release-.+/"
   - "/fix-.+/"
-after_success:
-  script: yarn release
-  on: master
+after_success: test $TRAVIS_BRANCH = "master" && yarn release
 deploy:
   provider: heroku
   api_key:
