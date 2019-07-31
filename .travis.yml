@@ -10,7 +10,7 @@ branches:
   - "/release-.+/"
   - "/fix-.+/"
 after_success:
-  script: yarn semantic-release
+  script: yarn release
   on: master
 deploy:
   provider: heroku
