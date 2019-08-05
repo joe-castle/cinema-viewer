@@ -1,7 +1,5 @@
 import React, { Component, FormEvent } from 'react'
 import { Row, Col, Button } from 'reactstrap'
-import { fromEvent, Subscription, animationFrameScheduler } from 'rxjs'
-import { pluck, debounceTime, tap, map } from 'rxjs/operators'
 import loadable, { LoadableComponent } from '@loadable/component'
 
 import {
@@ -20,9 +18,9 @@ import Showtimes from './Showtimes'
 import Watched from './Watched'
 import Loader from './utils/Loader'
 
-import { calculateDimensions, notCheckUserData, checkUserData, formatDate } from '../common/utils'
+import { notCheckUserData, checkUserData, formatDate } from '../common/utils'
 import { IFilmProps, IFilmState, IWatchedFormState, ITrailerModalProps, IWatchedFormProps } from '../types/react'
-import { IFilm } from '../types/data'
+import { IUserData } from '../types/data'
 import Icon from './Icon';
 
 const fallback = {
@@ -42,15 +40,8 @@ class Film extends Component<IFilmProps, IFilmState> {
     }
   }
 
-  resize: Subscription|null = null
-  favourite: Subscription|null = null
-  hidden: Subscription|null = null
-
   componentDidMount () {
     const { film, user, update } = this.props
-
-    this.favourite = this.createIconEvent('favourite')
-    this.hidden = this.createIconEvent('hidden')
 
     // Once viewied, remove new flag from film. Assuming signed in.
     if (user && film && notCheckUserData(film, (ud) => ud.new !== false)) {
@@ -58,29 +49,7 @@ class Film extends Component<IFilmProps, IFilmState> {
     }
   }
 
-  componentWillUnmount () {
-    this.resize && this.resize.unsubscribe()
-    this.favourite && this.favourite.unsubscribe()
-    this.hidden && this.hidden.unsubscribe()
-  }
-
-  createIconEvent = (type: string): Subscription => {
-    // return () => {
-    //   this.props.updateFlag(this.createBody({ [type]: !checkUserData(this.props.film, type) }))
-    // }
-    return fromEvent(document.getElementById(`icon-${type}`) as HTMLElement, 'click')
-      .pipe(
-        // @ts-ignore impossible to call this function if film is missing
-        map(() => this.createBody({ [type]: !checkUserData(this.props.film, type) })),
-        tap((body) => this.props.updateFilm(body)),
-        debounceTime(500)
-      )
-      .subscribe((body: IFilm) => {
-        this.props.update(body)
-      })
-  }
-
-  createBody = (data: IFilm): IFilm => {
+  createBody = (data: IUserData): IUserData => {
     // @ts-ignore impossible to call this function if film is missing
     return { _id: this.props.film._id, ...data }
   }
@@ -110,6 +79,11 @@ class Film extends Component<IFilmProps, IFilmState> {
     }))
   }
 
+  iconOnClick = (type: string): (ev: MouseEvent) => void => {
+    // @ts-ignore impossible to call this function if film is missing
+    return (ev) => this.props.update(this.createBody({ [type]: !checkUserData(this.props.film, type) }))
+  }
+
   render () {
     const { film, match }: IFilmProps = this.props
     const { watchedForm, modal }: IFilmState = this.state
@@ -135,19 +109,21 @@ class Film extends Component<IFilmProps, IFilmState> {
             {/* <Icon onClick={this.createIconEvent('favourite')} icon='heart' title='Favourite film' favourite={checkUserData(film, 'favourite')} />
             <Icon onClick={this.createIconEvent('hidden')} icon='eye' title='Visible in available' hiddenIcon={!checkUserData(film, 'hidden')} /> */}
             <Icon
+              onClick={this.iconOnClick('favourite')}
               type='favourite'
               icon='heart'
               title='Favourite film'
               color='red'
               highlight={checkUserData(film, 'favourite')}
-              loading={false} />
-            <Icon 
+              loading={film.userData && film.userData.favourite === 'loading'} />
+            <Icon
+              onClick={this.iconOnClick('hidden')}
               type='hidden'
               icon='eye'
               title='Visible in available'
               color='green'
               highlight={!checkUserData(film, 'hidden')}
-              loading={false} />
+              loading={film.userData && film.userData.hidden === 'loading'} />
           </div>
           {film.director && <><strong>Director: </strong><p>{film.director}</p></>}
           {film.cast && <><strong>Cast: </strong><p>{film.cast}</p></>}

@@ -1,6 +1,6 @@
 import { RouteComponentProps, RouteProps } from 'react-router'
 
-import { IFilm, IUser, IShowtimes, IWatched } from './data'
+import { IFilm, IUser, IShowtimes, IWatched, IUserData } from './data'
 import { IReduxActionCreator } from './redux'
 
 /**
@@ -18,8 +18,8 @@ export interface IAppProps extends IAppActionProps {
 }
 
 export interface IAppActionProps extends RouteComponentProps {
-  postUpdateFilm: IReduxActionCreator<IFilm>,
-  updateFilm: IReduxActionCreator<IFilm>
+  postUpdateFilm: IReduxActionCreator<IUserData>,
+  updateFilm: IReduxActionCreator<IUserData>
 }
 
 /**
@@ -41,8 +41,8 @@ export interface IFilmRouteProps {
 export interface IFilmProps extends RouteComponentProps<IFilmRouteProps> {
   film?: IFilm,
   user: IUser | null,
-  update: Function,
-  updateFilm: IReduxActionCreator<IFilm>
+  update: (film: IUserData) => void,
+  updateFilm: IReduxActionCreator<IUserData>
 }
 
 export interface IFilmState {

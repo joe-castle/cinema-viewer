@@ -4,7 +4,8 @@ import styled from 'styled-components'
 
 import { notCheckUserData, checkUserData, formatDate, formatTime } from '../common/utils'
 import { IBadgeWrapperProps } from '../types/react'
-function BadgeWrapperComp ({ film, ...props }: IBadgeWrapperProps): ReactElement {
+
+function BadgeWrapperComp ({ film, ...props }: IBadgeWrapperProps): ReactElement<IBadgeWrapperProps> {
   // @ts-ignore undefined check performed by checkUserData
   const watchedDate = new Date(checkUserData(film, 'watched') && film.userData.watched.dateTime)
 

@@ -14,7 +14,7 @@ import { IShowTimesProps } from '../types/react'
 function Showtimes ({ showtimes }: IShowTimesProps): ReactElement {
   return <RowCenter>
     {Object.keys(showtimes).map((format) =>
-      <ShowCol lg={4} md={12}>
+      <ShowCol lg={4} md={12} key={format}>
         <h3>{format}</h3>
         {Object.keys(showtimes[format]).map((date) => {
           const today: boolean = formatDate(new Date()) === date

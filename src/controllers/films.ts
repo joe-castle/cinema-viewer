@@ -15,7 +15,7 @@ export default function filmsController (router: Router): void {
 
   router.post('/api/films/:id', ensureAuthenticated, async (req: Request, res: Response) => {
     const { id }: { id: string } = req.params
-
+    
     res.json(await insertUpdateUserData(req.user._id, id, req.body))
   })
 }
