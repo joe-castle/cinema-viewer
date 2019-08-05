@@ -131,7 +131,7 @@ class Film extends Component<IFilmProps, IFilmState> {
           {/* 
             // @ts-ignore undefined checked performed by checkUSerData */}
           {checkUserData(film, 'watched') && <Watched watched={film.userData.watched} />}
-          {watchedForm && <WatchedForm submitForm={this.submitForm} />}
+          {watchedForm && <WatchedForm submitWatchedForm={this.submitForm} />}
           {!watchedForm && !notCheckUserData(film, 'watched') &&
             <Button onClick={() => this.setState({ watchedForm: true })} color='success'>Watched!</Button>
           }

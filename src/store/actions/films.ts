@@ -1,19 +1,19 @@
-import { ofType, ActionsObservable, Epic } from 'redux-observable'
+import { ofType, Epic } from 'redux-observable'
 import { mergeMap, map, throttleTime, delay } from 'rxjs/operators'
 import { ajax } from 'rxjs/ajax'
 import { merge, of } from 'rxjs'
 import { Reducer } from 'redux'
 
 import { actionCreatorMapFactory } from '../../common/utils'
-import { IReduxActionCreatorMap, IReduxAction } from '../../types/redux'
+import { IReduxAction } from '../../types/redux'
 import { IFilm, IUserData } from '../../types/data'
 
 const UPDATE_FILM: string = 'UPDATE_FILM'
 const POST_UPDATE_FILM: string = 'POST_UPDATE_FILM'
 
-export const filmActions: IReduxActionCreatorMap<IUserData> = actionCreatorMapFactory(UPDATE_FILM, POST_UPDATE_FILM)
+export const filmActions = actionCreatorMapFactory<IUserData>(UPDATE_FILM, POST_UPDATE_FILM)
 
-export const filmReducer: Reducer<IFilm[], IReduxAction<IUserData>> = (state = [], { type, payload }): IFilm[] => {
+export const filmReducer: Reducer<IFilm[], IReduxAction<IUserData>> = (state = [], { type, payload }) => {
   if (payload) {
     const { _id, ...body } = payload
 
@@ -40,7 +40,7 @@ export const filmReducer: Reducer<IFilm[], IReduxAction<IUserData>> = (state = [
 }
 
 export const filmEpics: Epic<IReduxAction<IUserData>>[] = [
-  (action$: ActionsObservable<IReduxAction<IUserData>>) => action$.pipe(
+  (action$) => action$.pipe(
     ofType(POST_UPDATE_FILM),
     throttleTime(500),
     mergeMap(({ payload: { _id, ...body } }) =>

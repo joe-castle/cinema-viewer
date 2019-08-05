@@ -3,11 +3,9 @@ import { Row, Col, Button, Form, FormGroup, Label, Input } from 'reactstrap'
 
 import { formatTime, zeroPad } from '../common/utils'
 import { useFormInput } from '../common/hooks';
-import { useDispatch } from 'react-redux';
-import { filmActions } from '../store/actions/films';
 
 export interface IWatchedFormProps {
-  submitForm: (ev: FormEvent<HTMLFormElement>, state: IWatchedFormState) => void
+  submitWatchedForm: (ev: FormEvent<HTMLFormElement>, state: IWatchedFormState) => void
 }
 
 export interface IWatchedFormState {
@@ -18,21 +16,21 @@ export interface IWatchedFormState {
   format: string
 }
 
-export default function WatchedForm () {
+export default function WatchedForm ({ submitWatchedForm }: IWatchedFormProps) {
   const currentDate = new Date()
   const rating = useFormInput(0)
   const format = useFormInput('2D')
   const date = useFormInput(`${currentDate.getFullYear()}-${zeroPad(currentDate.getMonth() + 1)}-${zeroPad(currentDate.getDate())}`)
   const time = useFormInput(formatTime(currentDate))
   const notes = useFormInput('')
-  const dispatch = useDispatch()
 
-  return <Form onSubmit={(ev) => dispatch(filmActions.postUpdateFilm(ev, { 
-    rating: rating.value, 
-    format: format.value, 
-    date: date.value, 
-    time: time.value, 
-    notes: notes.value }))}>
+  return <Form onSubmit={(ev) => submitWatchedForm(ev, { 
+      rating: rating.value, 
+      format: format.value, 
+      date: date.value, 
+      time: time.value, 
+      notes: notes.value })
+  }>
     <FormGroup>
       <Label for='rating'>Rating:</Label>
       <Input type='number' min='0' max='100' name='rating' {...rating} />
