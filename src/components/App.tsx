@@ -1,9 +1,9 @@
-import React, { ReactElement } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { hot } from 'react-hot-loader/root'
 import { Switch, Route, withRouter } from 'react-router-dom'
 import { Container } from 'reactstrap'
-import loadable, { LoadableComponent } from '@loadable/component'
+import loadable from '@loadable/component'
 // import delay from 'p-min-delay'
 // @ts-ignore no @types avalabile
 
@@ -14,30 +14,26 @@ import { actions } from '../store/actions'
 import Navigation from './Navigation'
 import Footer, { CopyrightText } from './styled/Footer'
 
-import { checkUserData, notCheckUserData } from '../common/utils'
 import { IState } from '../types/redux'
-import { IAppActionProps, IAppProps, IFilmGroupProps, IFilmProps } from '../types/react'
+import { IAppActionProps, IAppProps } from '../types/react'
+import { useUser } from '../common/hooks';
 
-const FilmGroup: LoadableComponent<IFilmGroupProps> = loadable(() => import(/* webpackPrefetch: true */ './FilmGroup') as unknown as Promise<LoadableComponent<IFilmGroupProps>>, {
+const FilmGroup = loadable(() => import(/* webpackPrefetch: true */ './FilmGroup'), {
   fallback: <Loader />
 })
-const Film: LoadableComponent<IFilmProps> = loadable(() => import(/* webpackPrefetch: true */ './Film'), {
+const Film = loadable(() => import(/* webpackPrefetch: true */ './Film'), {
   fallback: <Loader />
 })
 
 function App ({
-  favourite,
-  hidden,
-  available,
-  watched,
-  expired,
   films,
   location,
-  user,
   postUpdateFilm,
-  updateFilm }: IAppProps): ReactElement {
-  return <>
-    <Navigation url={location.pathname} user={user} />
+  updateFilm }: IAppProps) {
+  const user = useUser()
+
+  return <React.StrictMode>
+    <Navigation url={location.pathname} />
     <main>
       <Container>
         <Switch>
@@ -45,17 +41,17 @@ function App ({
             exact
             path='/'
             render={(props) => <>
-              <FilmGroup {...props} user={user} films={favourite} title='Favourites' />
-              <FilmGroup {...props} user={user} films={available} title='Available' />
-              <FilmGroup {...props} user={user} films={hidden} title='Hidden' collapse />
+              <FilmGroup {...props} title='Favourites' />
+              <FilmGroup {...props} title='Available' />
+              <FilmGroup {...props} title='Hidden' collapse />
             </>}
           />
           <Route
             exact
             path='/films'
             render={(props) => <>
-              <FilmGroup {...props} user={user} films={watched} title='Watched' />
-              <FilmGroup {...props} user={user} films={expired} title='Expired' collapse />
+              <FilmGroup {...props} title='Watched' />
+              <FilmGroup {...props} title='Expired' collapse />
             </>}
           />
           <Route
@@ -76,18 +72,12 @@ function App ({
     <Footer>
       <CopyrightText>© Joe Smith 2019</CopyrightText>
     </Footer>
-  </>
+  </React.StrictMode>
 }
 
 function mapStateToProps ({ films, ...props }: IState & IAppActionProps): IAppProps {
   return {
     ...props,
-    user: props.user && props.user.name ? props.user : null,
-    favourite: films.filter((film) => checkUserData(film, 'favourite')),
-    available: films.filter((film) => film.showtimes && notCheckUserData(film, '!favourite', '!hidden', '!watched')),
-    hidden: films.filter((film) => film.showtimes && checkUserData(film, '!favourite', 'hidden', '!watched')),
-    watched: films.filter((film) => checkUserData(film, 'watched')),
-    expired: films.filter((film) => !film.showtimes && checkUserData(film, '!watched')),
     films
   }
 }

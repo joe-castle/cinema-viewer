@@ -1,5 +1,5 @@
-import { IState } from "./redux";
-import { Db } from "mongodb";
+import { IState } from './redux';
+import { Db } from 'mongodb';
 
 /**
  * Connection interface for mongodb client connection

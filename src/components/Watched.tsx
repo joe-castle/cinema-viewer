@@ -1,19 +1,19 @@
-import React, { ReactElement } from 'react'
+import React from 'react'
 
-import { formatTime, formatDate } from '../common/utils'
+import { formatTime } from '../common/utils'
 import { IWatched } from '../types/data'
-import { IWatchedProps } from '../types/react'
 
-function Watched ({ watched }: IWatchedProps): ReactElement {
-  const { dateTime, rating, notes, format }: IWatched = watched
-  const date: Date = new Date(dateTime)
+export interface IWatchedProps {
+  watched: IWatched
+}
+
+export default function Watched ({ watched: { dateTime, rating, notes, format } }: IWatchedProps) {
+  const date = new Date(dateTime)
 
   return <div>
-    <p><strong>Watched: </strong>{formatDate(date)} at {formatTime(date)}</p>
+    <p><strong>Watched: </strong>{date.toDateString()} at {formatTime(date)}</p>
     <p><strong>Rating: </strong>{rating}/100</p>
     <p><strong>Format: </strong>{format}</p>
     <p><strong>Notes: </strong>{notes}</p>
   </div>
 }
-
-export default Watched

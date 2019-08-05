@@ -1,6 +1,6 @@
-import styled from "styled-components";
-import { IIconProps } from "../../types/react";
-import { transparentize } from "polished";
+import styled from 'styled-components';
+import { IIconProps } from '../../types/react';
+import { transparentize } from 'polished';
 
 export const IconStyles = styled.span.attrs(({ type, icon }: IIconProps) => ({
   id: `icon-${type}`,

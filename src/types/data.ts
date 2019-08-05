@@ -15,10 +15,6 @@ export interface IUser {
 export interface IFilm {
   _id?: string|Object,
   title?: string,
-  director?: string,
-  cast?: string,
-  length?: string,
-  rating?: string,
   dateAdded?: Date|string,
   edis?: string[],
   poster?: string,
@@ -51,11 +47,10 @@ export interface IShowtime {
  * Defines the structure of a userData objcet
  */
 export interface IUserData {
-  _id?: string,
   filmId?: string,
   userId?: string,
-  favourite?: boolean|'loading',
-  hidden?: boolean|'loading',
+  favourite?: boolean,
+  hidden?: boolean,
   new?: boolean,
   watched?: IWatched,
   [key: string]: any

@@ -1,11 +1,16 @@
-import React, { ReactElement } from 'react'
+import React from 'react'
 import { Badge } from 'reactstrap'
 import styled from 'styled-components'
 
 import { notCheckUserData, checkUserData, formatDate, formatTime } from '../common/utils'
-import { IBadgeWrapperProps } from '../types/react'
+import { IFilm } from '../types/data';
 
-function BadgeWrapperComp ({ film, ...props }: IBadgeWrapperProps): ReactElement<IBadgeWrapperProps> {
+export interface IBadgeWrapperProps {
+  film: IFilm,
+  [key: string]: any
+}
+
+function BadgeWrapperComp ({ film, ...props }: IBadgeWrapperProps) {
   // @ts-ignore undefined check performed by checkUserData
   const watchedDate = new Date(checkUserData(film, 'watched') && film.userData.watched.dateTime)
 

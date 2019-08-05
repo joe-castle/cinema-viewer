@@ -1,6 +1,10 @@
 import styled from 'styled-components'
 import { transparentize } from 'polished'
-import { ILoaderProps } from '../../types/react';
+
+export interface ILoaderProps {
+  color: string,
+  size: number
+}
 
 const Loader = styled.div`
   border-radius: 50%;

@@ -1,8 +1,11 @@
-import React, { ReactElement } from 'react'
-import { IRatingProps } from '../types/react';
+import React from 'react'
 import { RatingIcon, RatingWrapper } from './styled/Rating';
 
-function Rating ({ rating, icon }: IRatingProps): ReactElement<IRatingProps> {
+export interface IRatingProps {
+  rating: number
+}
+
+export default function Rating ({ rating }: IRatingProps) {
   return <RatingWrapper>
     <div className='text-center'>
       <RatingIcon
@@ -12,5 +15,3 @@ function Rating ({ rating, icon }: IRatingProps): ReactElement<IRatingProps> {
     </div>
   </RatingWrapper>
 }
-
-export default Rating
