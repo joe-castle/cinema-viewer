@@ -68,13 +68,6 @@ export interface ITrailerModalProps {
   trailer?: string
 }
 
-export interface IIconProps {
-  type: string,
-  icon: string,
-  favourite?: boolean,
-  hiddenIcon?: boolean
-}
-
 /**
  * FilmGroup.tsx
  */
@@ -139,6 +132,35 @@ export interface IWatchedFormState {
   notes: string,
   format: string,
   [key: string]: string|number
+}
+
+/**
+ * Rating.tsx
+ */
+export interface IRatingProps {
+  rating?: number
+}
+
+/**
+ * Icon.tsx
+ */
+
+export interface IIconProps {
+  // FIX: This needs to get gone when removing eventListener RxJS thing
+  type: string,
+  icon: string,
+  color: string,
+  highlight: boolean,
+  loading?: boolean
+  title?: string
+}
+
+/**
+ * Loader.tsx
+ */
+export interface ILoaderProps {
+  size?: number,
+  color?: string
 }
 
 /**

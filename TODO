@@ -31,6 +31,14 @@ Redux-observable:
     ☐ configure store, takes the reducers and epics and configures them in the store
 
 TODO:
+  ☐ sorting mechanic, default to new/a-z
+  ☐ checkUserData -> make getUserData and convert to a method that gets the property whilst checking conditions...
+    Only problem is the use of magic strings to essentially access nested properties...
+    Maybe have some sort of check to make sure it's only specific string?
+  ☐ make the icon class more multipurpose
+  ☐ from Film.tsx move trailer state into trailer class?
+  ☐ from Film.tsx move film state into film
+  ☐ have next available show date and last available day in filmgroup
   ☐ implement cookie consent
   ☐ distinguishing break between filmgroups, a line, or some sore of boxshadow???
   ✔ Update ensureauthenticated middleware @done(19-02-28 16:37)

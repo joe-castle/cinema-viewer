@@ -11,7 +11,7 @@ import {
   PlayIcon,
   Title,
   SubInfo,
-  Icon,
+  // Icon,
   Synopsis,
   ShowtimesHeader
 } from './styled/Film'
@@ -23,14 +23,14 @@ import Loader from './utils/Loader'
 import { calculateDimensions, notCheckUserData, checkUserData, formatDate } from '../common/utils'
 import { IFilmProps, IFilmState, IWatchedFormState, ITrailerModalProps, IWatchedFormProps } from '../types/react'
 import { IFilm } from '../types/data'
+import Icon from './Icon';
 
-const TrailerModal: LoadableComponent<ITrailerModalProps> = loadable(() => import(/* webpackPrefetch: true */ './TrailerModal'), {
+const fallback = {
   fallback: <Loader />
-})
+}
 
-const WatchedForm: LoadableComponent<IWatchedFormProps> = loadable(() => import(/* webpackPrefetch: true */ './WatchedForm'), {
-  fallback: <Loader />
-})
+const TrailerModal: LoadableComponent<ITrailerModalProps> = loadable(() => import(/* webpackPrefetch: true */ './TrailerModal'), fallback)
+const WatchedForm: LoadableComponent<IWatchedFormProps> = loadable(() => import(/* webpackPrefetch: true */ './WatchedForm'), fallback)
 
 class Film extends Component<IFilmProps, IFilmState> {
   constructor (props: IFilmProps) {
@@ -154,8 +154,20 @@ class Film extends Component<IFilmProps, IFilmState> {
           <div className='mt-3 mb-3'>
             {/* <Icon onClick={this.createIconEvent('favourite')} icon='heart' title='Favourite film' favourite={checkUserData(film, 'favourite')} />
             <Icon onClick={this.createIconEvent('hidden')} icon='eye' title='Visible in available' hiddenIcon={!checkUserData(film, 'hidden')} /> */}
-            <Icon type='favourite' icon='heart' title='Favourite film' favourite={checkUserData(film, 'favourite')} />
-            <Icon type='hidden' icon='eye' title='Visible in available' hiddenIcon={!checkUserData(film, 'hidden')} />
+            <Icon
+              type='favourite'
+              icon='heart'
+              title='Favourite film'
+              color='red'
+              highlight={checkUserData(film, 'favourite')}
+              loading={false} />
+            <Icon 
+              type='hidden'
+              icon='eye'
+              title='Visible in available'
+              color='green'
+              highlight={!checkUserData(film, 'hidden')}
+              loading={false} />
           </div>
           {film.director && <><strong>Director: </strong><p>{film.director}</p></>}
           {film.cast && <><strong>Cast: </strong><p>{film.cast}</p></>}
