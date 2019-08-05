@@ -55,13 +55,13 @@
     "p-min-delay": "^3.1.0",
     "passport": "^0.4.0",
     "passport-google-oauth20": "^2.0.0",
+    "polished": "^3.4.1",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-hot-loader": "^4.12.10",
     "react-redux": "^7.1.0",
     "react-router-dom": "^5.0.1",
-    "polished": "^3.4.1",
     "react-youtube": "^7.9.0",
     "reactstrap": "^8.0.1",
     "redux": "^4.0.4",
@@ -85,6 +85,7 @@
     "@babel/register": "7.5.5",
     "@loadable/babel-plugin": "^5.10.0",
     "@loadable/webpack-plugin": "^5.7.1",
+    "@semantic-release/git": "^7.0.16",
     "@types/connect-mongo": "^0.0.43",
     "@types/cookie-parser": "^1.4.1",
     "@types/express": "^4.17.0",
@@ -159,7 +160,9 @@
     ]
   },
   "jest": {
-    "setupFilesAfterEnv": ["./jest.setup.js"],
+    "setupFilesAfterEnv": [
+      "./jest.setup.js"
+    ],
     "testEnvironment": "enzyme",
     "testEnvironmentOptions": {
       "enzymeAdapter": "react16"
@@ -181,11 +184,5 @@
     "commitizen": {
       "path": "../cz-conventional-changelog/index.js"
     }
-  },
-  "release": {
-    "plugins": [
-      "@semantic-release/commit-analyzer", 
-      "@semantic-release/release-notes-generator", 
-      "@semantic-release/github"]
   }
 }
