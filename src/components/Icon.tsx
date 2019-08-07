@@ -6,10 +6,12 @@ export interface IIconProps {
   type: string,
   icon: string,
   color: string,
-  loading: boolean,
+  loading?: boolean,
   highlight?: boolean,
-  favourite?: boolean,
-  hiddenIcon?: boolean
+  title: string,
+  // favourite?: boolean,
+  // hiddenIcon?: boolean
+  onClick: Function
 }
 
 export default function Icon ({ type, icon, color, highlight, loading, ...props }: IIconProps) {

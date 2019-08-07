@@ -1,7 +1,10 @@
+import React from 'react'
+
 import { IDimensions } from '../types/react'
 import { IFilm, IUserData } from '../types/data'
 import { IPredicate } from '../types/common'
 import { IReduxActionCreator, IReduxAction, IReduxActionCreatorMap } from '../types/redux'
+import Loader from '../components/utils/Loader';
 
 /**
  * Calculates screen dimensions for a specific 16:9 aspect ratio
@@ -48,6 +51,13 @@ export function formatDate (date: Date): string {
   return date.toDateString().slice(0, -5)
 }
 
+/**
+ * Checks the heavily nested UserData object for the provided conditions
+ * 
+ * @param film The film in which to check
+ * @param conditions the conditions to run against the film
+ * @returns true if all conditions pass, false otherwise
+ */
 export function checkUserData (film: IFilm, ...conditions: (string|IPredicate<IUserData>)[]): boolean {
   const userData: IUserData|undefined = film.userData
 
@@ -68,6 +78,9 @@ export function checkUserData (film: IFilm, ...conditions: (string|IPredicate<IU
   return false
 }
 
+/**
+ * The inverse of checkUserData
+ */
 export function notCheckUserData (film: IFilm, ...conditions: (string|IPredicate<IUserData>)[]): boolean {
   return !film.userData || checkUserData(film, ...conditions)
 }
@@ -91,4 +104,11 @@ export function actionCreatorFactory <T = any> (type: string): IReduxActionCreat
 export function actionCreatorMapFactory <T = any> (...types: string[]): IReduxActionCreatorMap<T> {
   return types
     .reduce((prev, type) => ({ ...prev, [camelCase(type)]: actionCreatorFactory(type) }), {})
+}
+
+/**
+ * Fallback element for loadable components
+ */
+export const fallback = {
+  fallback: <Loader />
 }

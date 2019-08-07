@@ -1,7 +1,10 @@
 import { Col } from 'reactstrap'
 import styled from 'styled-components'
 
-import { IShowTimesStyledProps } from '../../types/react'
+export interface IShowTimesStyledProps {
+  expired?: boolean,
+  today?: boolean
+}
 
 export const ShowCol = styled(Col)`
   margin-top: 2em;

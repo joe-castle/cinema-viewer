@@ -47,10 +47,11 @@ export interface IShowtime {
  * Defines the structure of a userData objcet
  */
 export interface IUserData {
+  _id?: Object|string,
   filmId?: string,
   userId?: string,
-  favourite?: boolean,
-  hidden?: boolean,
+  favourite?: boolean|string,
+  hidden?: boolean|string,
   new?: boolean,
   watched?: IWatched,
   [key: string]: any

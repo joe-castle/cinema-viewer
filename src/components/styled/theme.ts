@@ -1,4 +1,8 @@
-import { ITheme } from '../../types/react'
+export interface ITheme {
+  primary: string,
+  secondary: string,
+  dark: string
+}
 
 const theme: ITheme = {
   primary: '0, 126, 167', // CERULEAN
