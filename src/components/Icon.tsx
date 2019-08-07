@@ -9,9 +9,9 @@ export interface IIconProps {
   loading?: boolean,
   highlight?: boolean,
   title: string,
+  onClick: Function
   // favourite?: boolean,
   // hiddenIcon?: boolean
-  onClick: Function
 }
 
 export default function Icon ({ type, icon, color, highlight, loading, ...props }: IIconProps) {
@@ -21,6 +21,7 @@ export default function Icon ({ type, icon, color, highlight, loading, ...props 
         color={color}
         size={5.6} 
       />
+      // @ts-ignore can't fix, don't know the issue
       : <IconStyles
         type={type}
         icon={icon}

@@ -1,40 +1,47 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import YouTube from 'react-youtube'
 
 import { Trailer } from './styled/TrailerModal'
-import { ITrailerModalProps, IDimensions } from '../types/react'
 import { calculateDimensions } from '../common/utils'
+import Loader from './utils/Loader';
+import styled from 'styled-components';
 
-class TrailerModal extends Component<ITrailerModalProps, IDimensions> {
-  constructor(props: ITrailerModalProps) {
-    super(props)
-
-    const state = {
-      width: '640',
-      height: '320'
-    }
-
-    try {
-      this.state = {
-        ...state,
-        ...calculateDimensions(window.innerWidth)
-      }
-    } catch {
-      this.state = state
-    }
-  }
-  
-  render() {
-    const { width, height } = this.state
-    const { trailer, toggle, open } = this.props
-
-    return <Trailer width={width} isOpen={open} toggle={toggle} centered>
-      <YouTube
-        opts={{ width, height }}
-        videoId={trailer && trailer.slice(trailer.indexOf('=') + 1, trailer.length)}
-      />
-    </Trailer>
-  }
+export interface ITrailerModalProps {
+  trailer?: string,
+  toggle: () => void,
+  open: boolean
 }
 
-export default TrailerModal
+const LoaderWrapper = styled.div`
+  position: absolute;
+  top: calc(50% - 3em);
+  left: calc(50% - 3em);
+`
+
+export default function TrailerModal ({ trailer, toggle, open }: ITrailerModalProps) {
+  const [loaded, setLoaded] = useState(false)
+  const [size] = useState(() => {
+    try {
+      return calculateDimensions(window.innerWidth)
+    } catch {
+      return {
+        width: '640',
+        height: '320'
+      }
+    }
+  })
+
+  return <Trailer 
+    onClosed={() => { setLoaded(false) }}
+    width={size.width} isOpen={open} toggle={toggle} centered
+  >
+    {/**
+    // @ts-ignore don't know how to fix this error */}
+    {!loaded && <LoaderWrapper><Loader /></LoaderWrapper>}
+    <YouTube
+      opts={size}
+      videoId={trailer && trailer.slice(trailer.indexOf('=') + 1, trailer.length)}
+      onReady={() => { setLoaded(true) }}
+    />
+  </Trailer>
+}

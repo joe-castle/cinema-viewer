@@ -110,5 +110,6 @@ export function actionCreatorMapFactory <T = any> (...types: string[]): IReduxAc
  * Fallback element for loadable components
  */
 export const fallback = {
+  // @ts-ignore don't know how to fix this error
   fallback: <Loader />
 }
