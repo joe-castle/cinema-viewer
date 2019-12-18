@@ -1,17 +1,17 @@
 import passport from '../strategies/google'
 import { getUserData } from '../data/models/filmUserData'
-import { Router, Response, Request } from 'express'
+import { Router } from 'express'
 
 export default function usersController (router: Router): void {
-  router.get('/api/user', (req: Request, res: Response) => {
+  router.get('/api/user', (req, res) => {
     res.json(req.user)
   })
 
-  router.get('/api/users/:id', async (req: Request, res: Response) => {
+  router.get('/api/users/:id', async (req, res) => {
     res.json(await getUserData(req.params.id))
   })
 
-  router.get('/logout', (req: Request, res: Response) => {
+  router.get('/logout', (req, res) => {
     req.logout()
     res.redirect('/')
   })

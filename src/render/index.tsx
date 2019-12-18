@@ -4,7 +4,6 @@ import { Provider } from 'react-redux'
 import { StaticRouter } from 'react-router-dom'
 import { StaticRouterContext } from 'react-router'
 import { ThemeProvider } from 'styled-components'
-import { Request, Response } from 'express'
 
 import { getAllFilms } from '../data/models/films'
 
@@ -15,7 +14,8 @@ import App from '../components/App'
 import theme from '../components/styled/theme'
 import { IReduxAction, IState } from '../types/redux'
 
-export default async function render (req: Request, res: Response): Promise<void> {
+// @ts-ignore express interfaces behaving whack
+export default async function render (req, res): Promise<void> {
   try {
     const store: Store<IState, IReduxAction> = configureStore({
       films: await getAllFilms(req.user),

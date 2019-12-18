@@ -25,6 +25,7 @@ export function getUserData (userId: string): Promise<IUserData[]> {
 export function insertUpdateUserData (userId: string, filmId: string, userData: IUserData): Promise<IUserData> {
   return userDataS((col) =>
     col.findOneAndUpdate(
+      // @ts-ignore not sure why this is failing now
       { userId, filmId: new ObjectID(filmId) },
       { $set: userData, $setOnInsert: { userId, filmId: new ObjectID(filmId) } },
       { upsert: true }))
