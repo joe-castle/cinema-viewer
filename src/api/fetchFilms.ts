@@ -73,10 +73,10 @@ export default async function fetchFilms (): Promise<Object> {
           rating: parsedFilms[film.edi].Rating,
           length: parsedFilms[film.edi].length,
           releaseDate: new Date(film.release.replace(/(\d+)\/(\d+)\/(\d+)/, '$3/$2/$1')),
-          // The returned URL from cineworld is something like: /https://cineworld.co.uk/{poster}
-          // So this just removes the starting /
-          poster: parsedFilms[film.edi].poster.slice(1),
-          url: film.url,
+          // OLD: The returned URL from cineworld is something like: /https://cineworld.co.uk/{poster} So this just removes the starting /
+          // poter and url are returned without the cineworld part, so we add that here
+          poster: `https://cineworld.co.uk${parsedFilms[film.edi].poster}`,
+          url: `https://cineworld.co.uk${film.url}`,
           unlimited: /unlimited/gi.test(parsedFilms[film.edi].Title),
           showtimes: {
             [format]: film.showtimes
