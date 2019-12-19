@@ -1529,6 +1529,11 @@
     "@types/express-serve-static-core" "*"
     "@types/serve-static" "*"
 
+"@types/fuzzy-search@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@types/fuzzy-search/-/fuzzy-search-2.1.0.tgz#a628a5136799a48d6fa72e88079d06a5f5a0c71a"
+  integrity sha512-huf9Mwh1pJPsN2riqiOOhFNBJfdZ88Pp7Vy9Y/8hYBcfIXPTHGk+B9OU2TSSV1FOTUh+JQfcg082wfAMMEJSoA==
+
 "@types/glob@^7.1.1":
   version "7.1.1"
   resolved "https://registry.yarnpkg.com/@types/glob/-/glob-7.1.1.tgz#aa59a1c6e3fbc421e07ccd31a944c30eba521575"
@@ -5719,6 +5724,11 @@ functions-have-names@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/functions-have-names/-/functions-have-names-1.1.1.tgz#79d35927f07b8e7103d819fed475b64ccf7225ea"
   integrity sha512-U0kNHUoxwPNPWOJaMG7Z00d4a/qZVrFtzWJRaK8V9goaVOCXBSQSJpt3MYGNtkScKEBKovxLjnNdC9MlXwo5Pw==
+
+fuzzy-search@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/fuzzy-search/-/fuzzy-search-3.0.2.tgz#d388dc072cb1dfd6d518f492ea2bb43471ff86ed"
+  integrity sha512-u3moKS69EAq12J+EPjAeF64u4gir6OzX/gDUNu4FXW2/5UfqqxvuYLWDEf7ehaz/TIMuYYh98HlJ2caUbpAiww==
 
 gauge@~2.7.3:
   version "2.7.4"

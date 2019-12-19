@@ -22,7 +22,7 @@ Features:
     ✔ USE TYPESCRIPT FOR THE LOVE OF GOD, maybe? @done(19-02-28 15:48)
     ☐ When rating a film, have a pop up list that shows what would be below and above the score
     ☐ Coming soon films
-    ☐ Have a sort/filter/search feature
+    ✔ Have a filter/search feature @done(19-12-19 16:22)
     ☐ Bulk mark as favourite/hidden
     ☐ 'Delete' film so that aggregation result removes it from return, i.e. mark as deleted in user part of the database, but don't actually delete it
     ☐ React native

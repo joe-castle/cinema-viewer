@@ -4,6 +4,7 @@ import { IUser, IFilm } from './data'
 export interface IState {
   films: IFilm[],
   user: IUser,
+  search: string
   [key: string]: any
 }
 

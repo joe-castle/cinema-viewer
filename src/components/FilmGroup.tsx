@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { CardImg, CardBody, CardTitle, CardSubtitle, Row, Col, Collapse } from 'reactstrap'
+import FuzzySearch from 'fuzzy-search'
 
 import { Title, CardCustom, LinkCustom } from './styled/FilmGroup'
 import BadgeWrapper from './BadgeWrapper'
@@ -18,14 +19,16 @@ export interface IFilmGroupProps extends RouteProps {
 export default function FilmGroup ({ title, collapse }: IFilmGroupProps) {
   const [collapseState, setCollapse] = useState(collapse)
   const user = useUser()
-  const films = useSelector<IState, IFilm[]>(({ films }) => {
+  const films = useSelector<IState, IFilm[]>(({ films, search }) => {
+    const searchedFilms = new FuzzySearch(films, ['title']).search(search)
+
     switch (title) {
-      case 'Watch List': return films.filter((film) => checkUserData(film, 'favourite'))
-      case 'Available': return films.filter((film) => film.showtimes && notCheckUserData(film, '!favourite', '!hidden', '!watched'))
-      case 'Hidden': return films.filter((film) => film.showtimes && checkUserData(film, '!favourite', 'hidden', '!watched'))
-      case 'Watched': return films.filter((film) => checkUserData(film, 'watched'))
-      case 'Expired': return films.filter((film) => !film.showtimes && checkUserData(film, '!watched'))
-      default: return films
+      case 'Watch List': return searchedFilms.filter((film) => checkUserData(film, 'favourite'))
+      case 'Available': return searchedFilms.filter((film) => film.showtimes && notCheckUserData(film, '!favourite', '!hidden', '!watched'))
+      case 'Hidden': return searchedFilms.filter((film) => film.showtimes && checkUserData(film, '!favourite', 'hidden', '!watched'))
+      case 'Watched': return searchedFilms.filter((film) => checkUserData(film, 'watched'))
+      case 'Expired': return searchedFilms.filter((film) => !film.showtimes && checkUserData(film, '!watched'))
+      default: return searchedFilms
     }
   })
 

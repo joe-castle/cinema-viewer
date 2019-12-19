@@ -4,13 +4,16 @@ import {
   NavbarToggler,
   NavbarBrand,
   Nav,
-  NavItem } from 'reactstrap'
+  NavItem, 
+  Input} from 'reactstrap'
 import { Link } from 'react-router-dom'
 
 // import GoogleLogin from '../assets/img/btn_google_light_normal_ios.svg'
 
 import { NavBarCustom } from './styled/Navigation'
-import { useUser } from '../common/hooks';
+import { useUser, useFormInput } from '../common/hooks';
+import { useDispatch } from 'react-redux';
+import { searchActions } from '../store/actions/search';
 
 export interface INavigationProps {
   url: string
@@ -19,6 +22,8 @@ export interface INavigationProps {
 export default function Navigation ({ url }: INavigationProps) {
   const [isOpen, setIsOpen] = useState(false)
   const user = useUser()
+
+  const dispatch = useDispatch()
 
   return (
     <NavBarCustom dark expand='md'>
@@ -34,6 +39,10 @@ export default function Navigation ({ url }: INavigationProps) {
           </NavItem>
           <NavItem active={url === '/soon'}>
             <Link className='nav-link' to='/soon'>Coming Soon</Link>
+          </NavItem>
+          <NavItem>
+            <Input placeholder='Search...'
+             onChange={ev => { dispatch(searchActions.updateSearchValue(ev.target.value)) }} />
           </NavItem>
         </Nav>
         <Nav className='ml-auto' navbar>
