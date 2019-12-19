@@ -4,7 +4,7 @@ import session from 'express-session'
 import connect from 'connect-mongo'
 import cookieParser from 'cookie-parser'
 import bodyParser from 'body-parser'
-import { Db } from 'mongodb'
+import { MongoClient } from 'mongodb'
 // @ts-ignore @types don't exist
 import gzipStatic from 'connect-gzip-static'
 
@@ -17,14 +17,14 @@ const app = express()
 const MongoStore = connect(session)
 const { SESSION_SECRET = 'Secret' } = process.env
 
-export default function serverApp (db: Db): Express {
+export default function serverApp (client: MongoClient): Express {
   return app
     .use('/assets', gzipStatic(path.resolve(__dirname, 'assets')))
     .use(bodyParser.json())
     .use(cookieParser())
     .use(session({
       // @ts-ignore connect-mongo depending on incompatible version of mongodb @types
-      store: new MongoStore({ db }),
+      store: new MongoStore({ client }),
       secret: SESSION_SECRET,
       resave: false,
       saveUninitialized: false

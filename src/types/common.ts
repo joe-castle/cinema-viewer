@@ -1,11 +1,11 @@
 import { IState } from './redux';
-import { Db } from 'mongodb';
+import { Db, MongoClient } from 'mongodb';
 
 /**
  * Connection interface for mongodb client connection
  */
 export interface Connect {
-  (uri: string, db?: string): Promise<Db | void>,
+  (uri: string, db?: string): Promise<MongoClient | void>,
   _db: Db | null
 }
 

@@ -1,4 +1,4 @@
-import { MongoClient, MongoError, Db } from 'mongodb'
+import { MongoClient, MongoError } from 'mongodb'
 
 import { Connect } from '../types/common'
 
@@ -8,16 +8,15 @@ import { Connect } from '../types/common'
  * @param url mongo url
  * @param db db name
  */
-const connect: Connect = (uri: string, db?: string): Promise<Db | void> => {
-  return MongoClient.connect(uri, { useNewUrlParser: true })
-    .then((client: MongoClient): Db => {
+const connect: Connect = (uri, db) => {
+  return MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then((client: MongoClient): MongoClient => {
       connect._db = client.db(db)
-      return connect._db
+      return client
     })
     .catch((err: MongoError) => console.error(err))
 }
 
-// @ts-ignore FIX: Thinks _db is any type but seems to understand it in the callback...
 connect._db = null
 
 export default connect
