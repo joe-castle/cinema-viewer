@@ -6,7 +6,14 @@ Features:
     ✔ Show films that are new to booking, @done(19-02-28 15:48)
     ☐ show films that have come back, i.e. already exist in the DB but have since dropped out of booking.
     ✔ have a "stamp" for unlimited content @done(19-02-28 15:48)
-    ☐ mark a film as watched and specify a rating, the format, seats (and seat rating / notes), date / time watched and any extra notes
+    ☐ mark a film as watched and specify 
+      ✔ a rating, @done(19-12-19 14:50)
+      ✔ the format, @done(19-12-19 14:50)
+      ☐ seats 
+        ☐ (and seat rating / 
+        ☐ notes), 
+      ✔ date / time watched and any @done(19-12-19 14:50)
+      ✔ extra notes @done(19-12-19 14:50)
     ✔ favourite films interested in @done(19-02-28 16:14)
     ☐ Also grab films that aren't at basildon?
     ☐ Films api fetches from DB with parsed data and stored information about film?
@@ -21,7 +28,8 @@ Features:
     ☐ React native
     ☐ Seat and screen selection
     ☐ Custom film entry
-    ☐ automatically unfavourite film when submiting review
+    ✔ automatically unfavourite film when submiting review @done(19-12-19 15:28)
+    ✔ rename favourites to watch list to make its purpuse more obvious, making above task make more sense @done(19-12-19 15:28)
     ☐ show all availble films option even if watched
 
 Redux-observable:

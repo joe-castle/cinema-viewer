@@ -20,7 +20,7 @@ export default function FilmGroup ({ title, collapse }: IFilmGroupProps) {
   const user = useUser()
   const films = useSelector<IState, IFilm[]>(({ films }) => {
     switch (title) {
-      case 'Favourites': return films.filter((film) => checkUserData(film, 'favourite'))
+      case 'Watch List': return films.filter((film) => checkUserData(film, 'favourite'))
       case 'Available': return films.filter((film) => film.showtimes && notCheckUserData(film, '!favourite', '!hidden', '!watched'))
       case 'Hidden': return films.filter((film) => film.showtimes && checkUserData(film, '!favourite', 'hidden', '!watched'))
       case 'Watched': return films.filter((film) => checkUserData(film, 'watched'))

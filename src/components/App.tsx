@@ -23,7 +23,7 @@ function App ({ location }: RouteComponentProps) {
             exact
             path='/'
             render={(props) => <>
-              <FilmGroup {...props} title='Favourites' />
+              <FilmGroup {...props} title='Watch List' />
               <FilmGroup {...props} title='Available' />
               <FilmGroup {...props} title='Hidden' collapse />
             </>}

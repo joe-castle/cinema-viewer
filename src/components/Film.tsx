@@ -70,12 +70,15 @@ export default function Film({ match }: RouteComponentProps<IFilmRouteProps>) {
     { rating, format, date, time, notes}: IWatchedFormState) {
     ev.preventDefault()
 
-    updateFilmUserData({ watched: {
-      rating,
-      format,
-      dateTime: new Date(`${date} ${time}`),
-      notes
-    } })
+    updateFilmUserData({ 
+      favourite: false,
+      watched: {
+        rating,
+        format,
+        dateTime: new Date(`${date} ${time}`),
+        notes
+      } 
+    })
 
     setWatchedForm(false)
   }
@@ -102,7 +105,7 @@ export default function Film({ match }: RouteComponentProps<IFilmRouteProps>) {
             onClick={() => updateFilmUserData({ favourite: !checkUserData(film, 'favourite') })}
             type='favourite'
             icon='heart'
-            title='Favourite film'
+            title='Watch List'
             color='red'
             highlight={checkUserData(film, 'favourite')}
             loading={film.userData && film.userData.favourite === 'loading'} />
