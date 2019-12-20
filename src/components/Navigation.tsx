@@ -1,19 +1,12 @@
-import React, { useState } from 'react'
-import {
-  Collapse,
-  NavbarToggler,
-  NavbarBrand,
-  Nav,
-  NavItem, 
-  Input} from 'reactstrap'
-import { Link } from 'react-router-dom'
-
-// import GoogleLogin from '../assets/img/btn_google_light_normal_ios.svg'
-
-import { NavBarCustom } from './styled/Navigation'
-import { useUser, useFormInput } from '../common/hooks';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { Collapse, Input, Nav, NavbarBrand, NavbarToggler, NavItem } from 'reactstrap';
+import { useUser } from '../common/hooks';
 import { searchActions } from '../store/actions/search';
+// import GoogleLogin from '../assets/img/btn_google_light_normal_ios.svg'
+import { NavBarCustom } from './styled/Navigation';
+
 
 export interface INavigationProps {
   url: string
