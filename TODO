@@ -118,6 +118,7 @@ Typescript:
   ✔ Have different interfaces for mongo data and front end data / use namespaces(modules) to 'namespace' them @done(19-02-25 13:34)
 
 FIX:
+  ☐ sorting arrows for watched films dropping below rating and margin is off
   ☐ dates currently aren't taking into account future BST/UTC
   ☐ have better handling of if trailer not found
   ✔ trailer not going full size due to reszie, maybe use lodash to debounce? @done(19-03-16 09:25)

@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import { CardImg, CardBody, CardTitle, CardSubtitle, Row, Col, Collapse, Table } from 'reactstrap'
 import FuzzySearch from 'fuzzy-search'
+import { useTable, useSortBy } from 'react-table'
 
 import { Title, CardCustom, LinkCustom } from './styled/FilmGroup'
 import BadgeWrapper from './BadgeWrapper'
@@ -8,7 +9,7 @@ import { RouteProps } from 'react-router';
 import { IFilm, IUser } from '../types/data';
 import { useSelector } from 'react-redux';
 import { IState } from '../types/redux';
-import { checkUserData, notCheckUserData, formatDate } from '../common/utils';
+import { checkUserData, notCheckUserData, formatTime, formatDate } from '../common/utils';
 import { useUser } from '../common/hooks';
 import styled from 'styled-components'
 
@@ -22,27 +23,75 @@ interface LayoutProps {
   user?: IUser|null
 }
 
-const Th = styled.th`
-  width: 10%;
+const ArrowSpan = styled.span`
+  margin-left: 5px;
 `
 
 function Tabular ({ films }: LayoutProps) {
-  return <Table dark>
+  const columns = useMemo(() => [
+    {
+      Header: 'Title',
+      accessor: 'title',
+      sortType: 'basic'
+    },
+    {
+      Header: 'Rating',
+      accessor: 'rating',
+      sortType: 'basic'
+    },
+    {
+      Header: 'Review',
+      accessor: 'notes',
+      disableSortBy: true
+    },
+    {
+      Header: 'Watched',
+      accessor: 'watched'
+    }
+  ], [])
+
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable(
+    {
+      data: useMemo(() => films.map(film => ({
+          // @ts-ignore cannot be undefined at this point
+          ...film.userData.watched,
+          title: film.title,
+          // @ts-ignore cannot be undefined at this point
+          watched: `${formatDate(new Date(film.userData.watched.dateTime))} @ ${formatTime(new Date(film.userData.watched.dateTime))}`
+        })), films),
+      columns,
+    },
+    useSortBy
+  )
+
+  return <Table bordered striped {...getTableProps()}>
     <thead>
-      <tr>
-        <th>Title</th>
-        <th>Rating</th>
-        <th>Review</th>
-        <Th>Watched</Th>
-      </tr>
+      {headerGroups.map(headerGroup => (
+        <tr {...headerGroup.getHeaderGroupProps()}>
+          {headerGroup.headers.map(column => (
+              //@ts-ignore
+              <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                {column.render('Header')}
+                {/*
+                //@ts-ignore */}
+                {column.isSorted && <ArrowSpan className={`oi oi-caret-${column.isSortedDesc ?'bottom' : 'top'}`} />}
+            </th>
+          ))}
+        </tr>
+      ))}
     </thead>
-    <tbody>
-      {films.map((film) => <tr key={film.title}>
-        <th scope='row'>{film.title}</th>
-        <td>{film.userData.watched.rating}</td>
-        <td>{film.userData.watched.notes}</td>
-        <td>{formatDate(new Date(film.userData.watched.dateTime))}</td>
-      </tr>)}
+    <tbody {...getTableBodyProps()}>
+      {rows.map(
+        (row, i) => {
+          prepareRow(row);
+          return (
+            <tr {...row.getRowProps()}>
+              {row.cells.map(cell => {
+                return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+              })}
+            </tr>
+          )}
+      )}
     </tbody>
   </Table>
 }
