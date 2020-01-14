@@ -9,7 +9,7 @@ import { RouteProps } from 'react-router';
 import { IFilm, IUser } from '../types/data';
 import { useSelector } from 'react-redux';
 import { IState } from '../types/redux';
-import { checkUserData, notCheckUserData, formatTime, formatDate } from '../common/utils';
+import { checkUserData, notCheckUserData } from '../common/utils';
 import { useUser } from '../common/hooks';
 import styled from 'styled-components'
 
@@ -46,7 +46,10 @@ function Tabular ({ films }: LayoutProps) {
     },
     {
       Header: 'Watched',
-      accessor: 'watched'
+      accessor: 'dateTime',
+      sortType: 'datetime',
+      // @ts-ignore
+      Cell: ({ cell: { value }}) => value.toLocaleString().replace(/,(.+):\d\d/, '$1')
     }
   ], [])
 
@@ -55,9 +58,9 @@ function Tabular ({ films }: LayoutProps) {
       data: useMemo(() => films.map(film => ({
           // @ts-ignore cannot be undefined at this point
           ...film.userData.watched,
-          title: film.title,
           // @ts-ignore cannot be undefined at this point
-          watched: `${formatDate(new Date(film.userData.watched.dateTime))} @ ${formatTime(new Date(film.userData.watched.dateTime))}`
+          dateTime: new Date(film.userData.watched.dateTime),
+          title: film.title,
         })), films),
       columns,
     },

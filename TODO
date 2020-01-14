@@ -39,6 +39,7 @@ Redux-observable:
     ☐ configure store, takes the reducers and epics and configures them in the store
 
 TODO:
+  ☐ edit watched film
   ☐ sorting mechanic, default to new/a-z
   ☐ checkUserData -> make getUserData and convert to a method that gets the property whilst checking conditions...
     Only problem is the use of magic strings to essentially access nested properties...
