@@ -2,6 +2,8 @@ import React, { useState, useMemo } from 'react'
 import { CardImg, CardBody, CardTitle, CardSubtitle, Row, Col, Collapse, Table } from 'reactstrap'
 import FuzzySearch from 'fuzzy-search'
 import { useTable, useSortBy } from 'react-table'
+import styled from 'styled-components'
+import { Link } from 'react-router-dom'
 
 import { Title, CardCustom, LinkCustom } from './styled/FilmGroup'
 import BadgeWrapper from './BadgeWrapper'
@@ -11,7 +13,6 @@ import { useSelector } from 'react-redux';
 import { IState } from '../types/redux';
 import { checkUserData, notCheckUserData } from '../common/utils';
 import { useUser } from '../common/hooks';
-import styled from 'styled-components'
 
 export interface IFilmGroupProps extends RouteProps {
   title: string,
@@ -32,12 +33,15 @@ function Tabular ({ films }: LayoutProps) {
     {
       Header: 'Title',
       accessor: 'title',
-      sortType: 'basic'
+      // @ts-ignore
+      Cell: ({ rows, cell }) =>
+        <Link to={`/films/${rows.find(row => row.original.title === cell.value).original.filmId}`}>
+          {cell.value}
+        </Link>
     },
     {
       Header: 'Rating',
-      accessor: 'rating',
-      sortType: 'basic'
+      accessor: 'rating'
     },
     {
       Header: 'Review',
@@ -60,7 +64,9 @@ function Tabular ({ films }: LayoutProps) {
           ...film.userData.watched,
           // @ts-ignore cannot be undefined at this point
           dateTime: new Date(film.userData.watched.dateTime),
+          // @ts-ignore cannot be undefined at this point
           title: film.title,
+          filmId: film._id
         })), films),
       columns,
     },
