@@ -20,9 +20,10 @@ export const Poster = styled.img`
   width: 100%;
 `
 
-export const PlayIcon = styled.span.attrs({
-  className: 'oi oi-play-circle'
-})`
+export const LargeIcon = styled.span.attrs(({ type, color }: { type: string, color?: string }) => ({
+  className: `oi oi-${type}`
+}))`
+  color: ${({ color }) => color};
   position: absolute;
   left: calc(50% - 0.5em);
   top: calc(50% - 0.5em);

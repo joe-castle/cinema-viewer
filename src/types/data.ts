@@ -25,6 +25,7 @@ export interface IFilm {
   unlimited?: boolean,
   url?: string
   userData?: IUserData,
+  selected?: boolean,
   [key: string]: any
 }
 

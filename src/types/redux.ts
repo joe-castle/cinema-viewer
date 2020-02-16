@@ -4,8 +4,15 @@ import { IUser, IFilm } from './data'
 export interface IState {
   films: IFilm[],
   user: IUser,
-  search: string
+  search?: string,
+  multiSelect?: IMultiSelect
   [key: string]: any
+}
+
+export interface IMultiSelect {
+  enabled?: boolean,
+  favouriteLoading?: boolean,
+  hiddenLoading?: boolean
 }
 
 export interface IReduxAction <T = Object> extends Action<string> {

@@ -6,7 +6,7 @@ import {
   RowCenter,
   PosterWrapper,
   Poster,
-  PlayIcon,
+  LargeIcon,
   Title,
   SubInfo,
   // Icon,
@@ -94,7 +94,9 @@ export default function Film({ match }: RouteComponentProps<IFilmRouteProps>) {
       >
         <PosterWrapper onClick={() => setTrailerModal(!trailerModal)}>
           <Poster src={film.poster} />
-          <PlayIcon />
+          {/*
+          // @ts-ignore */ }
+          <LargeIcon type={'play-circle'} />
         </PosterWrapper>
       </Col>
       <Col lg={8}>

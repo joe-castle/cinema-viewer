@@ -23,7 +23,7 @@ Features:
     ☐ When rating a film, have a pop up list that shows what would be below and above the score
     ☐ Coming soon films
     ✔ Have a filter/search feature @done(19-12-19 16:22)
-    ☐ Bulk mark as favourite/hidden
+    ☐ Bulk mark as favourite/hidden @started(20-02-09 17:08)
     ☐ 'Delete' film so that aggregation result removes it from return, i.e. mark as deleted in user part of the database, but don't actually delete it
     ☐ React native
     ☐ Seat and screen selection
@@ -39,6 +39,7 @@ Redux-observable:
     ☐ configure store, takes the reducers and epics and configures them in the store
 
 TODO:
+  ☐ make tabular rows the link rather then just the film title
   ☐ edit watched film
   ☐ sorting mechanic, default to new/a-z
   ☐ checkUserData -> make getUserData and convert to a method that gets the property whilst checking conditions...

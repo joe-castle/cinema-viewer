@@ -9,23 +9,39 @@ import { Title, CardCustom, LinkCustom } from './styled/FilmGroup'
 import BadgeWrapper from './BadgeWrapper'
 import { RouteProps } from 'react-router';
 import { IFilm, IUser } from '../types/data';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { IState } from '../types/redux';
 import { checkUserData, notCheckUserData } from '../common/utils';
 import { useUser } from '../common/hooks';
+import { filmActions } from '../store/actions/films'
+import { LargeIcon } from './styled/Film'
 
 export interface IFilmGroupProps extends RouteProps {
   title: string,
-  collapse?: boolean
+  collapse?: boolean,
 }
 
 interface LayoutProps {
   films: IFilm[],
+  multiSelectEnabled: boolean,
   user?: IUser|null
 }
 
 const ArrowSpan = styled.span`
   margin-left: 5px;
+`
+
+const Cursor = styled.span`
+  cursor: pointer;
+`
+
+const Background = styled.span`
+  background: rgba(50, 144, 246, 0.5);
+  top: 0;
+  left: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
 `
 
 function Tabular ({ films }: LayoutProps) {
@@ -35,6 +51,7 @@ function Tabular ({ films }: LayoutProps) {
       accessor: 'title',
       // @ts-ignore
       Cell: ({ rows, cell }) =>
+        // @ts-ignore
         <Link to={`/films/${rows.find(row => row.original.title === cell.value).original.filmId}`}>
           {cell.value}
         </Link>
@@ -91,7 +108,7 @@ function Tabular ({ films }: LayoutProps) {
     </thead>
     <tbody {...getTableBodyProps()}>
       {rows.map(
-        (row, i) => {
+        (row) => {
           prepareRow(row);
           return (
             <tr {...row.getRowProps()}>
@@ -105,29 +122,40 @@ function Tabular ({ films }: LayoutProps) {
   </Table>
 }
 
-function Grid ({ films, user }: LayoutProps) {
+function Grid ({ films, user, multiSelectEnabled }: LayoutProps) {
+  const dispatch = useDispatch()
+  const card = (film: IFilm, selected?: boolean) => <CardCustom>
+    <CardImg top src={film.poster} />
+    <CardBody className='d-flex flex-column'>
+      <CardTitle className='font-weight-bold' tag='h5'>{film.title}</CardTitle>
+      <CardSubtitle className='mb-2' tag='small'>
+        {new Date(film.releaseDate as string).toDateString()}
+      </CardSubtitle>
+      {user && <BadgeWrapper film={film} />}
+    </CardBody>
+    {selected && <Background />}
+  </CardCustom>
+
   return <> {films.map((film) =>
     <Col className='mb-4' lg={2} md={3} sm={4} xs={6} key={film._id as string}>
-      <LinkCustom to={`/films/${film._id}`}>
-        <CardCustom>
-          <CardImg top src={film.poster} />
-          <CardBody className='d-flex flex-column'>
-            <CardTitle className='font-weight-bold' tag='h5'>{film.title}</CardTitle>
-            <CardSubtitle className='mb-2' tag='small'>
-              {new Date(film.releaseDate as string).toDateString()}
-            </CardSubtitle>
-            {user && <BadgeWrapper film={film} />}
-          </CardBody>
-        </CardCustom>
-      </LinkCustom>
+      {multiSelectEnabled
+        ? <Cursor onClick={() => dispatch(filmActions.toggleSelected({ _id: film._id }))}>
+            {card(film, film.selected)}
+            {/* 
+            // @ts-ignore */}
+            {film.selected && <LargeIcon type='circle-check' color='#016adb' />}
+          </Cursor>
+        : <LinkCustom to={`/films/${film._id}`}>{card(film)}</LinkCustom>
+      }
     </Col>)}
   </>
 }
 
-
 export default function FilmGroup ({ title, collapse }: IFilmGroupProps) {
   const [collapseState, setCollapse] = useState(collapse)
   const user = useUser()
+  // @ts-ignore
+  const multiSelectEnabled = useSelector<IState, boolean>(({ multiSelect }) => multiSelect.enabled)
   const films = useSelector<IState, IFilm[]>(({ films, search }) => {
     const searchedFilms = new FuzzySearch(films, ['title']).search(search)
 
@@ -149,8 +177,8 @@ export default function FilmGroup ({ title, collapse }: IFilmGroupProps) {
     <Collapse isOpen={!collapseState}>
       <Row>
         {title === 'Watched' 
-          ? <Tabular films={films} />
-          : <Grid user={user} films={films} />}
+          ? <Tabular films={films} multiSelectEnabled={multiSelectEnabled} />
+          : <Grid user={user} films={films} multiSelectEnabled={multiSelectEnabled} />}
       </Row>
     </Collapse>
   </>

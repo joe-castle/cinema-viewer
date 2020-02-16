@@ -15,9 +15,12 @@ export default function configureStore (initialState: IState): Store<IState, IRe
   epicMiddleware.run(rootEpic)
 
   if (process.env.NODE_ENV !== 'production' && module.hot) {
-    module.hot.accept('./actions', () =>
-      store.replaceReducer(require('./actions').rootReducer)
-    )
+    module.hot.accept('./actions', () => {
+      const reloaded = require('./actions')
+      store.replaceReducer(reloaded.rootReducer)
+      // @ts-ignore does exits
+      epicMiddleware.replaceEpic(reloaded.rootEpic)
+    })
   }
 
   return store

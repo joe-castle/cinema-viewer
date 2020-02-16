@@ -30,3 +30,26 @@ export function insertUpdateUserData (userId: string, filmId: string, userData: 
       { $set: userData, $setOnInsert: { userId, filmId: new ObjectID(filmId) } },
       { upsert: true }))
 }
+
+/**
+ * Inserts multiple userData into the DB
+ *
+ * @param userData an array of userData
+ */
+export function insertOrUpdateMultipleUserData (userId: string, userData: IUserData[]): Promise<IUserData> {
+  return userDataS((col) => {
+    const bulk = col.initializeUnorderedBulkOp()
+
+    userData.forEach((userData) => {
+      const filmId = userData._id
+      delete userData._id
+
+      // @ts-ignore not sure why this is failing now
+      bulk.find({ userId, filmId: new ObjectID(filmId) }).upsert().update(
+        // @ts-ignore not sure why this is failing now
+        { $set: userData, $setOnInsert: { userId, filmId: new ObjectID(filmId) } })
+    })
+
+    return bulk.execute()
+  })
+}

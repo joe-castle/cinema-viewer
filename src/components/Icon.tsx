@@ -6,15 +6,14 @@ export interface IIconProps {
   type: string,
   icon: string,
   color: string,
-  loading?: boolean,
-  highlight?: boolean,
   title: string,
   onClick: Function
-  // favourite?: boolean,
-  // hiddenIcon?: boolean
+  loading?: boolean,
+  highlight?: boolean,
+  multiSelectEnabled?: boolean
 }
 
-export default function Icon ({ type, icon, color, highlight, loading, ...props }: IIconProps) {
+export default function Icon ({ color, loading, ...props }: IIconProps) {
   return <IconWrapper>
     {loading
       ? <Loader
@@ -23,10 +22,7 @@ export default function Icon ({ type, icon, color, highlight, loading, ...props 
       />
       // @ts-ignore can't fix, don't know the issue
       : <IconStyles
-        type={type}
-        icon={icon}
         color={color}
-        highlight={highlight}
         {...props}
       />}
   </IconWrapper>

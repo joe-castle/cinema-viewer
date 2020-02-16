@@ -19,8 +19,7 @@ export default async function render (req, res): Promise<void> {
   try {
     const store: Store<IState, IReduxAction> = configureStore({
       films: await getAllFilms(req.user),
-      user: req.user,
-      search: ''
+      user: req.user
     })
 
     const context: StaticRouterContext = {}

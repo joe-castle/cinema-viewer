@@ -9,6 +9,7 @@ import Navigation from './Navigation'
 import Footer, { CopyrightText } from './styled/Footer'
 
 import { fallback } from '../common/utils';
+import BulkSelector from './BulkSelector'
 
 const FilmGroup = loadable(() => import(/* webpackPrefetch: true */ './FilmGroup'), fallback)
 const Film = loadable(() => import(/* webpackPrefetch: true */ './Film'), fallback)
@@ -18,6 +19,7 @@ function App ({ location }: RouteComponentProps) {
     <Navigation url={location.pathname} />
     <main>
       <Container>
+        {!/^\/films\/.+$/.test(location.pathname) && <BulkSelector />}
         <Switch>
           <Route
             exact

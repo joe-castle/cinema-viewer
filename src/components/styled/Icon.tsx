@@ -11,8 +11,8 @@ export const IconStyles = styled.span.attrs(({ type, icon }: IIconProps) => ({
   transition: color ease-in .1s;
 
   &:hover {
-    cursor: pointer;
-    color: ${({ color, highlight }) => highlight ? transparentize(0.5, color) : 'rgba(0,0,0,.5)'}
+    cursor: ${({ multiSelectEnabled}) => multiSelectEnabled || multiSelectEnabled == undefined ? 'pointer' : 'auto'};
+    color: ${({ color, highlight, multiSelectEnabled }) => highlight ? transparentize(0.5, color) : !multiSelectEnabled && multiSelectEnabled != undefined ? '' : 'rgba(0,0,0,.5)'}
   }
 `
 
