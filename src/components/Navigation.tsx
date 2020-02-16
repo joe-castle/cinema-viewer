@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Collapse, Input, Nav, NavbarBrand, NavbarToggler, NavItem } from 'reactstrap';
+import { Collapse, Input, Nav, NavbarToggler, NavItem } from 'reactstrap';
 import { useUser } from '../common/hooks';
 import { searchActions } from '../store/actions/search';
 // import GoogleLogin from '../assets/img/btn_google_light_normal_ios.svg'
 import { NavBarCustom } from './styled/Navigation';
+import { LinkCustom } from './styled/FilmGroup';
+import { userActions } from '../store/actions/user';
 
 
 export interface INavigationProps {
@@ -20,7 +22,7 @@ export default function Navigation ({ url }: INavigationProps) {
 
   return (
     <NavBarCustom dark expand='md'>
-      <NavbarBrand href='/'>Cinema Viewer</NavbarBrand>
+      <LinkCustom to='/'>Cinema Viewer</LinkCustom>
       <NavbarToggler onClick={() => { setIsOpen(!isOpen) }} />
       <Collapse isOpen={isOpen} navbar>
         <Nav navbar>
@@ -43,7 +45,7 @@ export default function Navigation ({ url }: INavigationProps) {
           <NavItem>
             {/* TODO: FIX THE LOGIN BUTTON dangerouslySetInnerHTML={{ __html: GoogleLogin }} */}
             {!user && <a className='btn btn-outline-success' href='/auth/google'>Login with Google</a>}
-            {user && <a className='btn btn-outline-light' href='/logout'>Logout</a>}
+            {user && <span className='btn btn-outline-light pointer' onClick={() => dispatch(userActions.logout({}))}>Logout</span>}
           </NavItem>
         </Nav>
       </Collapse>

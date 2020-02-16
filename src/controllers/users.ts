@@ -13,7 +13,7 @@ export default function usersController (router: Router): void {
 
   router.get('/logout', (req, res) => {
     req.logout()
-    res.redirect('/')
+    res.send(205)
   })
 
   router.get('/auth/google', passport.authenticate('google', { scope: 'profile' }))
