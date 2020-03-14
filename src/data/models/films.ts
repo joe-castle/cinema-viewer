@@ -29,13 +29,15 @@ export function getFilmsWithUserData (userId: string): Promise<IFilm[]> {
     {
       $lookup: {
         from: 'film_user_data',
-        localField: '_id',
-        foreignField: 'filmId',
+        let: { filmId: '$_id' },
+        pipeline: [
+          { $match: { $expr: { $eq: ['$filmId', '$$filmId'] }}},
+          { $match: { $expr: { $eq: ['$userId', userId] }}},
+        ],
         as: 'userData'
       }
     },
     { $unwind: { path: '$userData', preserveNullAndEmptyArrays: true } },
-    { $match: { $or: [{ 'userData.userId': userId }, { 'userData': { $exists: false } }] } },
     { $sort: { title: 1 } }
   ]))
 }

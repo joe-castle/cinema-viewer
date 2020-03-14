@@ -18,6 +18,8 @@ Features:
     ☐ show all availble films option even if watched
 
 Todo:
+    ☐ have filmgroup collapse in redux state?
+    ☐ have bulk selector follow the scroll
     ☐ make tabular rows the link rather then just the film title
     ☐ edit watched film
     ☐ sorting mechanic, default to new/a-z
@@ -51,6 +53,7 @@ http2 / server push:
     ☐ other js assets
 
 Fix:
+    ☐ make bulk selector only visible when logged in
     ☐ sorting arrows for watched films dropping below rating and margin is off
     ☐ dates currently aren't taking into account future BST/UTC
     ☐ have better handling of if trailer not found

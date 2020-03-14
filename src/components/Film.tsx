@@ -102,7 +102,7 @@ export default function Film({ match }: RouteComponentProps<IFilmRouteProps>) {
       <Col lg={8}>
         <Title>{film.title}</Title>
         <SubInfo>{generateSubInfo(film.rating, film.length, formatDate(new Date(film.dateAdded as string)))}</SubInfo>
-        <div className='mt-3 mb-3'>
+        {user && <div className='mt-3'>
           <Icon
             onClick={() => updateFilmUserData({ favourite: !checkUserData(film, 'favourite') })}
             type='favourite'
@@ -119,17 +119,19 @@ export default function Film({ match }: RouteComponentProps<IFilmRouteProps>) {
             color='green'
             highlight={!checkUserData(film, 'hidden')}
             loading={film.userData && film.userData.hidden === 'loading'} />
-        </div>
-        {film.director && <><strong>Director: </strong><p>{film.director}</p></>}
-        {film.cast && <><strong>Cast: </strong><p>{film.cast}</p></>}
-        <Synopsis>{film.synopsis}</Synopsis>
-        {/* 
+        </div>}
+        <div className='mt-3'>
+          {film.director && <><strong>Director: </strong><p>{film.director}</p></>}
+          {film.cast && <><strong>Cast: </strong><p>{film.cast}</p></>}
+          <Synopsis>{film.synopsis}</Synopsis>
+          {/*
           // @ts-ignore undefined checked performed by checkUSerData */}
-        {checkUserData(film, 'watched') && <Watched watched={film.userData.watched} />}
-        {watchedForm && <WatchedForm submitWatchedForm={submitWatchedForm} />}
-        {!watchedForm && !notCheckUserData(film, 'watched') &&
+          {checkUserData(film, 'watched') && <Watched watched={film.userData.watched} />}
+          {watchedForm && <WatchedForm submitWatchedForm={submitWatchedForm} />}
+          {!watchedForm && !notCheckUserData(film, 'watched') &&
           <Button onClick={() => setWatchedForm(true)} color='success'>Watched!</Button>
-        }
+          }
+        </div>
       </Col>
     </Row>
     {film.showtimes && <RowCenter>

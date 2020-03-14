@@ -10,16 +10,19 @@ import Footer, { CopyrightText } from './styled/Footer'
 
 import { fallback } from '../common/utils';
 import BulkSelector from './BulkSelector'
+import {useUser} from "../common/hooks";
 
 const FilmGroup = loadable(() => import(/* webpackPrefetch: true */ './FilmGroup'), fallback)
 const Film = loadable(() => import(/* webpackPrefetch: true */ './Film'), fallback)
 
 function App ({ location }: RouteComponentProps) {
+  let user = useUser()
+
   return <React.StrictMode>
     <Navigation url={location.pathname} />
     <main>
       <Container>
-        {!/^\/films\/.+$/.test(location.pathname) && <BulkSelector />}
+        {!/^\/films\/.+$/.test(location.pathname) && user && <BulkSelector />}
         <Switch>
           <Route
             exact
