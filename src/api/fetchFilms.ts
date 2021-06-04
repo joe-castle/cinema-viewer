@@ -2,10 +2,10 @@ import axios, { AxiosResponse } from 'axios'
 import { parseString } from 'xml2js'
 import { getAllFilms, insertOrUpdateMultipleFilms } from '../data/models/films'
 import { IFilm, IShowtime } from '../types/data'
-import { IXmlFilmTimes, IXmlListings, IParsedFilmTimes, IParsedListing, IXmlFilmListing, IYoutubeSnippetSearch } from '../types/apis'
+import { IXmlFilmTimes, IXmlListings, IParsedFilmTimes, IParsedListing, IXmlFilmListing/*, IYoutubeSnippetSearch */} from '../types/apis'
 import { formatDate } from '../common/utils'
 
-const { YOUTUBE_API_KEY } = process.env
+// const { YOUTUBE_API_KEY } = process.env
 
 function processTitle (title: string): string {
   const matchedTitle: RegExpMatchArray|null = title.match(/^(?:\((.+?)\))? ?(.+)/)
@@ -99,15 +99,15 @@ export default async function fetchFilms (): Promise<Object> {
     let newFilms: IFilm[] = processedFilms
       .filter((processed) => !existingFilms.find((film) => film.title === processed.title))
 
-    const trailers: IYoutubeSnippetSearch[] = (await axios
-      .all<AxiosResponse<IYoutubeSnippetSearch>>(newFilms.map((film) => axios.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&q=${encodeURIComponent(`${film.title} trailer`)}&maxResults=1&key=${YOUTUBE_API_KEY}`))))
-      .map((trailer) => trailer.data)
+    // const trailers: IYoutubeSnippetSearch[] = (await axios
+    //   .all<AxiosResponse<IYoutubeSnippetSearch>>(newFilms.map((film) => axios.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&q=${encodeURIComponent(`${film.title} trailer`)}&maxResults=1&key=${YOUTUBE_API_KEY}`))))
+    //   .map((trailer) => trailer.data)
 
-    newFilms = newFilms.map((film, index) =>
-      ({ ...film, trailer: trailers[index].items.length > 0 
-        ? `https://www.youtube.com/watch?v=${trailers[index].items[0].id.videoId}` 
-        : 'TRAILER NOT FOUND'
-      }))
+    // newFilms = newFilms.map((film, index) =>
+    //   ({ ...film, trailer: trailers[index].items.length > 0 
+    //     ? `https://www.youtube.com/watch?v=${trailers[index].items[0].id.videoId}` 
+    //     : 'TRAILER NOT FOUND'
+    //   }))
 
     insertOrUpdateMultipleFilms(
       [
@@ -122,7 +122,7 @@ export default async function fetchFilms (): Promise<Object> {
     return {
       expiredFilms,
       newFilms,
-      trailers,
+      // trailers,
       processedFilms
     }
   } catch (err) {
