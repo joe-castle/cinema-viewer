@@ -137,7 +137,7 @@
     "optimize-css-assets-webpack-plugin": "^5.0.3",
     "postcss-loader": "^3.0.0",
     "rupture": "^0.7.1",
-    "semantic-release": "^15.13.31",
+    "semantic-release": "^17.2.3",
     "standard": "^14.3.1",
     "standard-loader": "^7.0.0",
     "style-loader": "^1.0.2",
